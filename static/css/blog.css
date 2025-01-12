@@ -1,0 +1,25 @@
+.btn.btn-rm {
+    position: relative;
+    transition: background-color 0.3s ease;
+    /* Ajout de la transition pour le changement de couleur */
+}
+
+.btn.btn-rm:hover {
+    background-color: #df4873;
+}
+
+.btn.btn-rm .flech {
+    position: absolute;
+    opacity: 1;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    transform: translateX(0);
+}
+
+.btn.btn-rm:hover .flech {
+    opacity: 0;
+    transform: translateX(100%);
+    background-image: ;
+    
+}
+
+/* Ajoutez ici d'autres styles spécifiques à la section "Blog" si nécessaire */

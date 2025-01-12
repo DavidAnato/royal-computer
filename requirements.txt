@@ -1,0 +1,9 @@
+django
+django-ckeditor
+django-admin-interface
+django-ckeditor
+django-colorfield
+Markdown
+pillow
+text-unidecode
+requests

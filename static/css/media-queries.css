@@ -1,0 +1,30 @@
+@media (max-width: 992px) {
+    .sidebar {
+        background-color: #fff9;
+        backdrop-filter: blur(10px);
+    }
+}
+
+@media (min-width: 992px) {
+    .cart-text {
+        opacity: 0;
+        transition: opacity 0.3s ease-in-out;
+    }
+
+    .nav-link:hover .cart-text {
+        opacity: 1;
+    }
+
+    .carousel-height {
+        height: 60vh;
+    }
+
+    /* .sticky-aside {
+        position: sticky;
+        bottom: 500px;
+        z-index: 1;
+    } */
+
+}
+
+/* Ajoutez ici d'autres styles spécifiques aux requêtes média si nécessaire */

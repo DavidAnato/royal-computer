@@ -1,0 +1,300 @@
+{% extends 'base.html' %}
+
+{% block title %}| Produits{% endblock %}
+
+{% block content %}
+<div class="text-dark">
+  
+    <div class="banner text-center bg-secondary p-5 m-0">
+      <div class="banner-content d-flex justify-content-center align-items-center">
+        <h1 class="text-bold display-4">Boutique</h1>
+      </div>
+    </div>
+
+    
+    <div class="container-fluid">
+      <div class="row mt-4">
+        
+        <div class="col-md-3 px-lg-5 my-1 sidebar bg-white sticky-aside align-items-center justify-content-center mx-auto">
+          <form class="mb-4 d-flex justify-content-end" action="{% url 'shop' %}" method="get">
+            <div class="input-group align-items-center border rounded-5 p-1">
+              <div class="form-outline col">
+                <input type="search" name="keyword" id="autocomplete-input" class="autocomplete-popover form-control rounded-5 shadow-none border-0" placeholder="Rechercher un produit" value="{{ request.GET.keyword }}">
+              </div>
+              <button type="submit" class="btn btn-light rounded-5 d-flex align-items-center justify-content-center"
+               style="width: 40px; height: 40px;">
+                <i class="fas fa-search"></i>
+              </button>
+            </div>
+          </form>
+          {# sidebar #}
+          {# Toggle button #}
+          <button class="btn btn-outline-secondary border mb-3 w-100 d-lg-none rounded-5" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span><i class="fa-solid fa-filter fa-lg me-2"></i> Filtre</span>
+          </button>
+          <h5 class="text-center"><i class="fa-solid fa-filter fa-lg me-2"></i> Filtre</h5>
+          <hr>
+          {# Filtre, trie et recherche #}
+          <div class="collapse rounded-5 d-lg-block mb-5" id="navbarSupportedContent">
+            
+            <form action="{% url 'shop' %}" method="">
+              <div class="accordion accordion-flush text-dark bg-transparent" id="accordionPanelsStayOpenExample">
+                <div class="accordion-item text-dark bg-transparent">
+                  <h2 class="accordion-header text-dark bg-transparent" id="flush-headingTwo">
+                    <button class="accordion-button collapsed rounded-5 shadow-none border-0 text-dark bg-transparent" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false" aria-controls="panelsStayOpen-collapseTwo">
+                        <i class="fa-solid fa-layer-group fa-lg me-2"></i>Catégories
+                    </button>
+                  </h2>
+                  <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo">
+                    <div class="accordion-body">
+                      {% for category in categories %}
+                        <div class="form-check">
+                          <input class="form-check-input shadow-none" type="checkbox" name="category[]" value="{{ category.id }}" id="category{{ category.id }}" {% if category.id in selected_categories %}checked{% endif %} />
+                          <label class="form-check-label" for="category{{ category.id }}">{{ category.name }}</label>
+                        </div>
+                      {% endfor %}
+                    </div>
+                  </div>
+                </div>
+    
+                <div class="accordion-item text-dark bg-transparent">
+                  <h2 class="accordion-header text-dark bg-transparent" id="flush-headingThree">
+                    <button class="accordion-button collapsed rounded-5 shadow-none border-0 text-dark bg-transparent" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseThree" aria-expanded="false" aria-controls="panelsStayOpen-collapseThree">
+                      <i class="fa-solid fa-tags fa-lg me-2"></i> Marques
+                    </button>
+                  </h2>
+                  <div id="panelsStayOpen-collapseThree" class="accordion-collapse collapse " aria-labelledby="flush-headingThree">
+                    <div class="accordion-body">
+                        {% for brand in brands %}
+                          <div class="form-check">
+                            <input class="form-check-input shadow-none" type="checkbox" name="brand[]" value="{{ brand.id }}" id="brand{{ brand.id }}" {% if brand.id in selected_brands %}checked{% endif %} />
+                            <label class="form-check-label" for="brand{{ brand.id }}">{{ brand.name }}</label>
+                          </div>
+                        {% endfor %}
+                    </div>
+                  </div>
+                </div>
+  
+                <div class="accordion-item text-dark bg-transparent">
+                  <h2 class="accordion-header text-dark bg-transparent" id="flush-headingFour">
+                    <button class="accordion-button collapsed rounded-5 shadow-none border-0 text-dark bg-transparent" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseFour" aria-expanded="false" aria-controls="panelsStayOpen-collapseFour">
+                      <i class="fa-solid fa-franc-sign fa-lg me-2"></i> Prix
+                    </button>
+                  </h2>
+                  <div id="panelsStayOpen-collapseFour" class="accordion-collapse collapse" aria-labelledby="flush-headingFour">
+                    <div class="accordion-body">
+                      <div class="row mb-3">
+                        <div class="col-6">
+                          <p class="mb-0">Prix Min</p>
+                          <div class="form-outline">
+                            <input type="number" name="min_price" class="form-control rounded-5 shadow-none" value="{{ selected_min_price }}" />
+                          </div>
+                        </div>
+                        <div class="col-6">
+                          <p class="mb-0">Prix Max</p>
+                          <div class="form-outline">
+                            <input type="number" name="max_price" class="form-control rounded-5 shadow-none" value="{{ selected_max_price }}" />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                    
+              </div>
+              <button type="submit" class="btn btn-outline-primary border w-100 rounded-5 shadow-none">Appliquer les filtres</button>
+            </form>
+          </div>
+        </div>
+    
+        <div class="col-md-9 products align-items-center ">  
+          <div class="row w-100 align-items-center mx-auto"> 
+            {% if products %}
+    
+            {% for product in products %}
+      
+            <div class="product col-12 col-sm-6 col-md-4 col-lg-3">
+              <div class="single-product-wrapper">
+                <div
+                  class="product-img w-100 bg-secondary"
+                  style="background: url('{{ product.image.url }}') no-repeat center; background-size: 90%; aspect-ratio: 1;"
+                >
+                  <div class="d-flex justify-content-between w-100">
+                    {% if product.is_new %}
+                    <span class="bg-primary small p-1 m-3 text-bold text-white rounded-5">Nouveau</span>
+                    {% endif %}
+                    <span class="bg-pink small p-1 m-3 text-bold text-white rounded-5">Promo</span>
+                  </div>
+                </div>
+              </div>
+              <div class="single-product-wrapper-hover d-none">
+                <a
+                  href="{% url 'product_detail' product.pk %}"
+                  class="product-img w-100 bg-secondary d-flex flex-column text-decoration-none product-img-secondary"
+                  style="background: url('{{ product.image_secondary.url }}') no-repeat center; background-size: 90%; aspect-ratio: 1;"
+                >
+                  <div class="d-flex justify-content-between w-100">
+                    {% if product.is_new %}
+                    <span class="bg-primary small p-1 m-3 text-bold text-white rounded-5">Nouveau</span>
+                    {% endif %}
+                    <span class="bg-pink small p-1 m-3 text-bold text-white rounded-5">Promo</span>
+                  </div>
+                  {% if product.id in products_in_cart %}
+                  <form
+                    action="{% url 'cart' %}"
+                    class="mt-auto mb-3 mx-3 add-to-cart-btn rounded-5 p-0"
+                  >
+                    <button type="submit" class="btn w-100 text-bold text-white"> <i class="fa fa-shopping-cart me-2"></i> Voir le panier</button>
+                  </form>
+                  {% else %}
+                  <form
+                    action="{% url 'add_to_cart' product.id %}"
+                    method="get"
+                    class="mt-auto mb-3 mx-3 add-to-cart-btn rounded-5 p-0"
+                  >
+                    <button type="submit" class="btn w-100 text-bold text-white"> <i class="fa fa-cart-plus me-2"></i> Ajouter au panier</button>
+                  </form>
+                  {% endif %}
+                </a>
+              </div>
+              <div class="product-description mt-4">
+                <span class="small text-bold">{{ product.brand }}</span>
+                <a href="{% url 'product_detail' product.pk %}" class="text-decoration-none">
+                  <h5 class="product-name">{{ product.name }}</h5>
+                </a>
+                {% if product.in_promo %}
+                <p class="product-price text-pink text-bold">
+                  <span class="text-decoration-line-through text-secondary me-5">{{ product.price|floatformat:0 }} F CFA</span>
+                  {{ product.promo_price|floatformat:0 }} F CFA
+                </p>
+                {% else %}
+                <p class="product-price text-pink text-bold">{{ product.price|floatformat:0 }} F CFA</p>
+                {% endif %}
+              </div>
+            </div>
+    
+            {% endfor %}
+            <div class="pagination">
+              <ul class="pagination justify-content-center">
+                  {% if products.has_previous %}
+                      <li class="page-item">
+                          <a class="page-link rounded-5" href="?page=1">&laquo; Premier</a>
+                      </li>
+                      <li class="page-item">
+                          <a class="page-link rounded-5" href="?page={{ products.previous_page_number }}">Précédent</a>
+                      </li>
+                  {% endif %}
+          
+                  <li class="page-item active">
+                      <span class="page-link rounded-5">
+                          Page {{ products.number }} sur {{ products.paginator.num_pages }}.
+                      </span>
+                  </li>
+          
+                  {% if products.has_next %}
+                      <li class="page-item">
+                          <a class="page-link rounded-5" href="?page={{ products.next_page_number }}">Suivant</a>
+                      </li>
+                      <li class="page-item">
+                          <a class="page-link rounded-5" href="?page={{ products.paginator.num_pages }}">Dernier &raquo;</a>
+                      </li>
+                  {% endif %}
+              </ul>
+          </div>
+                  
+            {% else %}
+            Pas de Produit
+            {%endif%}
+            </div>
+        </div>
+      </div>
+    </div>
+</div>
+  {% comment %} <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      const input = document.getElementById("autocomplete-input");
+      let currentPopover;
+  
+      // Gérer la saisie de l'utilisateur
+      input.addEventListener("input", function() {
+          const term = input.value;
+  
+          // Effacer les suggestions actuelles
+          clearPopover();
+  
+          // Si le terme de recherche a au moins 2 caractères
+          if (term.length >= 2) {
+              // Effectuer une requête AJAX pour récupérer les suggestions
+              fetch(`{% url 'autocomplete_suggestions' %}?term=${term}`)
+                  .then(response => response.json())
+                  .then(data => {
+                      // Afficher les suggestions dans un popover
+                      showPopover(data);
+                  });
+          }
+      });
+  
+      function showPopover(suggestions) {
+          const popoverContent = document.createElement("div");
+          popoverContent.classList.add("list-unstyled", "bg-white"); // Ajouter des classes au popover
+  
+          const selectedSuggestions = new Set();
+  
+          suggestions.forEach(suggestion => {
+              if (!selectedSuggestions.has(suggestion)) {
+                  selectedSuggestions.add(suggestion);
+  
+                  const listItem = document.createElement("div");
+                  listItem.textContent = suggestion;
+                  listItem.classList.add("p-2", "m-0"); // Ajouter des classes aux éléments de liste
+  
+                  listItem.addEventListener("click", function() {
+                      input.value = suggestion;
+                      clearPopover();
+                      selectedSuggestions.clear();
+                  });
+  
+                  listItem.addEventListener("mouseover", function() {
+                    input.value = suggestion;
+                    listItem.classList.add("bg-light");
+                });
+                
+                listItem.addEventListener("mouseout", function() {
+                    listItem.classList.remove("bg-light");
+                });
+                
+                  popoverContent.appendChild(listItem);
+              }
+          });
+  
+          const popoverWrapper = document.createElement("div");
+          popoverWrapper.appendChild(popoverContent);
+  
+          // Appliquer des styles au popover
+          popoverWrapper.style.position = "absolute";
+          popoverWrapper.style.zIndex = "1000";
+          popoverWrapper.classList.add("rounded-5", "py-1", "w-100", "border"); // Ajouter des classes au popover
+  
+          // Ajouter le popover au DOM
+          input.parentNode.appendChild(popoverWrapper);
+  
+          currentPopover = popoverWrapper;
+      }
+  
+      function clearPopover() {
+          if (currentPopover) {
+              currentPopover.remove();
+              currentPopover = null;
+          }
+      }
+  
+      // Gérer les clics en dehors de la zone de suggestions
+      document.addEventListener("click", function(event) {
+          if (!input.contains(event.target)) {
+              clearPopover();
+          }
+      });
+  });
+  </script> {% endcomment %}
+        
+{% endblock %}

@@ -1,0 +1,22 @@
+<!-- delete_account.html -->
+{% extends 'base.html' %}
+
+{% block title %}| Supprimer mon compte{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="row align-items-center" style="height:70vh">
+    <div class="col-md-6 offset-md-3">
+      <h2>Supprimer mon compte</h2>
+      <p>Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible.</p>
+      <form method="post" action="{% url 'delete_account' %}">
+        {% csrf_token %}
+        <div class="mb-3">
+          <input type="submit" class="btn btn-danger" name="confirm_delete" value="Oui, supprimer mon compte">
+          <a href="{% url 'profile' %}" class="btn btn-secondary">Annuler</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<main>
+    <div class="container-fluid px-5 mt-5">
+        <div class="row">
+            <div class="col-lg-9">
+                <!-- Post content -->
+                <article>
+                    <!-- Post header -->
+                    <header class="mb-4">
+                        <!-- Post title -->
+                        <h1 class="fw-bolder mb-1">{{ post.title }}</h1>
+                        <!-- Post categories -->
+                        {% for category in post.categories.all %}
+                            <a class="badge rounded-5 bg-pink text-decoration-none" href="{% url 'post_list' %}?search={{category.name}}">{{ category.name }}</a>
+                        {% endfor %}
+                    </header>
+                    <!-- Preview image figure -->
+                    <figure class="mb-4"><img class="img-fluid" src="{{ post.image.url }}" alt="{{ post.title }}" /></figure>
+                    <!-- Post content -->
+                    <section class="">
+                        <p class="fs-5">{{ post.formatted_content|linebreaks|safe }}</p>
+                    </section>
+                    <!-- Post meta content -->
+                    <div class="row text-muted fst-italic mb-2">
+                        <div class="small col-6 text-muted">{{ post.published_date|date }} - {{ post.published_date|time }}</div>
+                        <div class="small col-6 text-muted text-end">Par <span class="text-bold"> {{ post.author.get_full_name }} </span></div>
+                    </div>
+    
+                </article>
+                <!-- Comments section -->
+                <section class="mb-5">
+                    <div class="card rounded-5 bg-light">
+                        <div class="card-body m-3">
+                            <!-- Comment form -->
+                            <form class="mb-4 row" method="post">
+                                {% csrf_token %}
+                                <textarea
+                                    name="text"
+                                    class="form-control shadow-none rounded-5 col"
+                                    rows="3"
+                                    placeholder="Ajouter un commentaire"></textarea>
+                                <button type="submit" class="btn btn-primary rounded-5 col-md-3">Submit Comment</button>
+                            </form>
+
+                            <!-- Comments -->
+                            {% for comment in comments %}
+                            <div class="d-flex mb-4">
+                                <!-- Comment author photo -->
+                                <div class="flex-shrink-0">
+                                    {% if comment.author.profile_photo %}
+                                        <img height=45 class="rounded-circle" src="{{ comment.author.profile_photo.url }}" alt="{{ comment.author.get_full_name }}" />
+                                    {% else %}
+                                        <i class="fas fa-user fa-3x"></i>  {# Remplacez "fa-user" par la classe FontAwesome appropriée pour l'icône utilisateur #}
+                                    {% endif %}
+                                </div>
+                                <div class="ms-3">
+                                    <div class="fw-bold">{{ comment.author.first_name }} {{ comment.author.last_name }}</div>
+                                    {{ comment.formatted_content|linebreaks|safe }}
+                                    <div class="">
+                                    <small class="text-muted">{{ comment.created_date|date }} - {{ comment.created_date|time }}</small>
+                                    {% if user.is_authenticated and user == comment.author %}
+                                        <a class="link-danger" href="{% url 'delete_comment' comment.id %}"> <small>Supprimer</small> </a>
+                                    {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                        
+                    </div>
+                    </div>
+                </section>
+            </div>
+            
+
+            <!-- Side widgets-->
+            <div class="col-lg-3">
+            <!-- Sidebar with latest posts -->
+            <h3 class="mb-4">Latest Posts</h3>
+            <div class="row">
+                {% for post in latest_posts %}
+                    <div class="card mb-4 rounded-5 p-0">
+                        <a href="{% url 'post_detail' post.slug %}">
+                            <img class="card-img-top rounded-5" src="{{ post.image.url }}" alt="{{ post.title }}" />
+                        </a>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="small col-6 text-muted">{{ post.published_date|time }}</div>
+                                <div class="small col-6 text-muted text-end">{{ post.published_date|date }}</div>
+                            </div>
+                            <h5 class="card-title">{{ post.title }}</h5>
+                            <p class="card-text">{{ post.content|slice:":100" }}...</p>
+                            <a class="btn btn-primary rounded-5 border-0 pe-4 btn-rm" href="{% url 'post_detail' post.slug %}">
+                                Read more 
+                                <span class="flech mx-1">→</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}

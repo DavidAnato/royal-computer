@@ -1,0 +1,65 @@
+.navbar {
+	transition: slideOut 0.3s ease-in-out;
+}
+
+.sticky-top {
+	/* Styles CSS pour le positionnement sticky actif */
+	position: sticky;
+	top: 0;
+	animation: slideIn 0.3s ease-in-out;
+}
+
+@keyframes slideIn {
+	from {
+		top: -50px;
+		/* Réglez la valeur négative pour déplacer l'élément depuis le haut */
+	}
+
+	to {
+		top: 0;
+		/* Réglez la valeur à 0 pour l'afficher au niveau supérieur */
+	}
+}
+
+@keyframes slideOut {
+	from {
+		top: 0;
+		/* Position initiale */
+	}
+
+	to {
+		top: -50px;
+		/* Déplacez l'élément vers le haut pour le cacher */
+	}
+}
+
+
+.link-hovered {
+	position: relative;
+	text-decoration: none;
+}
+
+.link-hovered::before,
+.link-hovered::after {
+	content: "";
+	position: absolute;
+	left: 0;
+	right: 100%;
+	bottom: -2px;
+	height: 3px;
+	background-color: #ff4f81;
+	/* Couleur du soulignement */
+	transition: right 0.3s ease-in-out;
+}
+
+
+.link-hovered:hover::before,
+.link-hovered:hover::after {
+	right: 0;
+	left: 0;
+}
+
+.shadow-bottom {
+	box-shadow: 0 5px 50px #0005;
+	/* Remplacez les valeurs par celles de votre choix */
+}

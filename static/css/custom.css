@@ -1,0 +1,120 @@
+.text-bold {
+    font-weight: bold;
+}
+
+.bg-pink {
+    background: #ff4f81;
+}
+
+.text-pink {
+    color: #ff4f81;
+}
+
+.btn-pink {
+    background: #ff4f81;
+    color: #fff;
+}
+
+.btn-pink:hover {
+    background: #df4873;
+    color: #fff;
+}
+
+.btn-outline-pink {
+    border: #df4873 solid 1px;
+    color: #df4873;
+}
+
+.btn-outline-pink:hover {
+    background: #df4873;
+    color: black;
+}
+.btn-gradient{
+    background: linear-gradient(-45deg, #ff4f81, #0d6efd);
+    color: #fff;
+}
+.btn-gradient:hover{
+    background: linear-gradient(-45deg, #0d6efd, #ff4f81);
+    color: #fff;
+}
+.btn:focus {
+    box-shadow: none;
+    border: none;
+}
+
+.underline {
+    height: 3px;
+    width: 100px;
+    background: linear-gradient(-45deg, #ff4f81, #0d6efd);
+}
+/* 
+.banner {
+    background: url('../images/fond.jpg') center cover;
+} */
+
+.bg-danger-transparent {
+    background: rgba(255, 0, 0, 0.4);
+}
+
+.btn-gradient {
+    background: linear-gradient(-45deg, #ff4f81, #0d6efd);
+    background-size: 200% 200%; /* Définir une taille de fond plus grande pour l'animation */
+    color: #fff;
+    transition: color 0.4s ease; /* Transition fluide pour la couleur du texte */
+    animation: gradientAnimation 4s ease infinite; /* Animation du gradient */
+}
+
+@keyframes gradientAnimation {
+    0% {
+        background-position: 100% 0; /* Début de l'animation */
+    }
+    50% {
+        background-position: 0 100%; /* Milieu de l'animation */
+    }
+    100% {
+        background-position: 100% 0; /* Fin de l'animation */
+    }
+}
+
+.btn-gradient:hover {
+    animation: gradientReverseAnimation 4s ease infinite; /* Animation inverse au survol */
+}
+
+@keyframes gradientReverseAnimation {
+    0% {
+        background-position: 0 100%; /* Inverser la direction du gradient */
+    }
+    50% {
+        background-position: 100% 0;
+    }
+    100% {
+        background-position: 0 100%;
+    }
+}
+
+.banner {
+    position: relative;
+    background-image: url('https://www.weareamnet.com/wp-content/uploads/2020/02/smartshoringbackground.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 200px; /* Ajustez selon vos besoins */
+}
+
+.banner::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Noir semi-transparent */
+    z-index: 1; /* Place l'overlay devant l'image */
+}
+
+.banner-content {
+    position: relative;
+    z-index: 2; /* Place le contenu devant l'overlay */
+    color: white;
+    text-align: center;
+}

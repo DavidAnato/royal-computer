@@ -1,0 +1,370 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+        
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <link rel="icon" href="{% static 'images/rc-logo.png'%}" type="image/x-icon">
+
+        <link rel="stylesheet" href="{% static 'css/global.css' %}">
+        <link rel="stylesheet" href="{% static 'css/navbar.css' %}">
+        <link rel="stylesheet" href="{% static 'css/main.css' %}">
+        <link rel="stylesheet" href="{% static 'css/shop.css' %}">
+        <link rel="stylesheet" href="{% static 'css/blog.css' %}">
+        <link rel="stylesheet" href="{% static 'css/media-queries.css' %}">
+        <link rel="stylesheet" href="{% static 'css/custom.css' %}">
+        
+        <title>Royal Computer {% block title %}{% endblock %}</title>
+        
+    </head>
+
+    <body>
+        <header>
+          <nav class="navbar navbar-expand-lg navbar-light bg-light">
+              <div class="container-fluid px-lg-5">
+                  <!-- logo -->
+                  <a class="navbar-brand fs-4" href="{% url 'home' %}">
+                    <img id="logo" src="{% static 'images/rc-logo.png'%}" height=70>
+                  </a>
+                  <!-- toggler-btn -->
+              <button class="navbar-toggler shadow-none border-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon"></span>
+              </button>
+
+              <!-- SideBar -->
+              <div class="sidebar offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+                  <!-- SideBar Header -->
+                  <div class="offcanvas-header text-dark border-bottom">
+                  <h5 class="offcanvas-title" id="offcanvasNavbarLabel">  
+                    <a class="navbar-brand fs-4" href="{% url 'home' %}">
+                      <img id="logo" src="{% static 'images/rc-logo.png'%}" height=70>
+                    </a>
+                  </h5>
+                  <button type="button" class="btn-close btn-close-dark shadow-none" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                  </div>
+
+                  <!-- SideBar Body -->
+                  <div class="offcanvas-body d-flex flex-column flex-lg-row p-4 p-lg-0">
+                    <li class="nav-item mx-2 d-lg-none">
+                      <form action="{% url 'shop' %}" method="get">
+                        <div class="input-group border bg-white rounded-5 p-1">
+                            <input type="search" name="keyword" id="" class="autocomplete-popover form-control rounded-5 border-0 shadow-none" placeholder="Rechercher un produit" />
+                          <button type="submit" class="btn btn-light shadow-none rounded-5">
+                            <i class="fas fa-search"></i>
+                          </button>
+                        </div>
+                      </form>
+                    </li>
+                      <ul class="navbar-nav justify-content-center align-items-center fs-5 flex-grow-1 pe-3">
+
+
+                          <li class="nav-item mx-2">
+                              <a class="nav-link link-hovered {% if request.path == '/' %}text-bold{% endif %}" aria-current="page" href="{% url 'home' %}">Accueil</a>
+                          </li>
+                          <li class="nav-item mx-2">
+                              <a class="nav-link link-hovered {% if request.path == '/shop/' %}text-bold{% endif %}" href="{% url 'shop' %}">Boutique</a>
+                          </li>
+                          <li class="nav-item mx-2">
+                              <a class="nav-link link-hovered {% if request.path == '/about/' %}text-bold{% endif %}" href="{% url 'about' %}">À Propos</a>
+                          </li>
+                          <li class="nav-item mx-2">
+                              <a class="nav-link link-hovered {% if request.path == '/post_list/' %}text-bold{% endif %}" href="{% url 'post_list' %}">Blog</a>
+                          </li>
+                          <li class="nav-item mx-2">
+                              <a class="nav-link link-hovered {% if request.path == '/contact/' %}text-bold{% endif %}" href="{% url 'contact' %}">Contact</a>
+                          </li>
+                          <li class="nav-item mx-2">
+                              <a class="nav-link" href="{% url 'cart' %}">
+                                <i class="fas fa-shopping-cart text-pink"></i>
+                                  <span class="bg-pink text-white text-center rounded-circle d-inline-block" style="width: 20px; height: 20px;">
+                                    <h6>{{ number_of_items_in_cart }}</h6>
+                                  </span>
+                                  <span class="cart-text d-inline">Panier</span>
+                              </a>
+                          </li>
+                          <li class="nav-item mx-2 d-none d-lg-block w-100" style=" max-width:300px">
+                            <form action="{% url 'shop' %}" method="get">
+                              <div class="input-group border bg-white rounded-5 p-1">
+                                  <input type="search" name="keyword" id="" class="autocomplete-popover form-control rounded-5 border-0 shadow-none" placeholder="Rechercher un produit" />
+                                <button type="submit" class="btn btn-light shadow-none rounded-5">
+                                  <i class="fas fa-search"></i>
+                                </button>
+                              </div>
+                            </form>
+                          </li>
+
+                      </ul>
+
+                      <div class="d-flex flex-column flex-lg-row justify-content-center align-items-center gap-3">
+                          <!-- Lorsque l'utilisateur n'est pas connecté -->
+                          {% if not user.is_authenticated %}
+                              <a href="{% url 'login' %}" class="text-primary text-bold text-decoration-none"> <i class="fa fa-sign-in-alt me-2"></i>Connexion</a>
+                              <a href="https://accounts.google.com/o/oauth2/v2/auth?client_id={{ GOOGLE_CLIENT_ID }}&redirect_uri={{ GOOGLE_REDIRECT_URI }}&response_type=code&scope=email%20profile&prompt=consent&access_type=offline"
+                                class="text-secondary text-bold text-decoration-none rounded-5 border border-2 border-primary px-3 py-1">
+                                Avec <img src="{% static 'images/icon/google-large.png' %}" alt="Google" class="ms-1" style="width: auto; height: 20px;">
+                              </a>
+                          <!-- Lorsque l'utilisateur est connecté -->
+                          {% else %}
+                              <div class="dropdown ">
+                                  <a href="#" class="dropdown-toggle text-decoration-none d-flex align-items-center text-dark" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                      
+                                    {% if user.profile_photo %}
+                                    <img src="{{ user.profile_photo.url }}" alt="Profile Photo" class="rounded-circle me-1" style="width: 35px; height: 35px;">
+                                    {% elif user.picture_url %}
+                                    <img src="{{ user.picture_url }}" alt="Profile Photo" class="rounded-circle me-1" style="width: 35px; height: 35px;">
+                                    {% else %}
+                                    <i class="fa fa-user-circle fs-3 text-secondary m-1"></i> 
+                                    {% endif %}
+                                    {{ user.first_name }} {{ user.last_name }}
+                                  </a>
+                                  <ul class="dropdown-menu dropdown-menu-end rounded-5 overflow-hidden">
+                                    <li><a class="dropdown-item" href="{% url 'profile' %}"> <i class="fa fa-user me-2"></i> Profil</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'settings' %}"> <i class="fa fa-cog me-2"></i> Paramètres</a></li>
+                                    {% if user.is_staff %}
+                                        <li><a class="dropdown-item text-primary" href="{% url 'admin:index' %}"> <i class="fa fa-user-shield me-2"></i> Administration</a></li>
+                                    {% endif %}
+                                    <li><a class="dropdown-item text-danger" href="{% url 'logout' %}"> <i class="fa fa-sign-out-alt me-2"></i> Déconnexion</a></li>
+                                </ul>
+                              </div>
+                          {% endif %}
+                      </div>
+                  </div>
+              </div>
+              </div>
+          </nav>        
+        </hearder>
+        {% if messages %}
+          {% for message in messages %}
+            <div class="alert 
+              {% if message.tags == 'error' %}alert-danger{% elif message.tags == 'success' %}alert-success{% else %}alert-info{% endif %} 
+              alert-dismissible rounded-5 position-fixed bottom-0 start-0 m-3" 
+              style="z-index: 1000;" role="alert">
+              {{ message }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+          {% endfor %}
+        {% endif %}
+
+        <main>
+            {% block content %}
+            {% endblock %}
+        </main>
+        
+        <footer class="bg-dark text-white mt-5">
+            <div class="go-top-link d-none">
+                <a href="#" class="btn btn-outline-secondary rounded-5">
+                    <i class="fas fa-arrow-up"></i>
+                </a>
+            </div>
+    
+            <!-- Grid container -->
+            <div class="container p-4 pb-0">
+              <!-- Section: Links -->
+              <section>
+                <!--Grid row-->
+                <div class="row">
+                  <!-- Grid column -->
+                  <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mt-3">
+                    <h6 class="text-uppercase mb-4 font-weight-bold text-pink">Informations</h6>
+                    <p>
+                      Découvrez nos produits et services pour une expérience de shopping exceptionnelle.
+                    </p>
+                  </div>
+                  <!-- Grid column -->
+          
+                  <!-- Grid column -->
+                  <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mt-3">
+                    <h6 class="text-uppercase mb-4 font-weight-bold text-pink">Produits</h6>               
+                    <p>
+                      <a href="{% url 'shop' %}?keyword=Ordinateur" class="text-white text-decoration-none link-hovered pb-2">Ordinateurs</a>
+                    </p>
+                    <p>
+                      <a href="{% url 'shop' %}?keyword=Smartphone" class="text-white text-decoration-none link-hovered pb-2">Smartphones</a>
+                    </p>
+                    <p>
+                      <a href="{% url 'shop' %}?keyword=jeu" class="text-white text-decoration-none link-hovered pb-2">Gaming</a>
+                    </p>
+                    <p>
+                      <a href="{% url 'shop' %}?keyword=Accessoire" class="text-white text-decoration-none link-hovered pb-2">Accessoires</a>
+                    </p>
+                  </div>
+                  <!-- Grid column -->
+          
+                  <!-- Grid column -->
+                  <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mt-3">
+                    <h6 class="text-uppercase mb-4 font-weight-bold text-pink">Liens utiles</h6>
+                    <p>
+                      <a  href="{% url 'shop' %}" class="text-white text-decoration-none link-hovered pb-2">Produits</a>
+                    </p>
+                    <p>
+                      <p>
+                        <a href="{% url 'post_list' %}" class="text-white text-decoration-none link-hovered pb-2">Blog</a>
+                      </p>
+                    <p>
+                      <a href="{% url 'profile' %}" class="text-white text-decoration-none link-hovered pb-2">Profil</a>
+                    </p>
+                      <a href="{% url 'settings' %}" class="text-white text-decoration-none link-hovered pb-2">Parametre</a>
+                    </p>
+                  </div>
+                  <!-- Grid column -->
+          
+                  <!-- Grid column -->
+                  <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mt-3">
+                    <h6 class="text-uppercase mb-4 font-weight-bold text-pink">Contact</h6>
+                    <p><i class="fas fa-home me-3"></i> Agla En Face pharmacie luli luli, Cotonou, Bénin</p>
+                    <p><i class="fas fa-envelope me-3"></i> info@royalcomputer.com</p>
+                    <p><i class="fas fa-phone me-3"></i> +229 56 54 38 80</p>
+                    <p><i class="fas fa-print me-3"></i> +229 56 54 38 80</p>
+                  </div>
+                  <!-- Grid column -->
+                </div>
+                <!--Grid row-->
+              </section>
+              <!-- Section: Links -->
+          
+              <hr class="my-3">
+          
+              <!-- Section: Copyright -->
+              <section class="p-3 pt-0">
+                <div class="row d-flex align-items-center">
+                  <!-- Grid column -->
+                  <div class="col-md-7 col-lg-8 text-center text-md-start">
+                    <!-- Copyright -->
+                    <div class="p-3">
+                      © 2023 Tous droits réservés :
+                      <a href="https://ecommerce.com/" class="text-white">Ecommerce.com</a>
+                    </div>
+                    <!-- Copyright -->
+                  </div>
+                  <!-- Grid column -->
+          
+                  <!-- Grid column -->
+                  <div class="col-md-5 col-lg-4 ml-lg-0 text-center text-md-end">
+                    <!-- Réseaux sociaux -->
+                    <a class="btn btn-outline-pink rounded-5 btn-floating m-1" href="#" role="button"><i class="fab fa-facebook-f"></i></a>
+                    <a class="btn btn-outline-pink rounded-5 btn-floating m-1" href="#" role="button"><i class="fab fa-twitter"></i></a>
+                    <a class="btn btn-outline-pink rounded-5 btn-floating m-1" href="#" role="button"><i class="fab fa-instagram"></i></a>
+                    <a class="btn btn-outline-pink rounded-5 btn-floating m-1" href="#" role="button"><i class="fab fa-whatsapp"></i></a>
+                  </div>
+                  <!-- Grid column -->
+                </div>
+              </section>
+              <!-- Section: Copyright -->
+            </div>
+            <!-- Grid container -->
+        </footer>
+          
+      
+
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+      <!-- <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script> -->
+      
+      <script src="{% static 'js/accordion.js' %}"></script>
+      <script src="{% static 'js/username.js' %}"></script>
+      <script src="{% static 'js/image.js' %}"></script>
+      <script src="{% static 'js/nav.js' %}"></script>
+      <script src="{% static 'js/product.js' %}"></script>
+      <script src="{% static 'js/scroll.js' %}"></script>
+      <script src="{% static 'js/tabs.js' %}"></script>
+      <script src="{% static 'js/incrementationDetail.js' %}"></script>
+      <script src="{% static 'js/settings.js' %}"></script>
+      <script src="{% static 'js/main.js' %}"></script>
+      <script>
+        document.addEventListener("DOMContentLoaded", function() {
+          const input = document.getElementById("autocomplete-input");
+          let currentPopover;
+      
+          // Gérer la saisie de l'utilisateur
+          input.addEventListener("input", function() {
+              const term = input.value;
+      
+              // Effacer les suggestions actuelles
+              clearPopover();
+      
+              // Si le terme de recherche a au moins 2 caractères
+              if (term.length >= 2) {
+                  // Effectuer une requête AJAX pour récupérer les suggestions
+                  fetch(`{% url 'autocomplete_suggestions' %}?term=${term}`)
+                      .then(response => response.json())
+                      .then(data => {
+                          // Afficher les suggestions dans un popover
+                          showPopover(data);
+                      });
+              }
+          });
+      
+          function showPopover(suggestions) {
+              const popoverContent = document.createElement("div");
+              popoverContent.classList.add("list-unstyled", "bg-white"); // Ajouter des classes au popover
+      
+              const selectedSuggestions = new Set();
+      
+              suggestions.forEach(suggestion => {
+                  if (!selectedSuggestions.has(suggestion)) {
+                      selectedSuggestions.add(suggestion);
+      
+                      const listItem = document.createElement("div");
+                      listItem.textContent = suggestion;
+                      listItem.classList.add("p-2", "m-0"); // Ajouter des classes aux éléments de liste
+      
+                      listItem.addEventListener("click", function() {
+                          input.value = suggestion;
+                          clearPopover();
+                          selectedSuggestions.clear();
+                      });
+      
+                      listItem.addEventListener("mouseover", function() {
+                        input.value = suggestion;
+                        listItem.classList.add("bg-light");
+                    });
+                    
+                    listItem.addEventListener("mouseout", function() {
+                        listItem.classList.remove("bg-light");
+                    });
+                    
+                      popoverContent.appendChild(listItem);
+                  }
+              });
+      
+              const popoverWrapper = document.createElement("div");
+              popoverWrapper.appendChild(popoverContent);
+      
+              // Appliquer des styles au popover
+              popoverWrapper.style.position = "absolute";
+              popoverWrapper.style.zIndex = "1000";
+              popoverWrapper.classList.add("rounded-5", "py-1", "border", "bg-white", "px-lg-5"); // Ajouter des classes au popover
+      
+              // Ajouter le popover au DOM
+              input.parentNode.appendChild(popoverWrapper);
+      
+              currentPopover = popoverWrapper;
+          }
+      
+          function clearPopover() {
+              if (currentPopover) {
+                  currentPopover.remove();
+                  currentPopover = null;
+              }
+          }
+      
+          // Gérer les clics en dehors de la zone de suggestions
+          document.addEventListener("click", function(event) {
+              if (!input.contains(event.target)) {
+                  clearPopover();
+              }
+          });
+      });
+      </script>
+
+    </body>    
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha2/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

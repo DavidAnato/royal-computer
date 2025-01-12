@@ -1,0 +1,139 @@
+/* Masquer les barres de défilement horizontalement */
+.product-container-new, .product-container-promo {
+    scrollbar-width: none;
+}
+
+.product-container-new::-webkit-scrollbar, .product-container-promo::-webkit-scrollbar {
+    display: none;
+}
+
+
+@keyframes slide-in {
+	from {
+		transform: translateX(100px);
+		/* Déplacer le lien hors de la vue à droite */
+	}
+
+	to {
+		transform: translateX(0);
+		/* Position fixe à droite */
+	}
+}
+
+@keyframes slide-out {
+	from {
+		transform: translateX(0);
+		/* Position fixe à droite */
+	}
+
+	to {
+		transform: translateX(100px);
+		/* Déplacer le lien hors de la vue à droite */
+	}
+}
+
+
+.grayscale-img {
+	width: 100px;
+	filter: grayscale(100%);
+	/* Transforme l'image en noir et blanc */
+	transition: filter 0.3s ease;
+	/* Transition fluide de l'effet noir et blanc au couleur */
+}
+
+.grayscale-img:hover {
+	filter: grayscale(0%);
+	/* Passe l'image en couleur au survol */
+}
+
+/* review-background-image */
+.review-background-image::before {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.5);
+	/* Couleur d'arrière-plan semi-transparente */
+	z-index: -1;
+	/* Placez cette pseudo-classe derrière le contenu */
+}
+
+.contact-form{
+	border: 0;
+	border-bottom: 2px solid #0d6efd;
+}
+
+.contact-form:focus{
+	border-bottom: 4px solid #ff4f81;
+}
+
+/* Style pour les cases cochées */
+.green-radio:checked {
+	background-color: green; /* Couleur de fond verte pour les cases cochées */
+	border: green;
+	box-shadow: green 10px 10px;
+}
+/* Style pour les cases non cochées */
+.green-radio:not(:checked) {
+	background-color: initial; /* Réinitialise la couleur de fond pour les cases non cochées */
+}
+
+
+.main-image-animation {
+	animation: fade-in 0.5s ease-in-out;
+  }
+  
+  @keyframes fade-in {
+	from {
+	  opacity: 0;
+	  transform: scale(0.9);
+	}
+	to {
+	  opacity: 1;
+	  transform: scale(1);
+	}
+  }
+  
+/* Animation de l'image de fond */
+@keyframes slideBg {
+	0% {
+	  background-position: 50% 50%;
+	  background-size: 80%;
+	}
+	100% {
+	  background-position: 100%;
+	  background-size: 90%;
+	}
+  }
+  
+  /* Styles pour NEW PRODUCTS */
+  .product-img-secondary {
+	animation: slideBg 0.5s ease-out forwards; /* Animation de la position */
+  }
+  
+  /* Styles pour PROMO PRODUCTS */
+
+  #vedette-carousel {
+    background-image: url('../images/carousel-bg.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative; /* Ajouté pour que le pseudo-élément fonctionne correctement */
+}
+
+#vedette-carousel::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8); /* Augmenté à 0.8 pour un effet plus sombre */
+    z-index: 1; /* Changé à 1 pour que l'overlay soit au-dessus de l'image */
+}
+
+.carousel-inner, .carousel-control, .carousel-indicators {
+	z-index: 2;
+}
+

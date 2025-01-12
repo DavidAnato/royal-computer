@@ -1,0 +1,189 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}| Inscription{% endblock %}
+
+{% block content %}
+<div class="h-100">
+
+  <div class="row d-flex justify-content-center ">
+    <div class="col-lg-12 col-xl-11">
+      <div class="container text-black" style="border-radius: 25px">
+        <div class="p-md-5">
+          <div class="row justify-content-center">
+            <div class="col-md-10 col-lg-6">
+              <div class="d-flex justify-content-center align-items-center">
+                <img src="{% static 'images/auth/cart.png' %}" alt="Google" class="my-2" style="width: 'auto'; height: 120px;">
+                <div class="d-flex flex-column">
+                  <h1 class="h3">Bienvenue sur <span class="text-bold">Royal Computer</span></h1>
+                  <p class="text-muted">Créez un compte et profitez de nos ordinateurs haut de gamme à des prix imbattables.</p>
+                </div>
+              </div>
+  
+              <form method="post" action="{% url 'signup' %}" class="form">
+                {% csrf_token %}
+
+                <div class="mb-2 field">
+                  <div class="d-flex flex-row justify-content-center align-items-center border rounded-5 p-1">
+                    <label for="last_name" class="{% if form.last_name.errors %}bg-danger-transparent{% else %}bg-light{% endif %} rounded-circle d-flex justify-content-center align-items-center" style="width: 40px; height: 40px;">
+                      <i class="fas fa-id-badge fa-lg fa-fw"></i>
+                    </label>
+                    <div class="form-outline border-0 flex-fill mb-0">
+                      <input
+                        type="text"
+                        name="last_name"
+                        id="last_name"
+                        class="form-control border-0 shadow-none rounded-5"
+                        placeholder="Nom"
+                      />
+                    </div>
+                  </div>
+                  {% for error in form.last_name.errors %}
+                  <div class="text-danger text-bold small">{{ error }}</div>
+                  {% endfor %}
+                </div>
+
+                <div class="mb-2 field">
+                  <div class="d-flex flex-row justify-content-center align-items-center border rounded-5 p-1">
+                    <label for="first_name" class="{% if form.first_name.errors %}bg-danger-transparent{% else %}bg-light{% endif %} rounded-circle d-flex justify-content-center align-items-center" style="width: 40px; height: 40px;">
+                      <i class="fas fa-user fa-lg fa-fw"></i>
+                    </label>
+                    <div class="form-outline border-0 flex-fill mb-0">
+                      <input
+                        type="text"
+                        name="first_name"
+                        id="first_name"
+                        class="form-control border-0 shadow-none rounded-5"
+                        placeholder="Prénom"
+                        required
+                      />
+                    </div>
+                  </div>
+                  {% for error in form.first_name.errors %}
+                  <div class="text-danger text-bold small">{{ error }}</div>
+                  {% endfor %}
+                </div>
+
+                <div class="mb-2 field">
+                  <div class="d-flex flex-row justify-content-center align-items-center border rounded-5 p-1">
+                    <label for="email" class="{% if form.email.errors %}bg-danger-transparent{% else %}bg-light{% endif %} rounded-circle d-flex justify-content-center align-items-center" style="width: 40px; height: 40px;">
+                      <i class="fas fa-envelope fa-lg fa-fw"></i>
+                    </label>
+                    <div class="form-outline border-0 flex-fill mb-0">
+                      <input
+                        type="email"
+                        name="email"
+                        id="email"
+                        class="form-control border-0 shadow-none rounded-5"
+                        placeholder="Email"
+                        required
+                      />
+                    </div>
+                  </div>
+                  {% for error in form.email.errors %}
+                  <div class="text-danger text-bold small">
+                    <!-- {{ error }} -->
+                      Un utilisateur avec cette adresse e-mail existe déjà.
+                  </div>
+                  {% endfor %}
+                </div>
+                
+                <div class="mb-2 field">
+                  <div class="d-flex flex-row justify-content-center align-items-center border rounded-5 p-1">
+                    <label for="password1" class="{% if form.password1.errors or form.password2.errors%}bg-danger-transparent{% else %}bg-light{% endif %} rounded-circle d-flex justify-content-center align-items-center" style="width: 40px; height: 40px;">
+                      <i class="fas fa-lock fa-lg fa-fw"></i>
+                    </label>
+                    <div class="form-outline border-0 flex-fill mb-0">
+                      <input
+                        type="password"
+                        name="password1"
+                        id="password1"
+                        class="form-control border-0 shadow-none rounded-5"
+                        placeholder="Mot de passe"
+                        required
+                      />
+                    </div>
+                    <button type="button" onclick="togglePasswordVisibility('password1', 'password1-icon')" class="btn btn-transparent rounded-5">
+                      <i id="password1-icon" class="fas fa-eye fa-lg mx-1 fa-fw text-secondary"></i>
+                    </button>    
+                  </div>
+                  {% for error in form.password1.errors %}
+                  <div class="text-danger text-bold small">{{ error }}</div>
+                  {% endfor %}
+                </div>
+
+                <div class="mb-2 field">
+                  <div class="d-flex flex-row justify-content-center align-items-center border rounded-5 p-1">
+                    <label for="password2" class="{% if form.password1.errors or form.password2.errors %}bg-danger-transparent{% else %}bg-light{% endif %} rounded-circle d-flex justify-content-center align-items-center" style="width: 40px; height: 40px;">
+                      <i class="fas fa-key fa-lg fa-fw"></i>
+                    </label>
+                    <div class="form-outline border-0 flex-fill mb-0">
+                      <input
+                        type="password"
+                        name="password2"
+                        id="password2"
+                        class="form-control border-0 shadow-none rounded-5"
+                        placeholder="Confirmer le mot de passe"
+                        required
+                      />
+                    </div>
+                    <button type="button" onclick="togglePasswordVisibility('password2', 'password2-icon')" class="btn btn-transparent rounded-5">
+                      <i id="password2-icon" class="fas fa-eye fa-lg mx-1 fa-fw text-secondary"></i>
+                    </button>
+                  </div>
+                  {% for error in form.password2.errors %}
+                  <div class="text-danger text-bold small">{{ error }}</div>
+                  {% endfor %}
+                </div>
+
+                <!-- <div class="form-check d-flex justify-content-center mb-5">
+                  <input
+                    class="form-check-input me-2"
+                    type="checkbox"
+                    id="agree"
+                  />
+                  <label class="form-check-label" for="agree">
+                    J'accepte tous les termes et conditions du service
+                  </label>
+                </div> -->
+
+                <div class="d-flex justify-content-center mx-4 mb-3">
+                  <button
+                    type="submit"
+                    class="btn btn-primary text-bold rounded-5"
+                  >
+                    <i class="fas fa-user-plus fa-lg fa-fw"></i>
+                    S'inscrire
+                  </button>
+                </div>
+                <p class="text-center">ou</p>
+                <a href="https://accounts.google.com/o/oauth2/v2/auth?client_id={{ GOOGLE_CLIENT_ID }}&redirect_uri={{ GOOGLE_REDIRECT_URI }}&response_type=code&scope=email%20profile&prompt=consent&access_type=offline"
+                  class="btn btn-light w-100 text-bold rounded-5 border">
+                  <img src="{% static 'images/icon/google-400.png' %}" alt="Google" class="me-2" style="width: 25px; height: 25px;">
+                  Se connecter avec Google
+                </a>
+
+                <hr />
+                <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
+                  <p class="text-center">
+                    Vous avez déjà un <a href="{% url 'login' %}">compte</a> !
+                  </p>
+                </div>
+              </form>
+            </div>
+            <div
+              class="d-none d-lg-block col"
+            >
+              <img
+                src="{% static 'images/auth/signup.png' %}"
+                class="img-fluid"
+                alt="Sample image"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

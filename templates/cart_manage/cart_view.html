@@ -1,0 +1,217 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+  <div class="banner text-center bg-secondary p-5 m-0">
+    <h1>Panier</h1>
+  </div>
+  <section class="bg-light my-5">
+    <div class="container mt-5">
+      <form method="post">
+        <div class="row">
+          {% csrf_token %}
+          {{ form.non_field_errors }}
+          <div class="col-lg-9">
+            <div class="card rounded-5 mb-4 border shadow-0">
+              <div class="m-4">
+                <h4 class="card-title mb-4">Votre panier d'achat</h4>
+        
+                {% if cart.items.count == 0 %}
+                  <p>Votre panier d'achat est vide.</p>
+                {% else %}
+      
+                  {% for item in cart.items.all %}
+                    <div class="row gy-3 mb-4">
+                      <div class="col-lg-5">
+                        <div class="me-lg-5">
+                          <div class="d-flex">
+                            <div class="col">
+                              <img src="{{ item.product.image.url }}" class="border rounded-5 me-3 p-1" style="width: 100px;">
+                            </div>                      
+                            <div class="">
+                              <a href="{% url 'product_detail' item.product.id %}" class="nav-link">{{ item.product.name }}</a>
+                              <p class="text-muted">{{ item.product.description }}</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-2 col-sm-6 col-6 d-flex flex-row flex-lg-column flex-xl-row text-nowrap">
+                        <div class="">
+                          <input type="number" style="width: 100px;" class="form-control shadow-none rounded-5 me-4" name="{{ item.id }}-quantity" value="{{ item.quantity }}" min="1">
+                        </div>
+                        <div class="">
+                          <text class="h6 total-price">{{ item.total_price|floatformat:2 }} F</text> <br>
+                          <small class="text-muted text-nowrap">
+                            {% if item.promo_price %}
+                              {{ item.promo_price|floatformat:2 }} F / par article
+                            {% else %}
+                              {{ item.price|floatformat:2 }} F / par article
+                            {% endif %}
+                          </small>
+                        </div>
+                      </div>
+                      <div class="col-lg col-sm-6 d-flex justify-content-sm-center justify-content-md-start justify-content-lg-center justify-content-xl-end mb-2">
+                        <div class="float-md-end">
+                          <a href="{% url 'remove_from_cart' item.id %}" class="btn btn-danger border-0 icon-hover-danger rounded-5">Retirer</a>
+                        </div>
+                      </div>
+                    </div>
+                  {% endfor %}
+                  <div class="row">
+                    <button type="submit" class="btn btn-pink col-md-6 border-0 rounded-5">Mettre à jour</button>
+                    <a href="{% url 'clear_cart' %}" class="btn btn-danger col-md-6 border-0 rounded-5">Vider le panier</a>
+                  </div>
+                {% endif %}
+  
+              </div>
+        
+            </div>
+          </div>
+        
+          <div class="col-lg-3">
+            {% if cart.items.count > 0 %}
+            <div class="card rounded-5 mb-3 border shadow-0">
+              <div class="card-body">
+                <form>
+                  <div class="form-group">
+                    <label for="promo_code" class="form-label">Code Promo</label>
+                    <div class="input-group">
+                      <input type="text" name="promo_code" id="promo_code" class="form-control shadow-none rounded-5 border"
+                      {% if cart.promo_code and cart.promo_code.is_valid %} 
+                        value="{{ cart.promo_code.code }}"
+                      {% endif %} placeholder="Entrez votre code promo">
+                      <button type="submit" class="btn btn-pink border rounded-5">Appliquer</button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+            {% endif %}
+            <div class="card rounded-5 mb-3 text-bold">
+              <div class="card-body">
+                {% if cart.items.count > 0 %}
+
+                <div class="d-flex justify-content-between">
+                  <p class="mb-2">Prix total :</p>
+                  <p class="mb-2 total">{{ cart.total|floatformat:2 }} F CFA</p>
+                </div>
+                {% if cart.promo_code and cart.promo_code.is_valid %} 
+  
+                <div class="d-flex justify-content-between">
+                  <p class="mb-2">Réduction :</p>
+                  <p class="mb-2 text-success discount">{{ cart.discount|floatformat:2 }} F CFA</p>
+                </div>
+                <hr>
+                <div class="d-flex justify-content-between">
+                  <p class="mb-2">Prix total :</p>
+                  <p class="mb-2 fw-bold final-total">{{ cart.final_total|floatformat:2 }} F CFA</p>
+                </div>
+                {% endif %}
+                {% endif %}
+                <div class="mt-3">
+                  {% if cart.items.count > 0 %}
+                    <a href="{% url 'checkout' %}" class="btn btn-primary w-100 shadow-0 rounded-5 mb-2">Effectuer l'achat</a>
+                    <a href="{% url 'generate_whatsapp_url' %}" target="_blank" class="btn btn-success w-100 shadow-0 rounded-5 border mt-2 mb-2">Via Whatsapp <i class="fab fa-whatsapp"></i></a>
+                  {% endif %}
+                    <a href="{% url 'shop' %}" class="btn btn-pink w-100 shadow-0 rounded-5 border mt-2 mb-2">Retour à la boutique</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </section>
+
+<!-- NEW PRODUCTS -->
+<div class="container-fluid mt-2">
+  <h2 class="mt-5 text-center text-bold">NOUVEAUTÉS</h2>
+  <div class="underline mx-auto mb-5"></div>
+  
+  <!-- Conteneur flex pour aligner les boutons et le produit -->
+  <div class="d-flex justify-content-between align-items-center mx-lg-5">
+    <!-- Bouton précédent -->
+    <button
+      id="prevBtnNewProducts"
+      class="scroll-left-button btn btn-light rounded-5 prev-button d-none d-lg-block"
+    >
+      <i class="fa fa-angle-left fs-2 text-dark"></i>
+    </button>
+
+    <!-- Conteneur des produits -->
+    <div class="container">
+      <div class="overflow-x-auto product-container-new w-100 me-0 d-flex">
+        {% for product in new_products %}
+        <div class="product col-12 col-sm-6 col-md-4 col-lg-3 me-3">
+          <div class="single-product-wrapper">
+            <div
+              class="product-img w-100 bg-secondary"
+              style="background: url('{{ product.image.url }}') no-repeat center; background-size: 90%; aspect-ratio: 1;"
+            >
+              <div class="d-flex justify-content-between w-100">
+                <span class="bg-primary small p-1 m-3 text-bold text-white rounded-5">Nouveau</span>
+                {% if product.in_promo %}
+                <span class="bg-pink small p-1 m-3 text-bold text-white rounded-5">Promo</span>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+          <div class="single-product-wrapper-hover d-none">
+            <a
+              href="{% url 'product_detail' product.pk %}"
+              class="product-img w-100 bg-secondary d-flex flex-column text-decoration-none product-img-secondary"
+              style="background: url('{{ product.image_secondary.url }}') no-repeat center; background-size: 90%; aspect-ratio: 1;"
+            >
+              <div class="d-flex justify-content-between w-100">
+                <span class="bg-primary small p-1 m-3 text-bold text-white rounded-5">Nouveau</span>
+                {% if product.in_promo %}
+                <span class="bg-pink small p-1 m-3 text-bold text-white rounded-5">Promo</span>
+                {% endif %}
+              </div>
+              {% if product.id in products_in_cart %}
+              <form
+                action="{% url 'cart' %}"
+                class="mt-auto mb-3 mx-3 add-to-cart-btn rounded-5 p-0"
+              >
+                <button type="submit" class="btn w-100 text-bold text-white"> <i class="fa fa-shopping-cart me-2"></i> Voir le panier</button>
+              </form>
+              {% else %}
+              <form
+                action="{% url 'add_to_cart' product.id %}"
+                method="get"
+                class="mt-auto mb-3 mx-3 add-to-cart-btn rounded-5 p-0"
+              >
+                <button type="submit" class="btn w-100 text-bold text-white"> <i class="fa fa-cart-plus me-2"></i> Ajouter au panier</button>
+              </form>
+              {% endif %}
+            </a>
+          </div>
+          <div class="product-description mt-4">
+            <span class="small text-bold">{{ product.brand }}</span>
+            <a href="{% url 'product_detail' product.pk %}" class="text-decoration-none">
+              <h5 class="product-name">{{ product.name }}</h5>
+            </a>
+            {% if product.in_promo %}
+            <p class="product-price text-pink text-bold">
+              <span class="text-decoration-line-through text-secondary me-5">{{ product.price|floatformat:0 }} F CFA</span>
+              {{ product.promo_price|floatformat:0 }} F CFA
+            </p>
+            {% else %}
+            <p class="product-price text-pink text-bold">{{ product.price|floatformat:0 }} F CFA</p>
+            {% endif %}
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- Bouton suivant -->
+    <button
+      id="nextBtnNewProducts"
+      class="scroll-right-button btn btn-light rounded-5 next-button d-none d-lg-block"
+    >
+      <i class="fa fa-angle-right fs-2 text-dark"></i>
+    </button>
+  </div>
+</div>
+{% endblock %}

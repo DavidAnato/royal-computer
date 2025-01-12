@@ -1,0 +1,15 @@
+<!-- order_confirmation.html -->
+
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>Confirmation de commande</h1>
+  <p>Merci pour votre commande ! Voici les détails de votre commande :</p>
+  <ul>
+    <li>Référence de la commande : {{ order.id }}</li>
+    <li>Date de commande : {{ order.date_ordered }}</li>
+    <li>Total de la commande : {{ order.total_amount }}</li>
+    <!-- Affichez d'autres détails de la commande si nécessaire -->
+  </ul>
+  <p>Merci de votre achat.</p>
+{% endblock %}

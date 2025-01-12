@@ -1,0 +1,151 @@
+{% extends 'base.html' %}
+
+{% block title %}| Address{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-6 my-5">
+      <div class="card rounded-5 p-5">
+        <div class="text-center">
+          {% if address_id %}
+          <h2>Modifier l'adresse</h2>
+          {% else %}
+          <h2>Ajouter une adresse</h2>
+          {% endif %}
+          <div class="underline mx-auto mb-5"></div>
+        </div>
+
+        <form method="post" class="needs-validation" novalidate>
+          {% csrf_token %}
+          <div class="d-flex flex-row align-items-center mb-4">
+            <label for="{{ form.address.id_for_label }}">
+              <i class="fas fa-id-badge fa-lg me-3 fa-fw"></i>
+            </label>
+            <div class="form-outline flex-fill mb-0">
+              <input
+                type="{{ form.address.field.widget.input_type }}"
+                name="{{ form.address.html_name }}"
+                id="{{ form.address.id_for_label }}"
+                class="form-control shadow-none rounded-5"
+                value="{% if address_id %}{{ form.address.value }}{% endif %}"
+                placeholder="Adresse"
+                required
+              />
+              <div class="invalid-feedback">
+                Veuillez fournir une adresse valide.
+              </div>
+            </div>
+          </div>
+
+          <div class="d-flex flex-row align-items-center mb-4">
+            <label for="{{ form.address.id_for_label }}">
+              <i class="fas fa-id-badge fa-lg me-3 fa-fw"></i>
+            </label>
+
+            <div class="form-outline flex-fill mb-0">
+              <input
+                type="{{ form.city.field.widget.input_type }}"
+                name="{{ form.city.html_name }}"
+                id="{{ form.city.id_for_label }}"
+                class="form-control shadow-none rounded-5"
+                value="{% if address_id %}{{ form.city.value }}{% endif %}"
+                placeholder="Ville"
+                required
+              />
+              <div class="invalid-feedback">
+                Veuillez fournir une ville valide.
+              </div>
+            </div>
+          </div>
+
+          <div class="d-flex flex-row align-items-center mb-4">
+            <label for="{{ form.address.id_for_label }}">
+              <i class="fas fa-id-badge fa-lg me-3 fa-fw"></i>
+            </label>
+            <div class="form-outline flex-fill mb-0">
+              <input
+                type="{{ form.postal_code.field.widget.input_type }}"
+                name="{{ form.postal_code.html_name }}"
+                id="{{ form.postal_code.id_for_label }}"
+                class="form-control shadow-none rounded-5"
+                value="{% if address_id %}{{ form.postal_code.value }}{% endif %}"
+                placeholder="Code Postal"
+                required
+              />
+              <div class="invalid-feedback">
+                Veuillez fournir un code postal valide.
+              </div>
+            </div>
+          </div>
+          <button
+            type="submit"
+            class="btn btn-primary rounded-5 shadow-none w-100"
+          >
+            {% if address_id %}Mettre à jour{% else %}Ajouter{% endif %}
+          </button>
+          {% if address_id %}
+          <button
+            type="submit"
+            name="delete"
+            class="btn btn-pink rounded-5 shadow-none w-100 mt-1"
+          >
+            Supprimer
+          </button>
+          {% endif %}
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Ajoutez des gestionnaires d'événements d'entrée pour la validation en temps réel
+  document.addEventListener("DOMContentLoaded", function () {
+    const form = document.querySelector("form.needs-validation");
+
+    // Expressions régulières pour la validation
+    const addressRegex = /^.*$/;
+    const cityRegex = /^[a-zA-Z\s-]+$/; // Ville : lettres, espaces, tirets
+    const postalCodeRegex = /^\d{5}$/; // Code postal : 5 chiffres
+
+    form.addEventListener("input", function (event) {
+      const inputElement = event.target;
+      if (inputElement.name === "{{ form.address.html_name }}") {
+        if (addressRegex.test(inputElement.value)) {
+          inputElement.classList.remove("is-invalid");
+          inputElement.classList.add("is-valid");
+        } else {
+          inputElement.classList.remove("is-valid");
+          inputElement.classList.add("is-invalid");
+        }
+      } else if (inputElement.name === "{{ form.city.html_name }}") {
+        if (cityRegex.test(inputElement.value)) {
+          inputElement.classList.remove("is-invalid");
+          inputElement.classList.add("is-valid");
+        } else {
+          inputElement.classList.remove("is-valid");
+          inputElement.classList.add("is-invalid");
+        }
+      } else if (inputElement.name === "{{ form.postal_code.html_name }}") {
+        if (postalCodeRegex.test(inputElement.value)) {
+          inputElement.classList.remove("is-invalid");
+          inputElement.classList.add("is-valid");
+        } else {
+          inputElement.classList.remove("is-valid");
+          inputElement.classList.add("is-invalid");
+        }
+      }
+    });
+
+    form.addEventListener("submit", function (event) {
+      if (!form.checkValidity()) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+      form.classList.add("was-validated");
+    });
+  });
+</script>
+
+{% endblock %}

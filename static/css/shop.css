@@ -1,0 +1,25 @@
+.add-to-cart-btn {
+    text-align: center;
+    margin-top: 10px;
+}
+
+.add-to-cart-btn {
+    background-color: #0d6efd;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.add-to-cart-btn:hover {
+    background-color: #ff4f81;
+}
+
+#plus {
+    font-weight: lighter;
+}
+
+/* Ajoutez ici d'autres styles spécifiques à la section "Shop" si nécessaire */

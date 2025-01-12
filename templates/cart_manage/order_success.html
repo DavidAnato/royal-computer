@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="container mt-4">
+    <div class="jumbotron">
+      <h2 class="display-6">Confirmation de commande</h2>
+      <p class="lead">Votre commande a été passée avec succès.</p>
+      <hr class="my-4">
+      <p><span class="text-bold">Numéro de commande : </span> {{ order.id }}</p>
+      <p><span class="text-bold">Adresse de livraison : </span> {{ order.address }}</p>
+      <p><span class="text-bold">Total de la commande : </span> {{ order.total }} F CFA</p>
+      
+      <!-- Vous pouvez ajouter d'autres détails de commande si nécessaire -->
+      
+      <a class="btn btn-primary rounded-5 mx-auto" href="{% url 'home' %}" role="button">Retour à l'accueil</a>
+    </div>
+  </div>
+{% endblock %}

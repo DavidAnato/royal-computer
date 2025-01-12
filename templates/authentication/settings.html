@@ -1,0 +1,203 @@
+{% extends 'base.html' %}
+
+{% block title %}| Parametre{% endblock %}
+
+{% block content %}
+<div class="banner text-center bg-secondary p-5">
+    <h1>Paramètres</h1>
+</div>
+
+<div class='container'>
+    <div class='row justify-content-center'>
+        <div class='col-md-12'>
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <!-- Informations personnelles -->
+                <div class="card my-3 rounded-5">
+                    <div class="card-header">
+                        <h4 class="card-title">Informations personnelles</h4>
+                    </div>
+                    <div class="card-body row align-items-center justify-content-center">
+                        {% if form_submitted %}
+                        <p><strong>Merci d'avoir enregistré vos informations !</strong></p>
+                        {% else %}
+                        
+                        <div class="col-md-2">
+                            <div class="image-container">
+                                {% if user.profile_photo and user.profile_photo.url %}
+                                    <img src="{{ user.profile_photo.url }}" alt="Profile photo" class="img-fluid border-2 mb-3" id="profile-preview">
+                                    <label class="btn btn-light w-100 btn-sm rounded-5 border-0" for="{{ form.profile_photo.id_for_label }}">Modifier la photo <i class="fa-regular fa-image"></i></label>
+                                    <input type="file" name="{{ form.profile_photo.html_name }}" id="{{ form.profile_photo.id_for_label }}" accept="image/*" class="d-none">
+                                {% else %}
+                                    <img class="bg-secondary" id="profile-preview">
+                                    <label class="btn btn-light w-100 btn-sm rounded-5 border-0" for="{{ form.profile_photo.id_for_label }}">Ajouter une photo <i class="fa-regular fa-image"></i></label>
+                                    <input type="file" name="{{ form.profile_photo.html_name }}" id="{{ form.profile_photo.id_for_label }}" accept="image/*" class="d-none">
+
+                                {% endif %}
+                            </div>
+                        </div>
+                                         
+                        <div class="col-md-10">
+                            <div class="form-group d-flex">
+                                <label class='d-inline col-6 font-weight-bold' for="{{ form.first_name.id_for_label }}">Prénom :</label>
+                                <input type="{{ form.first_name.field.widget.input_type }}" name="{{ form.first_name.html_name }}" id="{{ form.first_name.id_for_label }}" class="form-control shadow-none rounded-5 border-0" value="{{ form.first_name.value }}">
+                            </div>
+                            <div class="form-group d-flex">
+                                <label class='d-inline col-6 font-weight-bold' for="{{ form.last_name.id_for_label }}">Nom :</label>
+                                <input type="{{ form.last_name.field.widget.input_type }}" name="{{ form.last_name.html_name }}" id="{{ form.last_name.id_for_label }}" class="form-control shadow-none rounded-5 border-0" value="{{ form.last_name.value }}">
+                            </div>
+                            <div class="form-group d-flex">
+                                <label class='d-inline col-6 font-weight-bold' for="{{ form.email.id_for_label }}">Adresse e-mail :</label>
+                                <input type="{{ form.email.field.widget.input_type }}" name="{{ form.email.html_name }}" id="{{ form.email.id_for_label }}" class="form-control shadow-none rounded-5 border-0" value="{{ form.email.value }}">
+                            </div>
+                            <div class="form-group d-flex">
+                                <label class='d-inline col-6 font-weight-bold' for="{{ form.phone_number.id_for_label }}">Numéro de téléphone :</label>
+                                <input type="{{ form.phone_number.field.widget.input_type }}" name="{{ form.phone_number.html_name }}" id="{{ form.phone_number.id_for_label }}" class="form-control shadow-none rounded-5 border-0" value="{{ form.phone_number.value }}">
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Préférences de notification -->
+                <div class="card my-3 rounded-5">
+                    <div class="card-header">
+                        <h4 class="card-title">Préférences de notification</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-check">
+                            <input type="checkbox" id="{{ form.receive_confirmation_emails.id_for_label }}" name="{{ form.receive_confirmation_emails.html_name }}" class="form-check-input shadow-none" {% if form.receive_confirmation_emails.value %}checked{% endif %}>
+                            <label class='d-inline col-6 font-weight-bold' for="{{ form.receive_confirmation_emails.id_for_label }}" class="form-check-label">Recevoir des e-mails de confirmation</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" id="{{ form.receive_order_updates.id_for_label }}" name="{{ form.receive_order_updates.html_name }}" class="form-check-input shadow-none" {% if form.receive_order_updates.value %}checked{% endif %}>
+                            <label class='d-inline col-6 font-weight-bold' for="{{ form.receive_order_updates.id_for_label }}" class="form-check-label">Recevoir des mises à jour de commande</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" id="{{ form.receive_promotions.id_for_label }}" name="{{ form.receive_promotions.html_name }}" class="form-check-input shadow-none" {% if form.receive_promotions.value %}checked{% endif %}>
+                            <label class='d-inline col-6 font-weight-bold' for="{{ form.receive_promotions.id_for_label }}" class="form-check-label">Recevoir des promotions</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Préférences de langue et de devise -->
+                <div class="card my-3 rounded-5">
+                    <div class="card-header">
+                        <h4 class="card-title">Préférences de langue et de devise</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group d-flex">
+                            <label class='d-inline col-6 font-weight-bold' for="{{ form.language.id_for_label }}">Langue préférée :</label>
+                            <select id="{{ form.language.id_for_label }}" name="{{ form.language.html_name }}" class="form-control shadow-none rounded-5 border-0">
+                                {% for choice in form.language.field.choices %}
+                                <option value="{{ choice.0 }}" {% if form.language.value == choice.0 %}selected{% endif %}>{{ choice.1 }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group d-flex">
+                            <label class='d-inline col-6 font-weight-bold' for="{{ form.currency.id_for_label }}">Devise :</label>
+                            <select id="{{ form.currency.id_for_label }}" name="{{ form.currency.html_name }}" class="form-control shadow-none rounded-5 border-0">
+                                {% for choice in form.currency.field.choices %}
+                                <option value="{{ choice.0 }}" {% if form.currency.value == choice.0 %}selected{% endif %}>{{ choice.1 }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Gestion des adresses -->
+                <div class="card my-3 rounded-5">
+                    <div class="card-header">
+                        <h4 class="card-title">Gestion des adresses</h4>
+                    </div>
+                    <div class="card-body row">
+                        {% for address in user.addresses.all %}
+                        <div class="col-12 col-sm-6 col-md-6 col-lg-4 mb-3">
+                          <div class="card p-3 rounded-5">
+                            <p><strong>Adresse :</strong> {{ address.address }}</p>
+                            <p><strong>Ville :</strong> {{ address.city }}</p>
+                            <p><strong>Code postal :</strong> {{ address.postal_code }}</p>
+                            <a href="{% url 'manage_address' address.id %}" class="rounded-5 btn btn-light w-100 d-inline">Modifier</a>
+                          </div>
+
+                        </div>
+                        {% empty %}
+                        <div class="col-12">
+                            <p>Aucune adresse enregistrée.</p>
+                        </div>
+                        {% endfor %}
+                        <div class="col">
+                            <a href="{% url 'manage_address' %}" class=" card p-3 rounded-5 align-items-center justify-content-center text-center text-decoration-none" style="height:191.2px;">
+                                {% comment %} <i class="fa-regular fa-plus w-100"></i> {% endcomment %}
+                                <div class="bg-secondary" style="height:40px; width:1px"></div>
+                                <div class="bg-secondary" style="height:1px; width:100px"></div>
+                                <div class="bg-secondary" style="height:40px; width:1px"></div>
+
+                            </a>
+                        </div>
+                        
+                    </div>
+                </div>
+
+                <!-- Méthodes de paiement -->
+                <div class="card my-3 rounded-5">
+                    <div class="card-header">
+                        <h4 class="card-title">Méthodes de paiement</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group d-flex">
+                            <label class='d-inline col-6 font-weight-bold' for="{{ form.payment_method.id_for_label }}">Méthode de paiement :</label>
+                            <select id="{{ form.payment_method.id_for_label }}" name="{{ form.payment_method.html_name }}" class="form-control shadow-none rounded-5 border-0">
+                                {% for choice in form.payment_method.field.choices %}
+                                <option value="{{ choice.0 }}" {% if form.payment_method.value == choice.0 %}selected{% endif %}>{{ choice.1 }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group d-flex">
+                            <label class='d-inline col-6 font-weight-bold' for="{{ form.mobile_money_number.id_for_label }}">Numéro mobile money :</label>
+                            <input type="{{ form.mobile_money_number.field.widget.input_type }}" name="{{ form.mobile_money_number.html_name }}" id="{{ form.mobile_money_number.id_for_label }}" class="form-control shadow-none rounded-5 border-0" value="{{ form.mobile_money_number.value }}">
+                        </div>
+                        <div class="form-group d-flex">
+                            <label class='d-inline col-6 font-weight-bold' for="{{ form.paypal_email.id_for_label }}">Adresse e-mail PayPal :</label>
+                            <input type="{{ form.paypal_email.field.widget.input_type }}" name="{{ form.paypal_email.html_name }}" id="{{ form.paypal_email.id_for_label }}" class="form-control shadow-none rounded-5 border-0" value="{{ form.paypal_email.value }}">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Confidentialité et sécurité -->
+                <div class="card my-3 rounded-5">
+                    <div class="card-header">
+                        <h4 class="card-title">Confidentialité et sécurité</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-check">
+                            <input type="checkbox" id="{{ form.profile_visibility.id_for_label }}" name="{{ form.profile_visibility.html_name }}" class="form-check-input shadow-none" {% if form.profile_visibility.value %}checked{% endif %}>
+                            <label class='d-inline col-6 font-weight-bold' for="{{ form.profile_visibility.id_for_label }}" class="form-check-label">Visibilité du profil</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" id="{{ form.data_sharing.id_for_label }}" name="{{ form.data_sharing.html_name }}" class="form-check-input shadow-none" {% if form.data_sharing.value %}checked{% endif %}>
+                            <label class='d-inline col-6 font-weight-bold' for="{{ form.data_sharing.id_for_label }}" class="form-check-label">Autorisations de partage de données</label>
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="rounded-5 btn btn-light w-100 d-inline">Enregistrer</button>
+
+            </form>
+
+            <!-- Autres -->
+            <div class="card my-3 rounded-5">
+                <div class="card-header">
+                    <h4 class="card-title">Autres</h4>
+                </div>
+                <div class="card-body row align-items-center">
+                    <a href="{% url 'password_change' %}" class="col-md-4 col-12 d-inline-block text-decoration-none text-center "> Modifier votre mot de passe </a>
+                    <hr class="d-block d-md-none mt-3">
+                    <a href="{% url 'logout' %}" class="col-md-4 col-12 d-inline-block text-danger text-decoration-none text-center "> Déconnexion </a>
+                    <hr class="d-block d-md-none mt-3">
+                    <a href="{% url 'delete_account' %}" class="col-md-4 col-12 d-inline-block text-danger text-decoration-none text-center "> Supprimer votre compte </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

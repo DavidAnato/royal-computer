@@ -1,0 +1,102 @@
+{% extends 'base.html' %} 
+{% load static %}
+{% block title %}| Connexion{% endblock %}
+
+{% block content %}
+<div class="container">
+  <!-- <div class="banner text-center bg-secondary p-5 m-0">
+    <h1>Login</h1>
+  </div> -->
+
+
+
+          <div class="row d-flex justify-content-center align-items-center">
+
+            <div
+            class="d-none d-lg-block col"
+            >
+              <img
+              src="{% static 'images/auth/login.png' %}"
+              class="img-fluid"
+              style="height: 80vh;"
+              alt="Sample image"
+              />
+          </div>
+          <div class="col-md-10 col-lg-6 col-xl-5 px-4">
+            <div class="d-flex justify-content-center align-items-center">
+              <img src="{% static 'images/auth/cart.png' %}" alt="Google" class="my-2" style="width: 'auto'; height: 120px;">
+              <h1 class="my-2 h3">Bon retour sur <span class="text-bold"><br>Royal Computer</span></h1>
+            </div>
+
+            <form method="post" action="{% url 'login' %}">
+              {% csrf_token %}
+  
+              <div class="d-flex flex-row justify-content-center align-items-center border rounded-5 p-1 mb-2">
+                <label for="username" class="bg-light rounded-circle d-flex justify-content-center align-items-center" style="width: 40px; height: 40px;">
+                  <i class="fas fa-envelope fa-lg mx-1 fa-fw"></i>
+                </label>
+                <div class="form-outline border-0 flex-fill mb-0">
+                  <input
+                    type="text"
+                    name="username"
+                    id="username"
+                    class="form-control border-0 shadow-none rounded-5"
+                    placeholder="Email"
+                    required
+                  />
+                </div>
+              </div>
+                            
+              <div class="d-flex flex-row justify-content-center align-items-center border rounded-5 p-1">
+                <label for="password" class="bg-light rounded-circle d-flex justify-content-center align-items-center" style="width: 40px; height: 40px;">
+                  <i class="fas fa-lock fa-lg mx-1 fa-fw"></i>
+                </label>
+                <div class="form-outline border-0 flex-fill mb-0">
+                  <input
+                    type="password"
+                    name="password"
+                    id="password"
+                    class="form-control border-0 shadow-none rounded-5"
+                    placeholder="Mot de passe"
+                    required
+                  />
+                </div>
+                <button type="button" onclick="togglePasswordVisibility()" class="btn btn-transparent rounded-5">
+                  <i id="password-icon" class="fas fa-eye fa-lg mx-1 fa-fw text-secondary"></i>
+                </button>
+              </div>
+              <div class="mb-4 text-end">
+                <a href="" class="text-decoration-none">Mot de passe oublié ?</a>
+              </div>
+
+              <div class="d-flex justify-content-center mx-4 mb-3">
+                <button
+                  type="submit"
+                  class="btn btn-primary text-bold rounded-5"
+                >
+                  <i class="fas fa-sign-in-alt fa-lg fa-fw"></i>
+                  Se connecter
+                </button>
+              </div>
+              <p class="text-center">ou</p>
+              <a href="https://accounts.google.com/o/oauth2/v2/auth?client_id={{ GOOGLE_CLIENT_ID }}&redirect_uri={{ GOOGLE_REDIRECT_URI }}&response_type=code&scope=email%20profile&prompt=consent&access_type=offline"
+                class="btn btn-light w-100 text-bold rounded-5 border">
+                <img src="{% static 'images/icon/google-400.png' %}" alt="Google" class="me-2" style="width: 25px; height: 25px;">
+                Se connecter avec Google
+              </a>
+
+              <hr />
+              <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
+                <p class="text-center">
+                  Vous n'avez pas encore de compte ?
+                  <a href="{% url 'signup' %}" class="text-decoration-none">Inscrivez-vous</a> !
+                </p>
+              </div>
+            </form>
+          </div>
+          
+        </div>
+
+
+</div>
+{% endblock %}

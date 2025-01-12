@@ -1,0 +1,42 @@
+@font-face {
+    font-family: 'Century Gothic';
+    src: url('../font/CenturyGothic.ttf') format('truetype');
+    /* Ajoutez ici d'autres formats de police si nécessaire */
+    font-weight: normal;
+    font-style: normal;
+}
+
+* {
+	font-family: "Century Gothic";
+}
+
+body {
+	background: #fff;
+
+}
+
+.go-top-link {
+	position: fixed;
+	bottom: 20px;
+	right: 20px;
+	z-index: 1000;
+	animation: slide-in 0.5s forwards;
+}
+
+.go-top-link a {
+	border-radius: 50%;
+	padding: 15px 20px;
+}
+
+.visible {
+	display: block !important; /* Surmonte la classe d-none de Bootstrap */
+	opacity: 1;
+	transition: opacity 0.3s ease; /* Vous pouvez ajuster la durée de la transition selon vos besoins */
+  }
+  
+  .hidden {
+	display: none !important; /* Surmonte la classe d-none de Bootstrap */
+	opacity: 0;
+	transition: opacity 0.3s ease; /* Assurez-vous que la durée de transition correspond à celle de la classe 'visible' */
+  }
+  
