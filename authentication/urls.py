@@ -23,10 +23,11 @@ urlpatterns = [
 
     path('settings/', views.settings, name='settings'),
 
-path('manage_address/', views.manage_address, name='manage_address'),
-path('manage_address/<int:address_id>/', views.manage_address, name='manage_address'),
+    path('manage_address/', views.manage_address, name='manage_address'),
+    path('manage_address/<int:address_id>/', views.manage_address, name='manage_address'),
 
     path('delete-account/', views.delete_account, name='delete_account'),
 
-
+    path('password_reset/', views.password_reset, name='password_reset'),
+    path('password_reset_confirm/', views.password_reset_confirm, name='password_reset_confirm'),
 ]

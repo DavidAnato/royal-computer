@@ -1,13 +1,16 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth import authenticate, login as django_login, logout as django_logout, get_user_model
+from django.contrib.auth import login as django_login, logout as django_logout, get_user_model
 from django.contrib.auth.decorators import login_required
-from django.contrib import messages
-from django.db.models import Q
 import requests
+
+from authentication.utils import send_password_reset_email
 from .forms import *
 from .models import Address
-from cart_manage.models import Cart, Order
+from cart_manage.models import Order
 from ecom import settings as django_settings
+from django.core.mail import send_mail
+from django.contrib.auth.tokens import default_token_generator
+import random
 
 User = get_user_model()
 
@@ -138,10 +141,8 @@ def logout(request):
 @login_required
 def profile(request):
     user = request.user
-    cart = Cart.objects.get(user=request.user)
-    number_of_items_in_cart = cart.items.count()
     orders = Order.objects.filter(user=request.user).all()
-    return render(request, 'authentication/profile.html', {'user': user, 'number_of_items_in_cart': number_of_items_in_cart, 'orders':orders})
+    return render(request, 'authentication/profile.html', {'user': user, 'orders':orders})
 
 @login_required
 def settings(request):
@@ -155,16 +156,13 @@ def settings(request):
     else:
         form = SettingsForm(instance=user)
 
-    cart = Cart.objects.get(user=request.user)
-    number_of_items_in_cart = cart.items.count()  # Supposons que vous avez un champ 'items' pour stocker les produits dans le panier
-
-    return render(request, 'authentication/settings.html', {'form': form, 'number_of_items_in_cart': number_of_items_in_cart,})
+    return render(request, 'authentication/settings.html', {'form': form})
 
 @login_required
 def manage_address(request, address_id=None):
     user = request.user
     instance = None
-
+    next = request.GET.get('next', None)
     if address_id:
         instance = get_object_or_404(Address, id=address_id)
 
@@ -180,27 +178,23 @@ def manage_address(request, address_id=None):
                 address = form.save(commit=False)
                 address.user = user
                 address.save()
+                if next:
+                    return redirect(next)
                 return redirect('settings')
     else:
         form = AddressForm(instance=instance)
 
     template = 'authentication/manage_address.html'
 
-    cart = Cart.objects.get(user=request.user)
-    number_of_items_in_cart = cart.items.count()  # Supposons que vous avez un champ 'items' pour stocker les produits dans le panier
-
     context = {
         'form': form,
         'address_id': address_id,
-        'number_of_items_in_cart': number_of_items_in_cart,
+        'next': next
     }
 
     return render(request, template, context)
-
 @login_required
 def delete_account(request):
-    cart = Cart.objects.get(user=request.user)
-    number_of_items_in_cart = cart.items.count()  # Supposons que vous avez un champ 'items' pour stocker les produits dans le panier
 
     if request.method == 'POST':
         # Si l'utilisateur confirme la suppression du compte
@@ -212,5 +206,42 @@ def delete_account(request):
         else:
             return redirect('setiings')  # Redirige vers la page de setiings si la suppression est annulée
     else:
-        return render(request, 'authentication/delete_account.html', {'number_of_items_in_cart': number_of_items_in_cart,})
+        return render(request, 'authentication/delete_account.html')
 
+def password_reset(request):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        try:
+            user = User.objects.get(email=email)
+            # Générer un OTP à 5 chiffres
+            otp = ''.join([str(random.randint(0, 9)) for _ in range(5)])
+            # Sauvegarder l'OTP temporairement
+            user.otp = otp
+            user.save()
+            
+            # Envoyer l'email avec l'OTP
+            send_password_reset_email(email, otp)
+            return redirect(f'/user/password_reset_confirm/?email={email}')
+        except User.DoesNotExist:
+            return render(request, 'authentication/password_reset.html', 
+                        {'error': 'Email non trouvé'})
+
+    return render(request, 'authentication/password_reset.html')
+
+def password_reset_confirm(request):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        otp = request.POST.get('otp')
+        try:
+            user = User.objects.get(email=email, otp=otp)
+            # OTP valide, connecter l'utilisateur
+            django_login(request, user)
+            # Effacer l'OTP
+            user.otp = None 
+            user.save()
+            return redirect('password_change')
+        except User.DoesNotExist:
+            return render(request, 'authentication/password_reset_confirm.html',
+                        {'error': 'Code OTP invalide'})
+
+    return render(request, 'authentication/password_reset_confirm.html')

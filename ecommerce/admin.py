@@ -7,7 +7,7 @@ from .models import *
 class AdditionalImageInline(admin.TabularInline):
     model = AdditionalImage
     extra = 1
-    fields = ('image',)  # Ne pas inclure `image_thumbnail` ici
+    fields = ('image', 'is_video')  # Ne pas inclure `image_thumbnail` ici
     readonly_fields = ('image_thumbnail',)  # Ajoutez-le ici pour l'affichage uniquement
 
     def image_thumbnail(self, obj):

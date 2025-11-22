@@ -1,18 +1,109 @@
 {% extends 'base.html' %}
+{% load static %}
+{% block title %}| Commande confirmée{% endblock %}
+
+{% block meta %}
+<meta name="robots" content="index, nofollow">
+<meta name="description" content="Confirmation de votre commande sur Royal Computer. Retrouvez tous les détails de votre achat, y compris le numéro de commande, l'adresse de livraison et le récapitulatif des articles.">
+
+<!-- Carte Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@RoyalComputerStore">
+<meta name="twitter:title" content="Commande confirmée">
+<meta name="twitter:description" content="Confirmation de votre commande sur Royal Computer. Retrouvez tous les détails de votre achat, y compris le numéro de commande, l'adresse de livraison et le récapitulatif des articles.">
+<meta name="twitter:image" content="{% static 'images/rc-logo.png' %}">
+
+<!-- Facebook (Open Graph) -->
+<meta property="og:title" content="Commande confirmée">
+<meta property="og:description" content="Confirmation de votre commande sur Royal Computer. Retrouvez tous les détails de votre achat, y compris le numéro de commande, l'adresse de livraison et le récapitulatif des articles.">
+<meta property="og:image" content="{% static 'images/rc-logo.png' %}">
+{% endblock %}
 
 {% block content %}
-  <div class="container mt-4">
-    <div class="jumbotron">
-      <h2 class="display-6">Confirmation de commande</h2>
-      <p class="lead">Votre commande a été passée avec succès.</p>
-      <hr class="my-4">
-      <p><span class="text-bold">Numéro de commande : </span> {{ order.id }}</p>
-      <p><span class="text-bold">Adresse de livraison : </span> {{ order.address }}</p>
-      <p><span class="text-bold">Total de la commande : </span> {{ order.total }} F CFA</p>
-      
-      <!-- Vous pouvez ajouter d'autres détails de commande si nécessaire -->
-      
-      <a class="btn btn-primary rounded-5 mx-auto" href="{% url 'home' %}" role="button">Retour à l'accueil</a>
+<div class="container mt-5">
+  <div class="card shadow-lg p-4">
+    <div class="text-center mb-4">
+      <h2 class="fw-bold text-dark">
+        <i class="fas fa-check-circle text-success me-2"></i> Commande confirmée
+      </h2>
+      <p class="text-muted">Votre commande a été enregistrée avec succès. Voici un récapitulatif :</p>
+    </div>
+    
+    <div class="border-top pt-3">
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <h5 class="fw-bold text-secondary">
+            <i class="fas fa-hashtag me-2"></i>Numéro de commande :
+          </h5>
+          <p class="fs-5">{{ order.id }}</p>
+        </div>
+        <div class="col-md-6 text-md-end">
+          <h5 class="fw-bold text-secondary">
+            <i class="fas fa-calendar-alt me-2"></i>Date de la commande :
+          </h5>
+          <p class="fs-5">{{ order.created_at|date:"d/m/Y H:i" }}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="border-top pt-3">
+      <h5 class="fw-bold text-secondary">
+        <i class="fas fa-map-marker-alt me-2"></i>Adresse de livraison :
+      </h5>
+      <p class="fs-5">
+        {% if order.address %}
+          {{ order.address }}
+        {% else %}
+          <span class="text-danger">Aucune adresse spécifiée</span>
+        {% endif %}
+      </p>
+    </div>
+
+    <div class="border-top pt-3">
+      <h5 class="fw-bold text-secondary">
+        <i class="fas fa-shopping-cart me-2"></i>Détails de la commande :
+      </h5>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item d-flex justify-content-between">
+          <span class="fw-bold">
+            <i class="fas fa-box me-2"></i>Nombre d'articles :
+          </span>
+          <span>{{ order_items_count }}</span>
+        </li>
+        <li class="list-group-item d-flex justify-content-between">
+          <span class="fw-bold">
+            <i class="fas fa-cubes me-2"></i>Quantité totale :
+          </span>
+          <span>{{ order_items_total_quantity }}</span>
+        </li>
+        <li class="list-group-item d-flex justify-content-between">
+          <span class="fw-bold">
+            <i class="fas fa-coins me-2"></i>Montant total :
+          </span>
+          <span>{{ order.total }} F CFA</span>
+        </li>
+        {% if order.promo_code %}
+        <li class="list-group-item d-flex justify-content-between">
+          <span class="fw-bold text-success">
+            <i class="fas fa-tag me-2"></i>Code Promo :
+          </span>
+          <span>{{ order.promo_code.code }}</span>
+        </li>
+        <li class="list-group-item d-flex justify-content-between">
+          <span class="fw-bold text-success">
+            <i class="fas fa-percent me-2"></i>Montant après réduction :
+          </span>
+          <span>{{ order.final_total }} F CFA</span>
+        </li>
+        {% endif %}
+      </ul>
+    </div>
+
+    <div class="text-center mt-4">
+      <a href="{% url 'home' %}" class="btn btn-anime-pink text-bold rounded-pill px-4 py-2">
+        <i class="fas fa-home me-2"></i>Retourner à l'accueil
+      </a>
     </div>
   </div>
+</div>
 {% endblock %}

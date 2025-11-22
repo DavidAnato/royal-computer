@@ -1,12 +1,33 @@
 {% extends "base.html" %}
+{% load static %}
+{% block title %}| Contact{% endblock %}
+
+{% block meta %}
+<meta name="robots" content="index, follow">
+<meta name="description" content="Contactez Royal Computer pour toute question ou assistance. Notre équipe est à votre disposition pour vous aider et répondre à vos besoins.">
+
+<!-- Carte Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@RoyalComputerStore">
+<meta name="twitter:title" content="Contact">
+<meta name="twitter:description" content="Contactez Royal Computer pour toute question ou assistance. Notre équipe est à votre disposition pour vous aider et répondre à vos besoins.">
+<meta name="twitter:image" content="{% static 'images/rc-logo.png' %}">
+
+<!-- Facebook (Open Graph) -->
+<meta property="og:title" content="Contact">
+<meta property="og:description" content="Contactez Royal Computer pour toute question ou assistance. Notre équipe est à votre disposition pour vous aider et répondre à vos besoins.">
+<meta property="og:image" content="{% static 'images/rc-logo.png' %}">
+{% endblock %}
 
 {% block content %}
 <section class="ftco-section">
-    <div class="banner text-center bg-secondary p-5 mb-3">
-        <h1>Contact</h1>
+    <div class="banner text-center bg-secondary p-5">
+        <div class="banner-content d-flex justify-content-center align-items-center">
+            <h1 class="text-bold display-4"> <i class="far fa-address-card"></i> Contact</h1>
+        </div>
     </div>
     <div class="container">
-            <div class="row justify-content-center">
+        <div class="row justify-content-center">
             <div class="col-md-12 mx-5">
                 <div class="row no-gutters mb-5">
                     <div class="col-md-7">
@@ -15,28 +36,29 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <input type="text" class="form-control mb-5 rounded-5 shadow-none border-none contact-form" name="name" id="name" placeholder="Name">
+                                            <input type="text" class="form-control mb-5 rounded-5 shadow-none border-none contact-form" name="name" id="name" placeholder="Votre nom" required>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <input type="email" class="form-control mb-5 rounded-5 shadow-none border-none contact-form" name="email" id="email" placeholder="Email">
+                                            <input type="email" class="form-control mb-5 rounded-5 shadow-none border-none contact-form" name="email" id="email" placeholder="Votre email" required>
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <input type="text" class="form-control mb-5 rounded-5 shadow-none border-none contact-form" name="subject" id="subject" placeholder="Subject">
+                                            <input type="text" class="form-control mb-5 rounded-5 shadow-none border-none contact-form" name="subject" id="subject" placeholder="Sujet du message" required>
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <textarea name="message" class="form-control mb-5 rounded-5 shadow-none border-none contact-form" id="message" cols="30" rows="6" placeholder="Message"></textarea>
+                                            <textarea name="message" class="form-control mb-5 rounded-5 shadow-none border-none contact-form" id="message" cols="30" rows="6" placeholder="Votre message" required></textarea>
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <input type="submit" value="Send Message" class="btn btn-primary w-100 mt-4 rounded-5">
-                                            <div class="submitting"></div>
+                                            <button type="submit" class="btn btn-primary w-100 mt-4 rounded-5">
+                                                <span class="submit"> <i class="fas fa-envelope"></i> Envoyer le message</span>
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
@@ -45,7 +67,8 @@
                     </div>
                     <div class="col-md-5 align-items-stretch">
                         <div id="map" class="p-4">
-                            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3965.1714564748054!2d2.3516145796664483!3d6.371852677163722!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1023571947d70899%3A0x3627ba3689f575ef!2sRoyal%20Computer!5e0!3m2!1sfr!2sbj!4v1698663029747!5m2!1sfr!2sbj" width="100% border-none" style="aspect-ratio:1;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3965.1714564748054!2d2.3516145796664483!3d6.371852677163722!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1023571947d70899%3A0x3627ba3689f575ef!2sRoyal%20Computer!5e0!3m2!1sfr!2sbj!4v1698663029747!5m2!1sfr!2sbj" 
+                            width="100%" class="border-none rounded-5" style="aspect-ratio:1;" allowfullscreen="true" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                         </div>
                     </div>
                 </div>
@@ -53,7 +76,7 @@
                     <div class="col-md-3">
                         <div class="dbox w-100 text-center">
                             <div class="icon bg-primary p-4 rounded-circle d-flex align-items-center justify-content-center mx-auto mb-2" style="width:50px; height:50px; aspect-ratio:1;">
-                                <span class="fa fa-map-marker text-white"></span>
+                                <span class="fas fa-location-dot text-white"></span>
                             </div>
                             <div class="text text d-flex">
                                 <p class="mx-auto">Agla En Face pharmacie luli luli, Cotonou, Bénin</p>
@@ -63,17 +86,17 @@
                     <div class="col-md-3">
                         <div class="dbox w-100 text-center">
                             <div class="icon bg-primary p-4 rounded-circle d-flex align-items-center justify-content-center mx-auto mb-2" style="width:50px; height:50px; aspect-ratio:1;">
-                                <span class="fa fa-phone text-white"></span>
+                                <span class="fas fa-phone text-white"></span>
                             </div>
                             <div class="text text d-flex">
-                                <p class="mx-auto"><a class="text-decoration-none" href="tel://+22956543880">+22956543880</a></p>
+                                <p class="mx-auto"><a class="text-decoration-none" href="tel://+22956543880">+229 56 54 38 80</a></p>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-3">
-                        <div class "dbox w-100 text-center">
+                        <div class="dbox w-100 text-center">
                             <div class="icon bg-primary p-4 rounded-circle d-flex align-items-center justify-content-center mx-auto mb-2" style="width:50px; height:50px; aspect-ratio:1;">
-                                <span class="fa fa-paper-plane text-white"></span>
+                                <span class="fas fa-envelope text-white"></span>
                             </div>
                             <div class="text d-flex">
                                 <p class="mx-auto"><a class="text-decoration-none" href="mailto:david1anato@gmail.com">david1anato@gmail.com</a></p>
@@ -95,4 +118,22 @@
         </div>
     </div>
 </section>
+<script>
+    const nom = document.getElementById('name');
+    const email = document.getElementById('email');
+    const sujet = document.getElementById('subject');
+    const message = document.getElementById('message');
+
+    const envoyer = () => {
+        console.log(nom.value, email.value, sujet.value, message.value);
+        window.location.href = "mailto:david1anato@gmail.com?subject=" + sujet.value + "&body=" + message.value;
+    }
+    // Empêcher le comportement par défaut du formulaire
+    document.getElementById('contactForm').addEventListener('submit', function(e){
+        e.preventDefault();
+        envoyer();
+        new Promise(resolve => setTimeout(resolve, 1000));
+        window.location.reload();
+    });
+</script>
 {% endblock %}

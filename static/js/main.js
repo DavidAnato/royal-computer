@@ -48,3 +48,39 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 });
+
+// refact url pour retirer les queries vides
+(function() {
+  function refactorUrl(url) {
+      const [baseUrl, queryString] = url.split("?");
+      if (!queryString) return url; // Pas de query string, rien à nettoyer.
+
+      const params = new URLSearchParams(queryString);
+
+      // Collecte des clés à supprimer
+      const keysToDelete = [];
+      for (const [key, value] of params.entries()) {
+          if (!value.trim()) {
+              keysToDelete.push(key);
+          }
+      }
+
+      // Supprime les clés collectées
+      keysToDelete.forEach(key => params.delete(key));
+
+      // Reconstruit l'URL
+      const newQueryString = params.toString();
+      return newQueryString ? `${baseUrl}?${newQueryString}` : baseUrl;
+  }
+
+  // Récupère l'URL actuelle
+  const currentUrl = window.location.href;
+
+  // Refactorise l'URL
+  const cleanedUrl = refactorUrl(currentUrl);
+
+  // Si l'URL a changé, met à jour l'historique sans recharger la page
+  if (cleanedUrl !== currentUrl) {
+      window.history.replaceState({}, document.title, cleanedUrl);
+  }
+})();

@@ -2,6 +2,14 @@
     font-weight: bold;
 }
 
+@keyframes scale-up {
+    0% { transform: scale(1); }
+    100% { transform: scale(1.05); }
+}
+
+.btn:hover{
+    animation: scale-up 0.3s ease-in-out forwards;
+}
 .bg-pink {
     background: #ff4f81;
 }
@@ -118,3 +126,318 @@
     color: white;
     text-align: center;
 }
+
+.text-justify {
+    text-align: justify;
+}
+
+/* Bouton anime */
+/* Bouton anime primary */
+.btn-anime-primary {
+    position: relative;
+    display: inline-block;
+    color: #0d6efd;
+    text-decoration: none;
+    overflow: hidden;
+    border: 1px solid #0d6efd;
+    z-index: 1;
+    background-color: transparent;
+    transition: color 0.4s ease;
+  }
+
+  .btn-anime-primary::before {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #0d6efd;
+    z-index: -1;
+    transition: top 0.4s ease;
+  }
+
+  .btn-anime-primary:hover::before {
+    top: 0;
+  }
+
+  .btn-anime-primary:hover {
+    color: #fff;
+    border: 1px solid #0d6efd;
+
+  }
+
+  /* Bouton anime secondary */
+  .btn-anime-secondary {
+    position: relative;
+    display: inline-block;
+    color: #6c757d;
+    text-decoration: none;
+    overflow: hidden;
+    border: 1px solid #6c757d;
+    z-index: 1;
+    background-color: transparent;
+    transition: color 0.4s ease;
+  }
+
+  .btn-anime-secondary::before {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #6c757d;
+    z-index: -1;
+    transition: top 0.4s ease;
+  }
+
+  .btn-anime-secondary:hover::before {
+    top: 0;
+  }
+
+  .btn-anime-secondary:hover {
+    color: #fff;
+    border: 1px solid #6c757d;
+
+  }
+
+  /* Bouton anime pink */
+  .btn-anime-pink {
+    position: relative;
+    display: inline-block;
+    color: #ff4f81;
+    text-decoration: none;
+    overflow: hidden;
+    border: 1px solid #ff4f81;
+    z-index: 1;
+    background-color: transparent;
+    transition: color 0.4s ease;
+  }
+
+  .btn-anime-pink::before {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #ff4f81;
+    z-index: -1;
+    transition: top 0.4s ease;
+  }
+
+  .btn-anime-pink:hover::before {
+    top: 0;
+  }
+
+  .btn-anime-pink:hover {
+    color: #fff;
+    border: 1px solid #ff4f81;
+
+  }
+
+/* Bouton anime success */
+.btn-anime-success {
+    position: relative;
+    display: inline-block;
+    color: #198754;
+    text-decoration: none;
+    overflow: hidden;
+    border: 1px solid #198754;
+    z-index: 1;
+    background-color: transparent;
+    transition: color 0.4s ease;
+  }
+
+  .btn-anime-success::before {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #198754;
+    z-index: -1;
+    transition: top 0.4s ease;
+  }
+
+  .btn-anime-success:hover::before {
+    top: 0;
+  }
+
+  .btn-anime-success:hover {
+    color: #fff;
+    border: 1px solid #198754;
+  }
+
+  
+/* Bouton anime dark */
+.btn-anime-dark {
+    position: relative;
+    display: inline-block;
+    color: #212529;
+    text-decoration: none;
+    overflow: hidden;
+    border: 1px solid #212529;
+    z-index: 1;
+    background-color: transparent;
+    transition: color 0.4s ease;
+  }
+
+  .btn-anime-dark::before {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #212529;
+    z-index: -1;
+    transition: top 0.4s ease;
+  }
+
+  .btn-anime-dark:hover::before {
+    top: 0;
+  }
+
+  .btn-anime-dark:hover {
+    color: #fff;
+    border: 1px solid #212529;
+  }
+
+  /* Bouton anime light */
+.btn-anime-light {
+    position: relative;
+    display: inline-block;
+    color: #f8f9fa;
+    text-decoration: none;
+    overflow: hidden;
+    border: 1px solid #f8f9fa;
+    z-index: 1;
+    background-color: transparent;
+    transition: color 0.4s ease;
+  }
+
+  .btn-anime-light::before {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #f8f9fa;
+    z-index: -1;
+    transition: top 0.4s ease;
+  }
+
+  .btn-anime-light:hover::before {
+    top: 0;
+  }
+
+  .btn-anime-light:hover {
+    color: #000;
+    border: 1px solid #f8f9fa;
+  }
+
+  /* Bouton anime warning */
+.btn-anime-warning {
+    position: relative;
+    display: inline-block;
+    color: #fd7e14;
+    text-decoration: none;
+    overflow: hidden;
+    border: 1px solid #fd7e14;
+    z-index: 1;
+    background-color: transparent;
+    transition: color 0.4s ease;
+  }
+
+  .btn-anime-warning::before {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #fd7e14;
+    z-index: -1;
+    transition: top 0.4s ease;
+  }
+
+  .btn-anime-warning:hover::before {
+    top: 0;
+  }
+
+  .btn-anime-warning:hover {
+    color: #fff;
+    border: 1px solid #fd7e14;
+  }
+
+  /* Bouton anime info */
+.btn-anime-info {
+    position: relative;
+    display: inline-block;
+    color: #0dcaf0;
+    text-decoration: none;
+    overflow: hidden;
+    border: 1px solid #0dcaf0;
+    z-index: 1;
+    background-color: transparent;
+    transition: color 0.4s ease;
+  }
+
+  .btn-anime-info::before {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #0dcaf0;
+    z-index: -1;
+    transition: top 0.4s ease;
+  }
+
+  .btn-anime-info:hover::before {
+    top: 0;
+  }
+
+  .btn-anime-info:hover {
+    color: #000;
+    border: 1px solid #0dcaf0;
+  }
+
+  /* Bouton anime danger */
+.btn-anime-danger {
+    position: relative;
+    display: inline-block;
+    color: #dc3545;
+    text-decoration: none;
+    overflow: hidden;
+    border: 1px solid #dc3545;
+    z-index: 1;
+    background-color: transparent;
+    transition: color 0.4s ease;
+  }
+
+  .btn-anime-danger::before {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #dc3545;
+    z-index: -1;
+    transition: top 0.4s ease;
+  }
+
+  .btn-anime-danger:hover::before {
+    top: 0;
+  }
+
+  .btn-anime-danger:hover {
+    color: #fff;
+    border: 1px solid #dc3545;
+  }

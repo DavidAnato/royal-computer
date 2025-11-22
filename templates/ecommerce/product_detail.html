@@ -1,24 +1,72 @@
-{% extends 'base.html' %} {% block title %}| Détails du Produit | {{
-product.name }}{% endblock %} {% block content %}
-{% comment %} Product {%endcomment %}
+{% extends 'base.html' %}
+
+{% block title %}| Détails du Produit | {{ product.name }}{% endblock %}
+
+{% block meta %}
+<meta name="robots" content="index, follow">
+<meta name="description" content="{{ product.description }}">
+
+<!-- Carte Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@RoyalComputerStore">
+<meta name="twitter:title" content="{{ product.name }}">
+<meta name="twitter:description" content="{{ product.description }}">
+<meta name="twitter:image" content="{{ product.image.url }}">
+
+<!-- Facebook (Open Graph) -->
+<meta property="og:title" content="{{ product.name }}">
+<meta property="og:description" content="{{ product.description }}">
+<meta property="og:image" content="{{ product.image.url }}">
+{% endblock %}
+
+{% block content %}
+{% comment %} Produit {%endcomment %}
 <section class="py-5">
   <div class="container">
     <div class="row gx-5">
+      <div class="d-lg-none">
+        <h4 class="title text-dark">{{ product.name }}</h4>
+        <div class="d-flex flex-row my-3">
+          {% if rating and rating.rate > 0 %}
+          <div class="text-warning mb-1 me-2">
+            {% for i in rating.full_stars %}
+              <i class="fas fa-star"></i>
+            {% endfor %}
+            {% if rating.half_stars %}
+              <i class="fas fa-star-half-alt"></i>
+            {% endif %}
+            {% for i in rating.empty_stars %}
+              <i class="far fa-star"></i>
+            {% endfor %}
+            <span class="ms-1"> {{rating.rate}} </span>
+          </div>
+          {% endif %}
+          <span class="text-muted"
+            ><i class="fas fa-store fa-sm mx-1"></i>
+          </span>
+          {% if product.in_stock %}
+          <span class="text-success ms-2">En stock</span>
+          {% else %}
+          <span class="text-danger ms-2">En rupture de stock</span>
+          {% endif %}
+        </div>
+      </div>
+
       <aside class="col-lg-6">
-        <div class="border rounded-5 mb-3 p-2 d-flex justify-content-center" style="aspect-ratio: 1">
-          <img id="mainImage" class="rounded-5 fit main-image-animation" src="{{ product.image.url }}" alt="Product Image" />
-          <video id="mainVideo" class="rounded-5 fit main-image-animation" style="display: none;" controls>
+        <div class="border rounded-5 mb-3 p-2 d-flex justify-content-center overflow-hidden" style="aspect-ratio: 5/3">
+          <img id="mainImage" class="rounded-5 main-image-animation" src="{{ product.image.url }}" alt="Image du Produit" />
+          <video id="mainVideo" class="rounded-5 main-image-animation bg-black" style="display: none; height: auto; max-width: 100%;" controls>
             <source src="{{ product.video_url }}" type="video/mp4" />
-            Votre navigateur ne supporte pas la vidéo.
+            Votre navigateur ne prend pas en charge la vidéo.
           </video>
         </div>
       
         <div class="d-flex justify-content-center mb-3">
           <a data-fslightbox="mygalley" class="border mx-1 rounded-5 d-flex justify-content-center align-items-center" target="_blank" data-type="image" class="item-thumb">
-            <img width="60" class="mini-image rounded-5" src="{{ product.image.url }}" alt="Product Thumbnail main" />
+            <img width="60" class="mini-image rounded-5" src="{{ product.image.url }}" alt="Miniature du produit principale" />
           </a>
           <a data-fslightbox="mygalley" class="border mx-1 rounded-5 d-flex justify-content-center align-items-center" target="_blank" data-type="image" class="item-thumb">
-            <img width="60" class="mini-image rounded-5" src="{{ product.image_secondary.url }}" alt="Product Thumbnail secondary" />
+            <img width="60" class="mini-image rounded-5" src="{{ product.image_secondary.url }}" alt="Miniature du produit secondaire" />
           </a>
       
           <div>
@@ -31,7 +79,7 @@ product.name }}{% endblock %} {% block content %}
                 <i class="fas fa-play position-absolute top-50 start-50 translate-middle text-white bg-dark bg-opacity-50 rounded-circle play-icon" style="font-size: 1.2rem; padding: 5px;"></i>
               </div>
               {% else %}
-              <img width="60" class="mini-image rounded-5" src="{{ additional_image.image.url }}" alt="Product Thumbnail {{ forloop.counter }}" />
+              <img width="60" class="mini-image rounded-5" src="{{ additional_image.image.url }}" alt="Miniature du produit {{ forloop.counter }}" />
               {% endif %}
             </a>
             {% endfor %}
@@ -40,39 +88,47 @@ product.name }}{% endblock %} {% block content %}
       </aside>
       
       <main class="col-lg-6 ps-lg-3">
-        <h4 class="title text-dark">{{ product.name }}</h4>
-        <div class="d-flex flex-row my-3">
-          <div class="text-warning mb-1 me-2">
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star-half-alt"></i>
-            <span class="ms-1"> 4.5 </span>
+        <div class="d-none d-lg-block">
+          <h4 class="title text-dark">{{ product.name }}</h4>
+          <div class="d-flex flex-row my-3">
+            {% if rating and rating.rate > 0 %}
+            <div class="text-warning mb-1 me-2">
+              {% for i in rating.full_stars %}
+                <i class="fas fa-star"></i>
+              {% endfor %}
+              {% if rating.half_stars %}
+                <i class="fas fa-star-half-alt"></i>
+              {% endif %}
+              {% for i in rating.empty_stars %}
+                <i class="far fa-star"></i>
+              {% endfor %}
+              <span class="ms-1"> {{rating.rate}} </span>
+            </div>
+            {% endif %}
+            <span class="text-muted"
+              ><i class="fas fa-store fa-sm mx-1"></i>
+            </span>
+            {% if product.in_stock %}
+            <span class="text-success ms-2">En stock</span>
+            {% else %}
+            <span class="text-danger ms-2">En rupture de stock</span>
+            {% endif %}
           </div>
-          <span class="text-muted"
-            ><i class="fas fa-shopping-basket fa-sm mx-1"></i>
-          </span>
-          {% if product.in_stock %}
-          <span class="text-success ms-2">En stock</span>
-          {% else %}
-          <span class="text-danger ms-2">En rupture</span>
-          {% endif %}
         </div>
 
-        <div class="mb-3 text-pink">
+        <div class="mb-3 text-pink text-bold fs-5">
           {% if product.in_promo %}
           <span class="text-decoration-line-through text-black me-1">
-            {{ product.price }} F CFA
+            {{ product.price|floatformat:0 }} F CFA
           </span>
-          {{ product.promo_price }} F CFA {% else %} {{ product.price }} F CFA
+          {{ product.promo_price|floatformat:0 }} F CFA {% else %} {{ product.price|floatformat:0 }} F CFA
           {% endif %}
         </div>
 
         <p>{{ product.description }}</p>
 
         <div class="row">
-          <dt class="col-3">Categorie:</dt>
+          <dt class="col-3">Catégorie:</dt>
           <dd class="col-9">{{ product.category }}</dd>
 
           <dt class="col-3">Marque:</dt>
@@ -82,101 +138,74 @@ product.name }}{% endblock %} {% block content %}
         <hr />
 
         <div class="row mb-4">
-          <!-- Column -->
+          <!-- Colonne -->
             <form method="post" action="{% url 'add_to_cart' product.id %}">
               {% csrf_token %}
+              {% if not product_in_cart %}
+                <label class="mb-2 d-block text-bold">Quantité</label>
+                  <div class="input-group rounded-5 mb-3" style="width: 150px;">
+      
+                    <button
+                      class="btn btn-anime-secondary rounded-circle shadow-none"
+                      type="button"
+                      id="decrementButton"
+                      data-mdb-ripple-color="dark"
+                    >
+                      <i class="fas fa-minus"></i>
+                    </button>
+                    <input
+                      type="number"
+                      id="quantityInput"
+                      name="quantity"
+                      class="form-control border-0 text-center text-bold bg-transparent rounded-5 shadow-none"
+                      value="1"
+                      aria-label="Exemple de texte avec bouton"
+                      aria-describedby="button-addon1"
+                    />
+                    <button
+                      class="btn btn-anime-secondary rounded-circle shadow-none"
+                      type="button"
+                      id="incrementButton"
+                      data-mdb-ripple-color="dark"
+                    >
+                      <i class="fas fa-plus"></i>
+                    </button>
+                  </div>
+              {% endif %}
 
-        {% if product_in_cart %}
-        <label class="mb-2 d-block">Quantity</label>
-        <div class="input-group mb-3" style="width: 170px">
-
-          <button
-            class="btn btn-white border border-secondary px-3 rounded-5 shadow-none"
-            type="button"
-            id="decrementButton"
-            data-mdb-ripple-color="dark"
-            disabled
-          >
-            <i class="fas fa-minus"></i>
-          </button>
-          <input
-            type="number"
-            id="quantityInput"
-            name="quantity"
-            class="form-control text-center border border-secondary rounded-5 shadow-none"
-            value="1"
-            aria-label="Example text with button addon"
-            aria-describedby="button-addon1"
-            disabled
-          />
-          <button
-            class="btn btn-white border border-secondary px-3 rounded-5 shadow-none"
-            type="button"
-            id="incrementButton"
-            data-mdb-ripple-color="dark"
-            disabled
-          >
-            <i class="fas fa-plus"></i>
-          </button>
-      </div>
-
-            <a href="https://wa.me/+22956543880?text=Je veux ce produits {{product.name}} - {{product.description}}. {{product.image.url}}" class="btn btn-success shadow-none rounded-5"><i class="fab fa-whatsapp"></i> Buy now</a>
-            <a href="{% url 'cart' %}" class="btn btn-pink shadow-none rounded-5">
-                    Go to cart
-            </a>
-        {% else %}
-                      <label class="mb-2 d-block">Quantity</label>
-              <div class="input-group mb-3" style="width: 170px">
-  
-                <button
-                  class="btn btn-white border border-secondary px-3 rounded-5 shadow-none"
-                  type="button"
-                  id="decrementButton"
-                  data-mdb-ripple-color="dark"
-                >
-                  <i class="fas fa-minus"></i>
-                </button>
-                <input
-                  type="number"
-                  id="quantityInput"
-                  name="quantity"
-                  class="form-control text-center border border-secondary rounded-5 shadow-none"
-                  value="1"
-                  aria-label="Example text with button addon"
-                  aria-describedby="button-addon1"
-                />
-                <button
-                  class="btn btn-white border border-secondary px-3 rounded-5 shadow-none"
-                  type="button"
-                  id="incrementButton"
-                  data-mdb-ripple-color="dark"
-                >
-                  <i class="fas fa-plus"></i>
-                </button>
+            <div class="d-flex flex-row flex-wrap gap-2">
+              <a href="https://wa.me/+22956543880?text=Je souhaite acheter ce produit {{product.name}} - {{product.description}}. {{product.image.url}}" 
+                class="btn btn-success shadow-none rounded-5 py-2 text-bold d-flex align-items-center">
+                <i class="fab fa-whatsapp me-2 fs-4"></i>Achat immédiat
+              </a>
+              {% if not product_in_cart %}
+              <button type="submit" 
+              class="btn add-to-cart-btn text-white shadow-none rounded-5 py-2 d-flex align-items-center">
+                <i class="fas fa-cart-plus me-2 fs-5"></i> Ajouter au panier
+              </button>
+              {% else %}
+              <a href="{% url 'cart' %}" class="btn btn-anime-primary shadow-none rounded-5 py-2 text-bold d-flex align-items-center">
+                <i class="fas fa-shopping-cart me-2 fs-5"></i> Voir le panier
+              </a>
+              {% endif %}
             </div>
 
-            <a href="https://wa.me/+22956543880?text=Je veux ce produits {{product.name}} -  {{product.description}}. {{product.image.url}}" class="btn btn-success shadow-none rounded-5"><i class="fab fa-whatsapp"></i> Buy now</a>
-            <button type="submit" class="btn btn-primary shadow-none rounded-5">
-              <i class="me-1 fas fa-shopping-basket"></i> Add to cart
-            </button>
-        {% endif %}
-
           <form>
-          <!-- Column -->
+          <!-- Colonne -->
         </div>
       </main>
     </div>
   </div>
 </section>
-<!-- Content -->
+<!-- Contenu -->
 
 <section class="bg-light border-top py-4">
   <div class="container">
     <div class="row gx-4">
-      {% comment %} Specification and other {% endcomment %}
+      {% comment %} Spécifications et autres {%endcomment %}
       <div class="col-lg-8 mb-4">
         <div class="border rounded-5 px-3 py-2 bg-white">
-          <!-- Pills navs -->
+          <!-- Navigation par onglets -->
           <ul class="nav nav-pills nav-justified mb-3" id="ex1" role="tablist">
             <li class="nav-item d-flex" role="presentation">
               <a
@@ -187,7 +216,7 @@ product.name }}{% endblock %} {% block content %}
                 role="tab"
                 aria-controls="ex1-pills-1"
                 aria-selected="true"
-                >Specification</a
+                >Spécifications</a
               >
             </li>
             {%if product.warranty_info%}
@@ -200,14 +229,14 @@ product.name }}{% endblock %} {% block content %}
                 role="tab"
                 aria-controls="ex1-pills-2"
                 aria-selected="false"
-                >Info Garantie</a
+                >Informations de garantie</a
               >
             </li>
             {%endif%}
           </ul>
-          <!-- Pills navs -->
+          <!-- Contenu des onglets -->
 
-          <!-- Pills content -->
+          <!-- Contenu des onglets -->
           <div class="tab-content" id="ex1-content">
             <div
               class="tab-pane fade show active"
@@ -221,7 +250,7 @@ product.name }}{% endblock %} {% block content %}
               <table class="table mt-3 mb-2">
                 {% if product.display %}
                 <tr>
-                  <th class="py-2">Ecran:</th>
+                  <th class="py-2">Écran:</th>
                   <td class="py-2">{{product.display}}</td>
                 </tr>
                 {% endif %} {% if product.processor_capacity %}
@@ -231,22 +260,22 @@ product.name }}{% endblock %} {% block content %}
                 </tr>
                 {% endif %} {% if product.camera_quality %}
                 <tr>
-                  <th class="py-2">Camera:</th>
+                  <th class="py-2">Caméra:</th>
                   <td class="py-2">{{product.camera_quality}}</td>
                 </tr>
                 {% endif %} {% if product.memory %}
                 <tr>
-                  <th class="py-2">Memoire RAM</th>
+                  <th class="py-2">Mémoire RAM:</th>
                   <td class="py-2">{{product.memory}}</td>
                 </tr>
                 {% endif %} {% if product.memory %}
                 <tr>
-                  <th class="py-2">Capacite memoire</th>
+                  <th class="py-2">Capacité de stockage:</th>
                   <td class="py-2">{{product.harddisk_capacity}}</td>
                 </tr>
                 {% endif %} {% if product.graphics %}
                 <tr>
-                  <th class="py-2">Graphics</th>
+                  <th class="py-2">Carte graphique:</th>
                   <td class="py-2">{{product.graphics}}</td>
                 </tr>
                 {% endif %}
@@ -261,7 +290,7 @@ product.name }}{% endblock %} {% block content %}
               {{product.warranty_info}}
             </div>
           </div>
-          <!-- Pills content -->
+          <!-- Contenu des onglets -->
         </div>
       </div>
 

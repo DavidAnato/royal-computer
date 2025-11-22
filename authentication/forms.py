@@ -43,4 +43,4 @@ class SettingsForm(forms.ModelForm):
 class AddressForm(forms.ModelForm):
     class Meta:
         model = Address
-        fields = ['address', 'city', 'postal_code']  # Liste des champs à inclure dans le formulaire
+        fields = ['address', 'city', 'postal_code']

@@ -1,70 +1,100 @@
 {% extends "base.html" %}
+{% load static %}
+{% block title %}| {{ post.title }}{% endblock %}
+
+{% block meta %}
+<meta name="robots" content="index, follow">
+<meta name="description" content="{{ post.content|slice:':160' }}">
+
+<!-- Carte Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@RoyalComputerStore">
+<meta name="twitter:title" content="{{ post.title }}">
+<meta name="twitter:description" content="{{ post.content|slice:':160' }}">
+<meta name="twitter:image" content="{{ post.image.url }}">
+
+<!-- Facebook (Open Graph) -->
+<meta property="og:title" content="{{ post.title }}">
+<meta property="og:description" content="{{ post.content|slice:':160' }}">
+<meta property="og:image" content="{{ post.image.url }}">
+{% endblock %}
 
 {% block content %}
 
 <main>
     <div class="container-fluid px-5 mt-5">
         <div class="row">
-            <div class="col-lg-9">
-                <!-- Post content -->
-                <article>
-                    <!-- Post header -->
+            <div class="col-lg-9 pe-lg-5">
+                <!-- Contenu de l'article -->
+                <article class="pe-lg-5">
+                    <!-- En-tête de l'article -->
                     <header class="mb-4">
-                        <!-- Post title -->
-                        <h1 class="fw-bolder mb-1">{{ post.title }}</h1>
-                        <!-- Post categories -->
+                        <!-- Titre de l'article -->
+                        <h1 class="text-bold h3 mb-1">{{ post.title }}</h1>
+                        <!-- Catégories de l'article -->
                         {% for category in post.categories.all %}
-                            <a class="badge rounded-5 bg-pink text-decoration-none" href="{% url 'post_list' %}?search={{category.name}}">{{ category.name }}</a>
+                            <a class="badge rounded-5 bg-pink text-uppercase text-decoration-none" href="{% url 'post_list' %}?search={{category.name}}">{{ category.name }}</a>
                         {% endfor %}
                     </header>
-                    <!-- Preview image figure -->
-                    <figure class="mb-4"><img class="img-fluid" src="{{ post.image.url }}" alt="{{ post.title }}" /></figure>
-                    <!-- Post content -->
+                    <!-- Image de prévisualisation -->
+                    <figure class="mb-4"><img class="img-fluid rounded-5 mx-auto d-block" src="{{ post.image.url }}" alt="{{ post.title }}" /></figure>
+                    <!-- Contenu de l'article -->
                     <section class="">
                         <p class="fs-5">{{ post.formatted_content|linebreaks|safe }}</p>
                     </section>
-                    <!-- Post meta content -->
+                    <!-- Métadonnées de l'article -->
                     <div class="row text-muted fst-italic mb-2">
+                        <hr>
                         <div class="small col-6 text-muted">{{ post.published_date|date }} - {{ post.published_date|time }}</div>
                         <div class="small col-6 text-muted text-end">Par <span class="text-bold"> {{ post.author.get_full_name }} </span></div>
                     </div>
     
                 </article>
-                <!-- Comments section -->
-                <section class="mb-5">
-                    <div class="card rounded-5 bg-light">
+                <!-- Section des commentaires -->
+                <section class="mb-5 pe-lg-5">
+                    <div class="card rounded-4 bg-light">
                         <div class="card-body m-3">
-                            <!-- Comment form -->
+                            <!-- Formulaire de commentaire -->
                             <form class="mb-4 row" method="post">
                                 {% csrf_token %}
-                                <textarea
-                                    name="text"
-                                    class="form-control shadow-none rounded-5 col"
-                                    rows="3"
-                                    placeholder="Ajouter un commentaire"></textarea>
-                                <button type="submit" class="btn btn-primary rounded-5 col-md-3">Submit Comment</button>
+                                <div
+                                  style="position: relative;" 
+                                  class="d-flex p-0 rounded-4 border bg-white justify-content-between align-items-bottom overflow-hidden">
+                                    <textarea
+                                        name="text"
+                                        class="form-control shadow-none border-0 m-0"
+                                        rows="3"
+                                        placeholder="Écrivez votre commentaire ici ..."></textarea>
+                                        <button type="submit" 
+                                          style="position: absolute; width: 40px; height: 40px; bottom: 5px; right: 5px;"
+                                          class="btn btn-anime-secondary rounded-circle d-flex justify-content-center align-items-center">
+                                          <i class="fa-solid fa-location-arrow fs-4"></i>
+                                        </button>
+                                </div>
                             </form>
 
-                            <!-- Comments -->
+                            <!-- Commentaires -->
                             {% for comment in comments %}
                             <div class="d-flex mb-4">
-                                <!-- Comment author photo -->
+                                <!-- Photo de l'auteur du commentaire -->
                                 <div class="flex-shrink-0">
                                     {% if comment.author.profile_photo %}
                                         <img height=45 class="rounded-circle" src="{{ comment.author.profile_photo.url }}" alt="{{ comment.author.get_full_name }}" />
                                     {% else %}
-                                        <i class="fas fa-user fa-3x"></i>  {# Remplacez "fa-user" par la classe FontAwesome appropriée pour l'icône utilisateur #}
+                                        <i class="fas fa-user fa-3x"></i> 
                                     {% endif %}
                                 </div>
-                                <div class="ms-3">
-                                    <div class="fw-bold">{{ comment.author.first_name }} {{ comment.author.last_name }}</div>
-                                    {{ comment.formatted_content|linebreaks|safe }}
-                                    <div class="">
-                                    <small class="text-muted">{{ comment.created_date|date }} - {{ comment.created_date|time }}</small>
-                                    {% if user.is_authenticated and user == comment.author %}
-                                        <a class="link-danger" href="{% url 'delete_comment' comment.id %}"> <small>Supprimer</small> </a>
-                                    {% endif %}
+                                <div class="ms-3 rounded-4 bg-white p-3">
+                                    <div class="d-flex justify-content-between mb-2">
+                                        <div class="text-bold">{{ comment.author.first_name }} {{ comment.author.last_name }}</div>
+                                        {% if user.is_authenticated and user == comment.author %}
+                                        <a class="link-danger" href="{% url 'delete_comment' comment.id %}">
+                                            <i class="fa-solid fa-trash-can"></i>
+                                        </a>
+                                        {% endif %}
                                     </div>
+                                    {{ comment.formatted_content|linebreaks|safe }}
+                                    <small class="text-muted">{{ comment.created_date|date }} - {{ comment.created_date|time }}</small>
                                 </div>
                             </div>
                         {% endfor %}
@@ -74,31 +104,32 @@
                 </section>
             </div>
             
-
-            <!-- Side widgets-->
+            <!-- Widgets latéraux -->
             <div class="col-lg-3">
-            <!-- Sidebar with latest posts -->
-            <h3 class="mb-4">Latest Posts</h3>
+            <!-- Barre latérale avec les derniers articles -->
+            <h3 class="mb-4">Derniers articles</h3>
+            <hr>
             <div class="row">
                 {% for post in latest_posts %}
-                    <div class="card mb-4 rounded-5 p-0">
+                <div class="col-lg-12 col-md-6">
+                    <!-- Article de blog -->
+                    <div class="card mb-4 rounded-5">
                         <a href="{% url 'post_detail' post.slug %}">
-                            <img class="card-img-top rounded-5" src="{{ post.image.url }}" alt="{{ post.title }}" />
+                            <img class="card-img-top rounded-top-5" src="{{ post.image.url }}" alt="{{ post.title }}" />
                         </a>
                         <div class="card-body">
                             <div class="row">
-                                <div class="small col-6 text-muted">{{ post.published_date|time }}</div>
-                                <div class="small col-6 text-muted text-end">{{ post.published_date|date }}</div>
+                                <div class="small text-muted text-end">{{ post.published_date|date }}</div>
                             </div>
-                            <h5 class="card-title">{{ post.title }}</h5>
-                            <p class="card-text">{{ post.content|slice:":100" }}...</p>
-                            <a class="btn btn-primary rounded-5 border-0 pe-4 btn-rm" href="{% url 'post_detail' post.slug %}">
-                                Read more 
-                                <span class="flech mx-1">→</span>
+                            <h2 class="card-title text-bold h6">{{ post.title }}</h2>
+                            <p class="card-text small text-muted text-justify">{{ post.content|slice:":80" }}...</p>
+                            <a class="btn btn-primary rounded-5 border-0 pe-4 w-100 btn-rm" href="{% url 'post_detail' post.slug %}">
+                                Lire la suite
+                                <span class="flech mx-1"> <i class="fas fa-angle-right"></i> </span>
                             </a>
                         </div>
                     </div>
-                </div>
+                </div>                
                 {% endfor %}
             </div>
         </div>

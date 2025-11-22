@@ -1,4 +1,26 @@
-{% extends 'base.html' %} {% load static %} {% block content %}
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}| Accueil{% endblock %}
+
+{% block meta %}
+<meta name="robots" content="index, follow">
+<meta name="description" content="Découvrez notre sélection de produits informatiques de qualité. Ordinateurs, smartphones, accessoires et plus encore. Livraison rapide et service client exceptionnel.">
+
+<!-- Carte Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@RoyalComputerStore">
+<meta name="twitter:title" content="Accueil">
+<meta name="twitter:description" content="Découvrez notre sélection de produits informatiques de qualité. Ordinateurs, smartphones, accessoires et plus encore. Livraison rapide et service client exceptionnel.">
+<meta name="twitter:image" content="{% static 'images/rc-logo.png' %}">
+
+<!-- Facebook (Open Graph) -->
+<meta property="og:title" content="Accueil">
+<meta property="og:description" content="Découvrez notre sélection de produits informatiques de qualité. Ordinateurs, smartphones, accessoires et plus encore. Livraison rapide et service client exceptionnel.">
+<meta property="og:image" content="{% static 'images/rc-logo.png' %}">
+{% endblock %}
+
+{% block content %}
 <!-- PRODUIT VEDETTE -->
 <div id="vedette-carousel" class="carousel slide d-none d-md-block" data-bs-ride="carousel">
   <div class="carousel-inner">
@@ -20,10 +42,10 @@
                   F CFA {% endif %}
                 </p>
                 <a
-                  href="https://wa.me/+22956543880?text=Je veux ce produits {{product.name}} -  {{product.description}}. {{product.image.url}}"
+                  href="https://wa.me/+22956543880?text=Je souhaite acheter ce produit {{product.name}} - {{product.description}}. {{product.image.url}}"
                   class="btn btn-lg btn-gradient rounded-5"
                 >
-                  <i class="fab fa-whatsapp me-2"></i> Achetez maintenant
+                  <i class="fab fa-whatsapp me-2"></i> Acheter maintenant
                 </a>
               </div>
               <div
@@ -45,7 +67,7 @@
     {% endfor %}
   </div>
 
-  <!-- Carousel Controls -->
+  <!-- Contrôles du Carrousel -->
   <button
     class="carousel-control carousel-control-prev text-white"
     type="button"
@@ -56,7 +78,7 @@
       class="carousel-control-prev-icon visually-hidden"
       aria-hidden="true"
     ></span>
-    <span class="visually-hidden">Previous</span>
+    <span class="visually-hidden">Précédent</span>
   </button>
   <button
     class="carousel-control carousel-control-next text-white"
@@ -68,14 +90,14 @@
       class="carousel-control-next-icon visually-hidden"
       aria-hidden="true"
     ></span>
-    <span class="visually-hidden">Next</span>
+    <span class="visually-hidden">Suivant</span>
   </button>
 </div>
 
 
 <div id="vedette-carousel" class="carousel slide d-block d-md-none" data-bs-ride="carousel">
   
-  <!-- Indicators -->
+  <!-- Indicateurs -->
   <div class="carousel-indicators">
     {% for product in vedettes_products %}
     <button 
@@ -84,12 +106,12 @@
       data-bs-slide-to="{{ forloop.counter0 }}" 
       class="{% if forloop.first %}active{% endif %}" 
       aria-current="{% if forloop.first %}true{% endif %}" 
-      aria-label="Slide {{ forloop.counter }}">
+      aria-label="Diapositive {{ forloop.counter }}">
     </button>
     {% endfor %}
   </div>
 
-  <!-- Slides -->
+  <!-- Diapositives -->
   <div class="carousel-inner home-banner">
     {% for product in vedettes_products %}
     <div class="carousel-item home-banner-content {% if forloop.first %}active{% endif %}">
@@ -120,10 +142,10 @@
               {% endif %}
             </p>
             <a
-              href="https://wa.me/+22956543880?text=Je veux ce produit {{product.name}} -  {{product.description}}. {{product.image.url}}"
+              href="https://wa.me/+22956543880?text=Je souhaite acheter ce produit {{product.name}} - {{product.description}}. {{product.image.url}}"
               class="btn btn-lg btn-gradient rounded-5"
             >
-              <i class="fab fa-whatsapp me-2"></i> Achetez maintenant
+              <i class="fab fa-whatsapp me-2"></i> Acheter maintenant
             </a>
           </div>
         </div>
@@ -132,7 +154,7 @@
     {% endfor %}
   </div>
 
-  <!-- Carousel Controls -->
+  <!-- Contrôles du Carrousel -->
   <button
     class="carousel-control carousel-control-prev text-white"
     type="button"
@@ -143,7 +165,7 @@
       class="carousel-control-prev-icon visually-hidden"
       aria-hidden="true"
     ></span>
-    <span class="visually-hidden">Previous</span>
+    <span class="visually-hidden">Précédent</span>
   </button>
   <button
     class="carousel-control carousel-control-next text-white"
@@ -155,11 +177,11 @@
       class="carousel-control-next-icon visually-hidden"
       aria-hidden="true"
     ></span>
-    <span class="visually-hidden">Next</span>
+    <span class="visually-hidden">Suivant</span>
   </button>
 </div>
 
-<!-- NEW PRODUCTS -->
+<!-- NOUVEAUX PRODUITS -->
 <div class="container-fluid mt-2">
   <h2 class="mt-5 text-center text-bold">NOUVEAUTÉS</h2>
   <div class="underline mx-auto mb-5"></div>
@@ -251,13 +273,13 @@
   </div>
 </div>
 
-<!-- SERVICE -->
+<!-- SERVICES -->
 <div class="container mt-5">
   <div class="row border border-white shadow m-4 pt-3">
     <div class="col-lg-3 col-md-6 col-sm-6 text-center">
       <div class="p-3">
         <i class="fas fa-desktop fa-2x mb-3"></i>
-        <h6 class="text-bold">Ventes d'ordinateur</h6>
+        <h6 class="text-bold">Vente d'ordinateurs</h6>
         <p>Achetez des ordinateurs de haute qualité</p>
       </div>
     </div>
@@ -265,7 +287,7 @@
     <div class="col-lg-3 col-md-6 col-sm-6 text-center">
       <div class="p-3">
         <i class="fas fa-microchip fa-2x mb-3"></i>
-        <h6 class="text-bold">Ventes de matériel informatique</h6>
+        <h6 class="text-bold">Vente de matériel informatique</h6>
         <p>Trouvez les composants dont vous avez besoin</p>
       </div>
     </div>
@@ -281,14 +303,14 @@
     <div class="col-lg-3 col-md-6 col-sm-6 text-center">
       <div class="p-3">
         <i class="fas fa-download fa-2x mb-3"></i>
-        <h6 class="text-bold">Installation logiciel</h6>
-        <p>Obtenez de l'aide pour l'installation de logiciels</p>
+        <h6 class="text-bold">Installation de logiciels</h6>
+        <p>Obtenez de l'aide pour l'installation de vos logiciels</p>
       </div>
     </div>
   </div>
 </div>
 
-<!-- PROMO PRODUCTS -->
+<!-- PRODUITS EN PROMOTION -->
 <div class="container-fluid mt-2">
   <h2 class="mt-5 text-center text-bold">PRODUITS EN PROMOTION</h2>
   <div class="underline mx-auto mb-5"></div>
@@ -402,7 +424,7 @@
       </div>
       <div class="order-1 order-lg-2 twoup-links">
         <h3 class="h5 font-weight-normal mt-0 pb-3">
-          Achetez des PC et des accessoires hautes performances
+          Achetez des PC et des accessoires haute performance
         </h3>
         <div class="sect-link-wrap order-link-wrap"></div>
       </div>
@@ -423,7 +445,7 @@
       </div>
       <div class="order-1 order-lg-2 twoup-links">
         <h3 class="h5 font-weight-normal mt-0 pb-3">
-          Faites-en plus avec une technologie d’exception.
+          Faites-en plus avec une technologie d'exception
         </h3>
         <div class="sect-link-wrap order-link-wrap"></div>
       </div>
@@ -445,7 +467,7 @@
       />
       <hr />
       <h4>Gaming</h4>
-      <p class="text-pink">Console, Manette, PC Gamer, etc</p>
+      <p class="text-pink">Console, Manette, PC Gamer, etc.</p>
     </a>
     <a
       href="{% url 'shop' %}?keyword=Smartphone"
@@ -457,7 +479,7 @@
       />
       <hr />
       <h4>Smartphones</h4>
-      <p class="text-pink">iPhone, Samsung ,etc</p>
+      <p class="text-pink">iPhone, Samsung, etc.</p>
     </a>
     <a
       href="{% url 'shop' %}?keyword=Accessoire"
@@ -465,11 +487,11 @@
       ><img
         src="/static/images/Accessoires.png"
         style="max-width: 180px; aspect-ratio: 1"
-        alt="Accesoire"
+        alt="Accessoire"
       />
       <hr />
       <h4>Accessoires</h4>
-      <p class="text-pink">Souris ,Clavier, Ecouteur</p>
+      <p class="text-pink">Souris, Clavier, Écouteurs</p>
     </a>
     <a
       href="{% url 'shop' %}?keyword=Autre"
@@ -481,12 +503,12 @@
       />
       <hr />
       <h4>Autres</h4>
-      <p class="text-pink">Sac PC, Support PC, etc</p>
+      <p class="text-pink">Sac PC, Support PC, etc.</p>
     </a>
   </div>
 </div>
 
-<!-- Avis client -->
+<!-- Témoignages clients -->
 <div
   class="py-5 mb-0"
   style="
@@ -501,84 +523,78 @@
 >
   <div class="review-background-image"></div>
   <div class="container">
-    <h2 class="text-center font-weight-bold mb-5">TEMOIGNAGE CLIENTS</h2>
+    <h2 class="text-center text-bold mb-5">TÉMOIGNAGES CLIENTS</h2>
     <div class="underline mx-auto mb-5"></div>
     <div class="row justify-content-center">
       <div class="col-md-8">
-        <!-- Carousel -->
+        <!-- Carrousel -->
         <div
           id="carouselExample"
           class="carousel slide"
           data-bs-ride="carousel"
         >
-          <!-- Inner -->
+          <!-- Contenu -->
           <div class="carousel-inner">
-            <!-- Single item -->
+            <!-- Premier témoignage -->
             <div class="carousel-item active">
               <p class="lead font-italic mx-4 mx-md-5 text-center">
-                "Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                Fugit, error amet numquam iure provident voluptate esse quasi,
-                voluptas nostrum quisquam!"
+                "J'ai acheté mon ordinateur portable chez Royal Computer et je suis très satisfait. Le service client est excellent et ils m'ont aidé à choisir le meilleur modèle pour mes besoins. La livraison était rapide et le produit est de très bonne qualité."
               </p>
               <div
                 class="d-flex justify-content-center align-items-center mt-5 mb-4"
               >
                 <img
-                  src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(2).webp"
+                  src="https://randomuser.me/api/portraits/men/45.jpg"
                   class="rounded-circle img-fluid shadow-1-strong"
                   alt="Client 1"
                   width="100"
                   height="100"
                 />
               </div>
-              <p class="text-muted-white mb-0 text-center">- Anna Morian</p>
+              <p class="text-muted-white mb-0 text-center">- Koffi Mensah</p>
             </div>
 
-            <!-- Single item -->
+            <!-- Deuxième témoignage -->
             <div class="carousel-item">
               <p class="lead font-italic mx-4 mx-md-5 text-center">
-                "Neque cupiditate assumenda in maiores repudiandae mollitia
-                adipisci maiores repudiandae mollitia consectetur adipisicing
-                architecto elit sed adipiscing elit."
+                "Royal Computer offre vraiment des produits de qualité. J'ai acheté un smartphone et des accessoires, et je suis impressionnée par leur professionnalisme. Les prix sont compétitifs et le service après-vente est très réactif."
               </p>
               <div
                 class="d-flex justify-content-center align-items-center mt-5 mb-4"
               >
                 <img
-                  src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(31).webp"
+                  src="https://randomuser.me/api/portraits/women/32.jpg"
                   class="rounded-circle img-fluid shadow-1-strong"
                   alt="Client 2"
                   width="100"
                   height="100"
                 />
               </div>
-              <p class="text-muted-white mb-0 text-center">- Teresa May</p>
+              <p class="text-muted-white mb-0 text-center">- Afiavi Dossou</p>
             </div>
 
-            <!-- Single item -->
+            <!-- Troisième témoignage -->
             <div class="carousel-item">
               <p class="lead font-italic mx-4 mx-md-5 text-center">
-                "Duis aute irure dolor in reprehenderit in voluptate velit esse
-                cillum dolore eu fugiat nulla pariatur est laborum neque
-                cupiditate assumenda in maiores."
+                "Je recommande vivement Royal Computer pour leur expertise et leur service client exceptionnel. Ils m'ont fourni exactement ce dont j'avais besoin pour mon entreprise et ont même assuré l'installation. Une équipe vraiment professionnelle !"
               </p>
               <div
                 class="d-flex justify-content-center align-items-center mt-5 mb-4"
               >
                 <img
-                  src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(10).webp"
+                  src="https://randomuser.me/api/portraits/men/22.jpg"
                   class="rounded-circle img-fluid shadow-1-strong"
                   alt="Client 3"
                   width="100"
                   height="100"
                 />
               </div>
-              <p class="text-muted-white mb-0 text-center">- Kate Allise</p>
+              <p class="text-muted-white mb-0 text-center">- Codjo Agbossou</p>
             </div>
           </div>
-          <!-- Inner -->
+          <!-- Contenu -->
 
-          <!-- Controls -->
+          <!-- Contrôles -->
           <button
             class="carousel-control-prev"
             type="button"
@@ -586,7 +602,7 @@
             data-bs-slide="prev"
           >
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
+            <span class="visually-hidden">Précédent</span>
           </button>
           <button
             class="carousel-control-next"
@@ -595,16 +611,16 @@
             data-bs-slide="next"
           >
             <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
+            <span class="visually-hidden">Suivant</span>
           </button>
         </div>
-        <!-- Carousel -->
+        <!-- Carrousel -->
       </div>
     </div>
   </div>
 </div>
 
-<!-- partners -->
+<!-- Partenaires -->
 <div class="brand-area section_gap mb-5 pt-3 pb-5 mt-0 bg-light">
   <h2 class="mt-5 text-center text-bold">NOS PARTENAIRES</h2>
   <div class="underline mx-auto mb-5"></div>
@@ -667,39 +683,25 @@
   <div class="row">
     {% for post in latest_posts %}
     <div class="col-sm-6 col-md-3">
+      <!-- Blog post -->
       <div class="card mb-4 rounded-5">
-        <a href="{% url 'post_detail' post.slug %}">
-          <img
-            class="card-img-top rounded-top-5"
-            src="{{ post.image.url }}"
-            alt="{{ post.title }}"
-            style="object-fit: cover; object-position: center; height: 190px"
-          />
-        </a>
-        <div class="card-body">
-          <div class="row">
-            <div class="small col-6 text-muted">
-              {{ post.published_date|time }}
-            </div>
-            <div class="small col-6 text-muted text-end">
-              {{ post.published_date|date }}
-            </div>
-          </div>
-          <h5 style="height: 90px" class="card-title">{{ post.title }}</h5>
-          <p style="height: 100px" class="card-text">
-            {{ post.content|slice:":100" }}...
-          </p>
-          <a
-            class="btn btn-primary rounded-5 border-0 pe-4 btn-rm"
-            href="{% url 'post_detail' post.slug %}"
-          >
-            Read more
-            <span class="flech mx-1">→</span>
+          <a href="{% url 'post_detail' post.slug %}">
+              <img class="card-img-top rounded-top-5" src="{{ post.image.url }}" alt="{{ post.title }}" />
           </a>
-        </div>
+          <div class="card-body">
+              <div class="row">
+                  <div class="small text-muted text-end">{{ post.published_date|date }}</div>
+              </div>
+              <h2 class="card-title text-bold h6">{{ post.title }}</h2>
+              <p class="card-text small text-muted text-justify">{{ post.content|slice:":80" }}...</p>
+              <a class="btn btn-primary rounded-5 border-0 pe-4 w-100 btn-rm" href="{% url 'post_detail' post.slug %}">
+                  Lire la suite
+                  <span class="flech mx-1"> <i class="fas fa-angle-right"></i> </span>
+              </a>
+          </div>
       </div>
     </div>
-    {% endfor %}
+{% endfor %}
   </div>
 </div>
 

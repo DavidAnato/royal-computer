@@ -1,7 +1,24 @@
-<!-- delete_account.html -->
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}| Supprimer mon compte{% endblock %}
+
+{% block meta %}
+<meta name="robots" content="noindex, nofollow">
+<meta name="description" content="Supprimez votre compte Royal Computer. Cette action est irréversible.">
+
+<!-- Carte Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@RoyalComputerStore">
+<meta name="twitter:title" content="Supprimer mon compte">
+<meta name="twitter:description" content="Supprimez votre compte Royal Computer. Cette action est irréversible.">
+<meta name="twitter:image" content="{% static 'images/rc-logo.png' %}">
+
+<!-- Facebook (Open Graph) -->
+<meta property="og:title" content="Supprimer mon compte">
+<meta property="og:description" content="Supprimez votre compte Royal Computer. Cette action est irréversible.">
+<meta property="og:image" content="{% static 'images/rc-logo.png' %}">
+{% endblock %}
 
 {% block content %}
 <div class="container">

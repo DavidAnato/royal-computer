@@ -18,6 +18,37 @@
         <link rel="stylesheet" href="{% static 'css/media-queries.css' %}">
         <link rel="stylesheet" href="{% static 'css/custom.css' %}">
         
+        {% block meta %}{% endblock %}
+        <style>
+            @media screen and (min-width: 992px) and (max-width: 1340px) {
+                .navbar .nav-link {
+                    font-size: 1rem !important;
+                    padding: 0.4rem 0.4rem !important;
+                }
+                
+                .navbar #logo {
+                    height: 50px !important;
+                }
+                
+                .navbar .cart-text {
+                    font-size: 0.9rem;
+                }
+                
+                .navbar .input-group {
+                    max-width: 200px !important;
+                }
+                
+                .navbar .container-fluid {
+                    padding-left: 0.9rem !important;
+                    padding-right: 0.9rem !important;
+                }
+
+                .name{
+                  display: none;
+                }
+            }
+        </style>
+        
         <title>Royal Computer {% block title %}{% endblock %}</title>
         
     </head>
@@ -30,113 +61,115 @@
                   <a class="navbar-brand fs-4" href="{% url 'home' %}">
                     <img id="logo" src="{% static 'images/rc-logo.png'%}" height=70>
                   </a>
-                  <!-- toggler-btn -->
-              <button class="navbar-toggler shadow-none border-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
-                  <span class="navbar-toggler-icon"></span>
-              </button>
+                  <!-- bouton menu -->
+                <button class="navbar-toggler shadow-none border-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Basculer la navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
 
-              <!-- SideBar -->
-              <div class="sidebar offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
-                  <!-- SideBar Header -->
-                  <div class="offcanvas-header text-dark border-bottom">
-                  <h5 class="offcanvas-title" id="offcanvasNavbarLabel">  
-                    <a class="navbar-brand fs-4" href="{% url 'home' %}">
-                      <img id="logo" src="{% static 'images/rc-logo.png'%}" height=70>
-                    </a>
-                  </h5>
-                  <button type="button" class="btn-close btn-close-dark shadow-none" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-                  </div>
+                <!-- Menu latéral -->
+                <div class="sidebar offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+                    <!-- En-tête du menu latéral -->
+                    <div class="offcanvas-header text-dark border-bottom">
+                    <h5 class="offcanvas-title" id="offcanvasNavbarLabel">  
+                      <a class="navbar-brand fs-4" href="{% url 'home' %}">
+                        <img id="logo" src="{% static 'images/rc-logo.png'%}" height=70>
+                      </a>
+                    </h5>
+                    <button type="button" class="btn-close btn-close-dark shadow-none" data-bs-dismiss="offcanvas" aria-label="Fermer"></button>
+                    </div>
 
-                  <!-- SideBar Body -->
-                  <div class="offcanvas-body d-flex flex-column flex-lg-row p-4 p-lg-0">
-                    <li class="nav-item mx-2 d-lg-none">
-                      <form action="{% url 'shop' %}" method="get">
-                        <div class="input-group border bg-white rounded-5 p-1">
-                            <input type="search" name="keyword" id="" class="autocomplete-popover form-control rounded-5 border-0 shadow-none" placeholder="Rechercher un produit" />
-                          <button type="submit" class="btn btn-light shadow-none rounded-5">
-                            <i class="fas fa-search"></i>
-                          </button>
+                    <!-- Corps du menu latéral -->
+                    <div class="offcanvas-body d-flex flex-column flex-lg-row p-4 p-lg-0">
+                      <li class="nav-item mx-2 d-lg-none">
+                        <form action="{% url 'shop' %}" method="get">
+                          <div class="input-group border bg-white rounded-5 p-1">
+                              <input type="search" name="keyword" id="" class="autocomplete-popover form-control rounded-5 border-0 shadow-none" placeholder="Rechercher un produit" />
+                            <button type="submit" class="btn btn-light shadow-none rounded-5">
+                              <i class="fas fa-search"></i>
+                            </button>
+                          </div>
+                        </form>
+                      </li>
+                        <ul class="navbar-nav justify-content-center align-items-center fs-5 flex-grow-1 pe-3">
+
+
+                            <li class="nav-item mx-2">
+                                <a class="nav-link link-hovered {% if request.path == '/' %}text-bold{% endif %}" aria-current="page" href="{% url 'home' %}">Accueil</a>
+                            </li>
+                            <li class="nav-item mx-2">
+                                <a class="nav-link link-hovered {% if request.path == '/shop/' %}text-bold{% endif %}" href="{% url 'shop' %}">Boutique</a>
+                            </li>
+                            <li class="nav-item mx-2">
+                                <a class="nav-link link-hovered {% if request.path == '/about/' %}text-bold{% endif %}" href="{% url 'about' %}">À Propos</a>
+                            </li>
+                            <li class="nav-item mx-2">
+                                <a class="nav-link link-hovered {% if request.path == '/post_list/' %}text-bold{% endif %}" href="{% url 'post_list' %}">Blog</a>
+                            </li>
+                            <li class="nav-item mx-2">
+                                <a class="nav-link link-hovered {% if request.path == '/contact/' %}text-bold{% endif %}" href="{% url 'contact' %}">Contact</a>
+                            </li>
+                            <li class="nav-item mx-2">
+                                <a class="nav-link" href="{% url 'cart' %}">
+                                  <i class="fas fa-shopping-cart text-pink"></i>
+                                    <span class="bg-pink text-white text-center rounded-circle d-inline-block" style="width: 20px; height: 20px;">
+                                      <h6>{{ number_of_items_in_cart }}</h6>
+                                    </span>
+                                    <span class="cart-text d-inline">Panier</span>
+                                </a>
+                            </li>
+                            <li class="nav-item mx-2 d-none d-lg-block w-100" style=" max-width:300px">
+                              <form action="{% url 'shop' %}" method="get">
+                                <div class="input-group border bg-white rounded-5 p-1">
+                                    <input type="search" name="keyword" id="" class="autocomplete-popover form-control rounded-5 border-0 shadow-none" placeholder="Rechercher un produit" />
+                                  <button type="submit" class="btn btn-light shadow-none rounded-5">
+                                    <i class="fas fa-search"></i>
+                                  </button>
+                                </div>
+                              </form>
+                            </li>
+
+                        </ul>
+
+                        <div class="d-flex flex-column flex-lg-row justify-content-center align-items-center gap-3">
+                            <!-- Lorsque l'utilisateur n'est pas connecté -->
+                            {% if not user.is_authenticated %}
+                                <a href="{% url 'login' %}" class="text-primary text-bold text-decoration-none"> <i class="fa fa-sign-in-alt me-2"></i>Connexion</a>
+                                <a href="https://accounts.google.com/o/oauth2/v2/auth?client_id={{ GOOGLE_CLIENT_ID }}&redirect_uri={{ GOOGLE_REDIRECT_URI }}&response_type=code&scope=email%20profile&prompt=consent&access_type=offline"
+                                  class="text-secondary text-bold text-decoration-none rounded-5 border border-2 border-primary px-3 py-1">
+                                  Avec <img src="{% static 'images/icon/google-large.png' %}" alt="Google" class="ms-1" style="width: auto; height: 20px;">
+                                </a>
+                            <!-- Lorsque l'utilisateur est connecté -->
+                            {% else %}
+                                <div class="dropdown ">
+                                    <a href="#" class="dropdown-toggle text-decoration-none d-flex align-items-center text-dark" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        
+                                      {% if user.profile_photo %}
+                                      <img src="{{ user.profile_photo.url }}" alt="Photo de profil" class="rounded-circle me-1" style="width: 35px; height: 35px;">
+                                      {% elif user.picture_url %}
+                                      <img src="{{ user.picture_url }}" alt="Photo de profil" class="rounded-circle me-1" style="width: 35px; height: 35px;">
+                                      {% else %}
+                                      <i class="fa fa-user-circle fs-3 text-secondary m-1"></i> 
+                                      {% endif %}
+                                      <span class="name">
+                                        {{ user.first_name }} {{ user.last_name }}
+                                      </span>
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-menu-end rounded-5 overflow-hidden">
+                                      <li><a class="dropdown-item" href="{% url 'profile' %}"> <i class="fa fa-user me-2"></i> Profil</a></li>
+                                      <li><a class="dropdown-item" href="{% url 'settings' %}"> <i class="fa fa-cog me-2"></i> Paramètres</a></li>
+                                      {% if user.is_staff %}
+                                          <li><a class="dropdown-item text-primary" href="{% url 'admin:index' %}"> <i class="fa fa-user-shield me-2"></i> Administration</a></li>
+                                      {% endif %}
+                                      <li><a class="dropdown-item text-danger" href="{% url 'logout' %}"> <i class="fa fa-sign-out-alt me-2"></i> Déconnexion</a></li>
+                                  </ul>
+                                </div>
+                            {% endif %}
                         </div>
-                      </form>
-                    </li>
-                      <ul class="navbar-nav justify-content-center align-items-center fs-5 flex-grow-1 pe-3">
-
-
-                          <li class="nav-item mx-2">
-                              <a class="nav-link link-hovered {% if request.path == '/' %}text-bold{% endif %}" aria-current="page" href="{% url 'home' %}">Accueil</a>
-                          </li>
-                          <li class="nav-item mx-2">
-                              <a class="nav-link link-hovered {% if request.path == '/shop/' %}text-bold{% endif %}" href="{% url 'shop' %}">Boutique</a>
-                          </li>
-                          <li class="nav-item mx-2">
-                              <a class="nav-link link-hovered {% if request.path == '/about/' %}text-bold{% endif %}" href="{% url 'about' %}">À Propos</a>
-                          </li>
-                          <li class="nav-item mx-2">
-                              <a class="nav-link link-hovered {% if request.path == '/post_list/' %}text-bold{% endif %}" href="{% url 'post_list' %}">Blog</a>
-                          </li>
-                          <li class="nav-item mx-2">
-                              <a class="nav-link link-hovered {% if request.path == '/contact/' %}text-bold{% endif %}" href="{% url 'contact' %}">Contact</a>
-                          </li>
-                          <li class="nav-item mx-2">
-                              <a class="nav-link" href="{% url 'cart' %}">
-                                <i class="fas fa-shopping-cart text-pink"></i>
-                                  <span class="bg-pink text-white text-center rounded-circle d-inline-block" style="width: 20px; height: 20px;">
-                                    <h6>{{ number_of_items_in_cart }}</h6>
-                                  </span>
-                                  <span class="cart-text d-inline">Panier</span>
-                              </a>
-                          </li>
-                          <li class="nav-item mx-2 d-none d-lg-block w-100" style=" max-width:300px">
-                            <form action="{% url 'shop' %}" method="get">
-                              <div class="input-group border bg-white rounded-5 p-1">
-                                  <input type="search" name="keyword" id="" class="autocomplete-popover form-control rounded-5 border-0 shadow-none" placeholder="Rechercher un produit" />
-                                <button type="submit" class="btn btn-light shadow-none rounded-5">
-                                  <i class="fas fa-search"></i>
-                                </button>
-                              </div>
-                            </form>
-                          </li>
-
-                      </ul>
-
-                      <div class="d-flex flex-column flex-lg-row justify-content-center align-items-center gap-3">
-                          <!-- Lorsque l'utilisateur n'est pas connecté -->
-                          {% if not user.is_authenticated %}
-                              <a href="{% url 'login' %}" class="text-primary text-bold text-decoration-none"> <i class="fa fa-sign-in-alt me-2"></i>Connexion</a>
-                              <a href="https://accounts.google.com/o/oauth2/v2/auth?client_id={{ GOOGLE_CLIENT_ID }}&redirect_uri={{ GOOGLE_REDIRECT_URI }}&response_type=code&scope=email%20profile&prompt=consent&access_type=offline"
-                                class="text-secondary text-bold text-decoration-none rounded-5 border border-2 border-primary px-3 py-1">
-                                Avec <img src="{% static 'images/icon/google-large.png' %}" alt="Google" class="ms-1" style="width: auto; height: 20px;">
-                              </a>
-                          <!-- Lorsque l'utilisateur est connecté -->
-                          {% else %}
-                              <div class="dropdown ">
-                                  <a href="#" class="dropdown-toggle text-decoration-none d-flex align-items-center text-dark" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                      
-                                    {% if user.profile_photo %}
-                                    <img src="{{ user.profile_photo.url }}" alt="Profile Photo" class="rounded-circle me-1" style="width: 35px; height: 35px;">
-                                    {% elif user.picture_url %}
-                                    <img src="{{ user.picture_url }}" alt="Profile Photo" class="rounded-circle me-1" style="width: 35px; height: 35px;">
-                                    {% else %}
-                                    <i class="fa fa-user-circle fs-3 text-secondary m-1"></i> 
-                                    {% endif %}
-                                    {{ user.first_name }} {{ user.last_name }}
-                                  </a>
-                                  <ul class="dropdown-menu dropdown-menu-end rounded-5 overflow-hidden">
-                                    <li><a class="dropdown-item" href="{% url 'profile' %}"> <i class="fa fa-user me-2"></i> Profil</a></li>
-                                    <li><a class="dropdown-item" href="{% url 'settings' %}"> <i class="fa fa-cog me-2"></i> Paramètres</a></li>
-                                    {% if user.is_staff %}
-                                        <li><a class="dropdown-item text-primary" href="{% url 'admin:index' %}"> <i class="fa fa-user-shield me-2"></i> Administration</a></li>
-                                    {% endif %}
-                                    <li><a class="dropdown-item text-danger" href="{% url 'logout' %}"> <i class="fa fa-sign-out-alt me-2"></i> Déconnexion</a></li>
-                                </ul>
-                              </div>
-                          {% endif %}
-                      </div>
-                  </div>
-              </div>
+                    </div>
+                </div>
               </div>
           </nav>        
-        </hearder>
+        </header>
         {% if messages %}
           {% for message in messages %}
             <div class="alert 
@@ -144,7 +177,7 @@
               alert-dismissible rounded-5 position-fixed bottom-0 start-0 m-3" 
               style="z-index: 1000;" role="alert">
               {{ message }}
-              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fermer"></button>
             </div>
           {% endfor %}
         {% endif %}
@@ -156,29 +189,29 @@
         
         <footer class="bg-dark text-white mt-5">
             <div class="go-top-link d-none">
-                <a href="#" class="btn btn-outline-secondary rounded-5">
-                    <i class="fas fa-arrow-up"></i>
+                <a href="#" class="btn btn-anime-secondary rounded-5">
+                    <i class="fas fa-arrow-up fs-4"></i>
                 </a>
             </div>
     
-            <!-- Grid container -->
+            <!-- Conteneur de la grille -->
             <div class="container p-4 pb-0">
-              <!-- Section: Links -->
+              <!-- Section: Liens -->
               <section>
-                <!--Grid row-->
+                <!--Ligne de la grille-->
                 <div class="row">
-                  <!-- Grid column -->
+                  <!-- Colonne de la grille -->
                   <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mt-3">
-                    <h6 class="text-uppercase mb-4 font-weight-bold text-pink">Informations</h6>
+                    <img src="{% static 'images/rc-logo.png' %}" alt="Royal Computer" class="img-fluid" style="width: 100px; height: 100px;">
                     <p>
-                      Découvrez nos produits et services pour une expérience de shopping exceptionnelle.
+                      Découvrez nos gammes d'ordinateurs et accessoires idéales pour votre usage, et bien plus encore.
                     </p>
                   </div>
-                  <!-- Grid column -->
+                  <!-- Colonne de la grille -->
           
-                  <!-- Grid column -->
+                  <!-- Colonne de la grille -->
                   <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mt-3">
-                    <h6 class="text-uppercase mb-4 font-weight-bold text-pink">Produits</h6>               
+                    <h6 class="text-uppercase mb-4 text-bold text-pink">Produits</h6>               
                     <p>
                       <a href="{% url 'shop' %}?keyword=Ordinateur" class="text-white text-decoration-none link-hovered pb-2">Ordinateurs</a>
                     </p>
@@ -192,11 +225,11 @@
                       <a href="{% url 'shop' %}?keyword=Accessoire" class="text-white text-decoration-none link-hovered pb-2">Accessoires</a>
                     </p>
                   </div>
-                  <!-- Grid column -->
+                  <!-- Colonne de la grille -->
           
-                  <!-- Grid column -->
+                  <!-- Colonne de la grille -->
                   <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mt-3">
-                    <h6 class="text-uppercase mb-4 font-weight-bold text-pink">Liens utiles</h6>
+                    <h6 class="text-uppercase mb-4 text-bold text-pink">Liens utiles</h6>
                     <p>
                       <a  href="{% url 'shop' %}" class="text-white text-decoration-none link-hovered pb-2">Produits</a>
                     </p>
@@ -207,55 +240,75 @@
                     <p>
                       <a href="{% url 'profile' %}" class="text-white text-decoration-none link-hovered pb-2">Profil</a>
                     </p>
-                      <a href="{% url 'settings' %}" class="text-white text-decoration-none link-hovered pb-2">Parametre</a>
+                      <a href="{% url 'settings' %}" class="text-white text-decoration-none link-hovered pb-2">Paramètres</a>
                     </p>
                   </div>
-                  <!-- Grid column -->
+                  <!-- Colonne de la grille -->
           
-                  <!-- Grid column -->
+                  <!-- Colonne de la grille -->
                   <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mt-3">
-                    <h6 class="text-uppercase mb-4 font-weight-bold text-pink">Contact</h6>
-                    <p><i class="fas fa-home me-3"></i> Agla En Face pharmacie luli luli, Cotonou, Bénin</p>
-                    <p><i class="fas fa-envelope me-3"></i> info@royalcomputer.com</p>
-                    <p><i class="fas fa-phone me-3"></i> +229 56 54 38 80</p>
-                    <p><i class="fas fa-print me-3"></i> +229 56 54 38 80</p>
+                    <h6 class="text-uppercase mb-4 text-bold text-pink">Contact</h6>
+                    <p>
+                      <a target="_blank" class="text-white text-decoration-none pb-2" href="https://maps.app.goo.gl/Yyo5oCWAKi2fZJSf7">
+                        <i class="fas fa-map-marker-alt me-3 icon-hovered"></i>
+                      </a>
+                      Agla, Cotonou, Bénin
+                    </p>
+                    <p>
+                      <a class="text-white text-decoration-none pb-2" href="mailto:info@royalcomputer.com">
+                        <i class="fas fa-envelope me-3 icon-hovered"></i>
+                      </a>
+                      info@royalcomputer.com
+                    </p>
+                    <p>
+                      <a class="text-white text-decoration-none pb-2" href="tel:+2290164500582">
+                        <i class="fas fa-phone me-3 icon-hovered"></i>
+                      </a>
+                      +229 01 64 50 05 82
+                    </p>
+                    <p>
+                      <a class="text-white text-decoration-none pb-2" href="tel:+2290166181600">
+                        <i class="fas fa-mobile-alt me-3 icon-hovered"></i>
+                      </a>
+                      +229 01 66 18 16 00
+                    </p>
                   </div>
-                  <!-- Grid column -->
+                  <!-- Colonne de la grille -->
                 </div>
-                <!--Grid row-->
+                <!--Ligne de la grille-->
               </section>
-              <!-- Section: Links -->
+              <!-- Section: Liens -->
           
               <hr class="my-3">
           
               <!-- Section: Copyright -->
               <section class="p-3 pt-0">
                 <div class="row d-flex align-items-center">
-                  <!-- Grid column -->
+                  <!-- Colonne de la grille -->
                   <div class="col-md-7 col-lg-8 text-center text-md-start">
                     <!-- Copyright -->
                     <div class="p-3">
                       © 2023 Tous droits réservés :
-                      <a href="https://ecommerce.com/" class="text-white">Ecommerce.com</a>
+                      <a href="/" class="text-white">Royal Computer</a>
                     </div>
                     <!-- Copyright -->
                   </div>
-                  <!-- Grid column -->
+                  <!-- Colonne de la grille -->
           
-                  <!-- Grid column -->
+                  <!-- Colonne de la grille -->
                   <div class="col-md-5 col-lg-4 ml-lg-0 text-center text-md-end">
                     <!-- Réseaux sociaux -->
-                    <a class="btn btn-outline-pink rounded-5 btn-floating m-1" href="#" role="button"><i class="fab fa-facebook-f"></i></a>
-                    <a class="btn btn-outline-pink rounded-5 btn-floating m-1" href="#" role="button"><i class="fab fa-twitter"></i></a>
-                    <a class="btn btn-outline-pink rounded-5 btn-floating m-1" href="#" role="button"><i class="fab fa-instagram"></i></a>
-                    <a class="btn btn-outline-pink rounded-5 btn-floating m-1" href="#" role="button"><i class="fab fa-whatsapp"></i></a>
+                    <a target="_blank" class="btn rounded-circle btn-floating m-1 btn-anime-primary" href="https://www.facebook.com/p/Royal-Computer-STORE-100063837952913/" role="button"><i class="fab fa-facebook-f"></i></a>
+                    <a target="_blank" class="btn rounded-circle btn-floating m-1 btn-anime-light" href="https://x.com/RoyalComputerStore" role="button"><i class="fab fa-x-twitter"></i></a>
+                    <a target="_blank" class="btn rounded-circle btn-floating m-1 btn-anime-pink" href="https://www.instagram.com/royalcomputerstore/" role="button"><i class="fab fa-instagram"></i></a>
+                    <a target="_blank" class="btn rounded-circle btn-floating m-1 btn-anime-success" href="https://wa.me/22964500582" role="button"><i class="fab fa-whatsapp"></i></a>
                   </div>
-                  <!-- Grid column -->
+                  <!-- Colonne de la grille -->
                 </div>
               </section>
               <!-- Section: Copyright -->
             </div>
-            <!-- Grid container -->
+            <!-- Conteneur de la grille -->
         </footer>
           
       

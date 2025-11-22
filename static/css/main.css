@@ -81,20 +81,22 @@
 
 
 .main-image-animation {
-	animation: fade-in 0.5s ease-in-out;
-  }
-  
+    animation: fade-in 0.5s ease-in-out;
+    height: auto; /* La hauteur s'ajuste automatiquement */
+    object-fit: contain; /* Important pour garder le ratio */
+}
+  /* Du bas au haut */
   @keyframes fade-in {
 	from {
-	  opacity: 0;
-	  transform: scale(0.9);
+	  transform: translateY(50px) scale(0.9);
+	  opacity: 0.7;
 	}
 	to {
+	  transform: translateY(0) scale(1);
 	  opacity: 1;
-	  transform: scale(1);
 	}
   }
-  
+	
 /* Animation de l'image de fond */
 @keyframes slideBg {
 	0% {
@@ -137,3 +139,6 @@
 	z-index: 2;
 }
 
+.mini-image:hover {
+	transform: scale(1.1);
+}

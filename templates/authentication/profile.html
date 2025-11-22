@@ -1,10 +1,27 @@
 {% extends 'base.html' %}
+{% load static %}
+{% block title %}| Profil{% endblock %}
 
-{% block title %}| Profile{% endblock %}
+{% block meta %}
+<meta name="robots" content="index, nofollow">
+<meta name="description" content="Gérez votre profil sur Royal Computer. Consultez vos informations personnelles, votre historique de commandes et vos adresses de livraison.">
+
+<!-- Carte Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@RoyalComputerStore">
+<meta name="twitter:title" content="Profil">
+<meta name="twitter:description" content="Gérez votre profil sur Royal Computer. Consultez vos informations personnelles, votre historique de commandes et vos adresses de livraison.">
+<meta name="twitter:image" content="{% static 'images/rc-logo.png' %}">
+
+<!-- Facebook (Open Graph) -->
+<meta property="og:title" content="Profil">
+<meta property="og:description" content="Gérez votre profil sur Royal Computer. Consultez vos informations personnelles, votre historique de commandes et vos adresses de livraison.">
+<meta property="og:image" content="{% static 'images/rc-logo.png' %}">
+{% endblock %}
 
 {% block content %}
 <div class="banner text-center bg-secondary p-5 m-0">
-  <h1>Profil</h1>
+  <h1>Mon Profil</h1>
 </div>
 
 <div class="container-fluid">
@@ -17,7 +34,7 @@
               {% if user.profile_photo and user.profile_photo.url %}
               <img
                 src="{{ user.profile_photo.url }}"
-                alt="Profile photo"
+                alt="Photo de profil"
                 class="img-fluid border-2 mb-3"
                 id="profile-preview"
               />
@@ -35,7 +52,7 @@
                 {{ user.username }}
               </p>
               <p>
-                <strong>Email :</strong> <br />
+                <strong>Courriel :</strong> <br />
                 {{ user.email }}
               </p>
               <p>
@@ -60,15 +77,15 @@
                   <th><i class="fas fa-hashtag"></i> Commande</th>
                   <th><i class="fas fa-calendar-alt"></i> Date</th>
                   <th><i class="fas fa-money-bill-wave"></i> Montant</th>
-                  <th><i class="fas fa-truck"></i> Statut</th>
+                  <th><i class="fas fa-truck"></i> État</th>
                 </tr>
               </thead>
               <tbody>
                 {% for order in orders %}
                 <tr>
-                  <td>Commande #{{ order.id }}</td>
+                  <td>Commande n°{{ order.id }}</td>
                   <td>{{ order.created_at | date:"d M Y, H:i" }}</td>
-                  <td class="text-success fw-bold">{{ order.total }} F CFA</td>
+                  <td class="text-success text-bold">{{ order.total }} F CFA</td>
                   <td>
                     {% if order.is_delivered %}
                       <span class="badge bg-success"><i class="fas fa-check-circle"></i> Livré</span>
@@ -92,7 +109,7 @@
           <!-- Affichez ici les informations de paiement enregistrées par l'utilisateur et l'historique des transactions -->
           <!-- Exemple d'une carte fictive -->
           <p>
-            <strong>Methode de paiement : </strong> {{ user.payment_method }}
+            <strong>Méthode de paiement : </strong> {{ user.payment_method }}
           </p>
           <p>
             <strong>Numéro mobile money : </strong> {{ user.mobile_money_number}}

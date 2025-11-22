@@ -4,6 +4,7 @@ from ecom import settings
 def global_variables(request):
     user = request.user
     number_of_items_in_cart = 0
+    products_in_cart = []
     if user.is_authenticated:
         cart = Cart.objects.filter(user=user).first()
         number_of_items_in_cart = cart.items.count() if cart else 0

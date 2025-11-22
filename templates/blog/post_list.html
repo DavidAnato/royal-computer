@@ -1,59 +1,80 @@
 {% extends "base.html" %}
+{% load static %}
+{% block title %}| Blog{% endblock %}
+
+{% block meta %}
+<meta name="robots" content="index, follow">
+<meta name="description" content="Découvrez les derniers articles du blog Royal Computer. Restez informé des actualités, guides et conseils sur l'informatique et les nouvelles technologies.">
+
+<!-- Carte Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@RoyalComputerStore">
+<meta name="twitter:title" content="Blog">
+<meta name="twitter:description" content="Découvrez les derniers articles du blog Royal Computer. Restez informé des actualités, guides et conseils sur l'informatique et les nouvelles technologies.">
+<meta name="twitter:image" content="{% static 'images/rc-logo.png' %}">
+
+<!-- Facebook (Open Graph) -->
+<meta property="og:title" content="Blog">
+<meta property="og:description" content="Découvrez les derniers articles du blog Royal Computer. Restez informé des actualités, guides et conseils sur l'informatique et les nouvelles technologies.">
+<meta property="og:image" content="{% static 'images/rc-logo.png' %}">
+{% endblock %}
 
 {% block content %}
 <main>
-    <div class="banner text-center bg-secondary p-5 mb-3">
-        <h1>Blog</h1>
+    <div class="banner text-center bg-secondary p-5 mb-5">
+        <div class="banner-content d-flex justify-content-center align-items-center">
+            <h1 class="text-bold display-4"> <i class="fa-solid fa-blog"></i> Blog</h1>
+        </div>
     </div>
 
-    <div class="containe-fluid px-5">
+    <div class="containe-fluid px-3 px-lg-5">
         <div class="row">
-            <!-- Blog entries-->
-            <div class="col-lg-8">
-                <!-- Featured blog post -->
+            <!-- Articles de blog -->
+            <div class="col-lg-8 order-2 order-lg-1">
+                <!-- Article à la une -->
                 {% if not search_term and not selected_categories %}
-                    <div id="lastPost" class="card mb-4 rounded-5">
-                        {% if latest_post %}
+                    {% if latest_post %}
+                        <div id="lastPost" class="card mb-4 rounded-5">
                             <a href="{% url 'post_detail' latest_post.slug %}">
-                                <img class="card-img-top rounded-5" src="{{ latest_post.image.url }}" alt="{{ latest_post.title }}" />
+                                <img class="card-img-top rounded-top-5" src="{{ latest_post.image.url }}" alt="{{ latest_post.title }}" />
                             </a>
                             <div class="card-body">
                                 <div class="row">
-                                    <div class="small col-6 text-muted">{{ latest_post.published_date|time }}</div>
-                                    <div class="small col-6 text-muted text-end">{{ latest_post.published_date|date }}</div>
+                                    <div class="small text-muted text-end">{{ latest_post.published_date|date }}</div>
                                 </div>
-                                <h2 class="card-title">{{ latest_post.title }}</h2>
-                                <p class="card-text">{{ latest_post.content|slice:":100" }}...</p>
-                                <a class="btn btn-primary rounded-5 border-0 pe-4 btn-rm" href="{% url 'post_detail' latest_post.slug %}">
-                                    Read more 
-                                    <span class="flech mx-1">→</span>
-                                </a>
+                                <h2 class="card-title text-bold fs-4 fs-lg-2">{{ latest_post.title }}</h2>
+                                <p class="card-text text-muted text-justify">{{ latest_post.content|slice:":300" }}...</p>
+                                <div class="d-flex justify-content-end">
+                                    <a class="btn btn-primary rounded-5 border-0 pe-4 btn-rm" href="{% url 'post_detail' latest_post.slug %}">
+                                        Lire la suite
+                                        <span class="flech mx-1"> <i class="fas fa-angle-right"></i> </span>
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     {% else %}
-                        <p>No latest post available.</p>
+                        <p>Aucun article récent disponible.</p>
                     {% endif %}
                 {% endif %}
 
-                <!-- Nested row for non-featured blog posts -->
+                <!-- Rangée imbriquée pour les articles non mis en avant -->
                 <div class="row">
                     {% for post in other_posts %}
-                        <div class="col-lg-6">
-                            <!-- Blog post -->
+                        <div class="col-lg-4 col-md-6">
+                            <!-- Article de blog -->
                             <div class="card mb-4 rounded-5">
                                 <a href="{% url 'post_detail' post.slug %}">
-                                    <img class="card-img-top rounded-5" src="{{ post.image.url }}" alt="{{ post.title }}" />
+                                    <img class="card-img-top rounded-top-5" src="{{ post.image.url }}" alt="{{ post.title }}" />
                                 </a>
                                 <div class="card-body">
                                     <div class="row">
-                                        <div class="small col-6 text-muted">{{ post.published_date|time }}</div>
-                                        <div class="small col-6 text-muted text-end">{{ post.published_date|date }}</div>
+                                        <div class="small text-muted text-end">{{ post.published_date|date }}</div>
                                     </div>
-                                    <h2 class="card-title h4">{{ post.title }}</h2>
-                                    <p class="card-text">{{ post.content|slice:":100" }}...</p>
-                                    <a class="btn btn-primary rounded-5 border-0 pe-4 btn-rm" href="{% url 'post_detail' post.slug %}">
-                                        Read more 
-                                        <span class="flech mx-1">→</span>
+                                    <h2 class="card-title text-bold h6">{{ post.title }}</h2>
+                                    <p class="card-text small text-muted text-justify">{{ post.content|slice:":80" }}...</p>
+                                    <a class="btn btn-primary rounded-5 border-0 pe-4 w-100 btn-rm" href="{% url 'post_detail' post.slug %}">
+                                        Lire la suite
+                                        <span class="flech mx-1"> <i class="fas fa-angle-right"></i> </span>
                                     </a>
                                 </div>
                             </div>
@@ -66,10 +87,14 @@
                     <ul class="pagination justify-content-center">
                         {% if posts.has_previous %}
                             <li class="page-item">
-                                <a class="page-link rounded-5" href="?page=1">&laquo; Premier</a>
+                                <a class="page-link rounded-5" href="?page=1&{{ query_string }}">
+                                    <i class="fa fa-angle-double-left"></i> Premier
+                                </a>
                             </li>
                             <li class="page-item">
-                                <a class="page-link rounded-5" href="?page={{ posts.previous_page_number }}">Précédent</a>
+                                <a class="page-link rounded-5" href="?page={{ posts.previous_page_number }}&{{ query_string }}">
+                                    <i class="fa fa-chevron-left"></i> Précédent
+                                </a>
                             </li>
                         {% endif %}
 
@@ -81,64 +106,108 @@
 
                         {% if posts.has_next %}
                             <li class="page-item">
-                                <a class="page-link" href="?page={{ posts.next_page_number }}">Suivant</a>
+                                <a class="page-link rounded-5" href="?page={{ posts.next_page_number }}&{{ query_string }}">
+                                    <i class="fa fa-chevron-right"></i> Suivant
+                                </a>
                             </li>
                             <li class="page-item">
-                                <a class="page-link rounded-5" href="?page={{ posts.paginator.num_pages }}">Dernier &raquo;</a>
+                                <a class="page-link rounded-5" href="?page={{ posts.paginator.num_pages }}&{{ query_string }}">
+                                    Dernier <i class="fa fa-angle-double-right"></i>
+                                </a>
                             </li>
                         {% endif %}
                     </ul>
                 </div>
             </div>
 
-            <!-- Side widgets-->
-            <div class="col-lg-4">
-                <!-- Search widget -->
-                <div class="card mb-4 rounded-5">
-                    <div class="card-header">Search</div>
-                    <div class="card-body">
-                        <form id="search-form" method="get" action="{% url 'post_list' %}">
-                            <div class="input-group">
-                                <input class="form-control rounded-5" type="text" name="search" placeholder="Enter search term..."
-                                    aria-label="Enter search term..." aria-describedby="button-search" value="{{ search_term }}">
-                                <button class="btn btn-primary rounded-5" id="button-search" type="submit">Go!</button>
+            <!-- Widgets latéraux -->
+            <div class="col-lg-4 ps-lg-5 order-1 order-lg-2">
+                <!-- Recherche & Catégories -->
+                <form id="search-form" method="get" action="{% url 'post_list' %}">
+                    <!-- Carte de recherche -->
+                    <div class="card mb-4 rounded-4 overflow-hidden">
+                        <div class="card-header d-flex align-items-center text-bold">
+                            <i class="fas fs-4 fa-search me-2"></i> Recherche
+                        </div>
+                        <div class="card-body">
+                            <div class="input-group rounded-5 border">
+                                <!-- Champ de recherche -->
+                                <input 
+                                    class="form-control border-0 rounded-5" 
+                                    type="text" 
+                                    name="search" 
+                                    placeholder="Rechercher un article de blog"
+                                    aria-label="Rechercher un article de blog" 
+                                    aria-describedby="button-search" 
+                                    value="{{ search_term }}"
+                                >
+                                <!-- Bouton de recherche -->
+                                <button class="btn btn-primary rounded-5" id="button-search" type="submit">
+                                    <i class="fas fa-search"></i>
+                                </button>
                             </div>
-                        </form>
+                        </div>
                     </div>
-                </div>
-                <!-- Categories widget -->
-                <div class="card mb-4 rounded-5">
-                    <div class="card-header">Categories</div>
-                    <div class="card-body">
-                        <form id="category-form" method="get" action="{% url 'post_list' %}">
+
+                    <!-- Carte des filtres par catégories -->
+                    <div class="card mb-4 rounded-4 overflow-hidden">
+                        <div class="card-header d-flex align-items-center text-bold">
+                            <i class="fas fs-4 fa-cubes-stacked me-2"></i> Filtre par catégories
+                        </div>
+                        <div class="card-body">
                             <div class="d-flex">
+                                <!-- Colonne gauche -->
                                 <div class="col-6">
                                     {% for category in categories_left %}
                                         <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" name="category" value="{{ category.id }}"
-                                                id="category{{ category.id }}" {% if category.id in selected_categories %}checked{% endif %}>
-                                            <label class="form-check-label" for="category{{ category.id }}">
+                                            <input 
+                                                class="form-check-input" 
+                                                type="checkbox" 
+                                                name="category" 
+                                                value="{{ category.id }}"
+                                                id="category{{ category.id }}" 
+                                                {% if category.id in selected_categories %}checked{% endif %}
+                                            >
+                                            <label class="form-check-label text-uppercase" for="category{{ category.id }}">
                                                 {{ category.name }}
                                             </label>
                                         </div>
                                     {% endfor %}
                                 </div>
+                                <!-- Colonne droite -->
                                 <div class="col-6">
                                     {% for category in categories_right %}
                                         <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" name="category" value="{{ category.id }}"
-                                                id="category{{ category.id }}" {% if category.id in selected_categories %}checked{% endif %}>
-                                            <label class="form-check-label" for="category{{ category.id }}">
+                                            <input 
+                                                class="form-check-input" 
+                                                type="checkbox" 
+                                                name="category" 
+                                                value="{{ category.id }}"
+                                                id="category{{ category.id }}" 
+                                                {% if category.id in selected_categories %}checked{% endif %}
+                                            >
+                                            <label class="form-check-label text-uppercase" for="category{{ category.id }}">
                                                 {{ category.name }}
                                             </label>
                                         </div>
                                     {% endfor %}
                                 </div>
                             </div>
-                            <button type="submit" class="btn btn-primary rounded-5">Appliquer les filtres</button>
-                        </form>
+
+                            <!-- Bouton pour appliquer les filtres -->
+                            <button type="submit" class="btn btn-light border p-0 rounded-5 w-100 mt-3"> 
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <div class="mx-2">
+                                        Appliquer les filtres
+                                    </div>
+                                    <div class="btn btn-primary rounded-5">
+                                        <i class="fas fa-filter"></i> 
+                                    </div>
+                                </div>
+                            </button>
+                        </div>
                     </div>
-                </div>
+                </form>
             </div>
         </div>
     </div>

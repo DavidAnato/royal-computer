@@ -49,6 +49,7 @@
 	height: 3px;
 	background-color: #ff4f81;
 	/* Couleur du soulignement */
+	border-radius: 10px;
 	transition: right 0.3s ease-in-out;
 }
 

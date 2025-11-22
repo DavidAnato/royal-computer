@@ -1,4 +1,5 @@
 from math import ceil
+from urllib.parse import urlencode
 from django.shortcuts import render, redirect, get_object_or_404
 from cart_manage.models import Cart
 from django.core.paginator import Paginator
@@ -10,22 +11,30 @@ from .forms import *
 PER_PAGE = 8
 
 def post_list(request):
-    user = request.user
-
     # Récupération des articles publiés, triés par date de publication
-    all_posts = Post.objects.filter(published_date__isnull=False).order_by('-published_date')
-
+    all_posts = Post.objects.filter(published_date__isnull=False).order_by('-updated_date')
     latest_post = all_posts.first()
 
-    other_posts = all_posts.exclude(pk=latest_post.pk)
+    # Si aucun post n'existe, retourner une page vide
+    if not latest_post:
+        return render(request, 'blog/post_list.html', {
+            'posts': [],
+            'other_posts': [],
+            'categories': [],
+            'categories_left': [],
+            'categories_right': [],
+            'selected_categories': [],
+            'search_term': '',
+            'latest_post': None,
+            'query_string': '',
+        })
 
     # Récupération des paramètres de recherche, de filtre et de tri depuis la requête
     search_term = request.GET.get('search', '')
     category_ids = request.GET.getlist('category')
-    sort_by = request.GET.get('sort_by', 'published_date')
 
-    # Filtrage des articles de blog en fonction des paramètres
-    posts = Post.objects.filter(published_date__isnull=False)
+    # Filtrage des articles
+    posts = all_posts
 
     if search_term:
         posts = posts.filter(Q(title__icontains=search_term) | Q(content__icontains=search_term))
@@ -33,14 +42,10 @@ def post_list(request):
     if category_ids:
         posts = posts.filter(categories__in=category_ids)
 
-    # Tri des articles
-    allowed_sorts = ['published_date', 'title', 'author']  # Liste des champs de tri autorisés
-    if sort_by in allowed_sorts:
-        posts = posts.order_by(sort_by)
-    else:
-        sort_by = 'published_date'  # Utilisation du tri par date par défaut
+    # Élimination des doublons
+    posts = posts.distinct()
 
-    # Pagination
+    # Pagination sur les posts filtrés
     paginator = Paginator(posts, per_page=PER_PAGE)
     page_number = request.GET.get('page', 1)
     try:
@@ -49,33 +54,47 @@ def post_list(request):
         page_number = 1
     posts = paginator.get_page(page_number)
 
+    # Préserver les paramètres de recherche, de filtre et de tri dans les liens de pagination
+    query_params = {
+        'search': search_term,
+    }
+    if category_ids:
+        query_params['category'] = category_ids
+    query_string = urlencode(query_params, doseq=True)  # `doseq=True` permet de gérer les listes (e.g., catégories)
+
+    # Mise à jour des autres articles en fonction des filtres
+    if search_term or category_ids:
+        other_posts = posts  # Pagination sur les résultats filtrés
+    else:
+        other_posts = all_posts.exclude(pk=latest_post.pk)  # Pagination sur tous les posts sans filtre
+
+    # Pagination sur other_posts
+    paginator_other = Paginator(other_posts, per_page=PER_PAGE)
+    other_posts_page_number = request.GET.get('page', 1)
+    try:
+        other_posts_page_number = max(int(other_posts_page_number), 1)
+    except ValueError:
+        other_posts_page_number = 1
+    other_posts = paginator_other.get_page(other_posts_page_number)
+
     # Récupération des catégories pour les filtres
     categories = Category.objects.all()
     mid_index = ceil(len(categories) / 2)
     categories_left = categories[:mid_index]
     categories_right = categories[mid_index:]
-
-    # Récupération du panier de l'utilisateur s'il est authentifié
-    cart = None
-    number_of_items_in_cart = 0
-    if user.is_authenticated:
-        cart = Cart.objects.filter(user=user).first()
-        if cart:
-            number_of_items_in_cart = cart.items.count()
+    selected_categories = [int(category_id) for category_id in category_ids]
 
     return render(request, 'blog/post_list.html', {
         'posts': posts,
+        'other_posts': other_posts,  # Pagination des autres posts
         'categories': categories,
         'categories_left': categories_left,
         'categories_right': categories_right,
-        'selected_categories': category_ids,
+        'selected_categories': selected_categories,
         'search_term': search_term,
-        'selected_sort_by': sort_by,
         'latest_post': latest_post,
-        'other_posts': other_posts,
-        'number_of_items_in_cart': number_of_items_in_cart,
+        'query_string': query_string,  # Ajout de la chaîne de requête pour la pagination
     })
-
 
 def post_detail(request, slug):
     post = get_object_or_404(Post, slug=slug, published_date__isnull=False)
@@ -97,18 +116,12 @@ def post_detail(request, slug):
 
     comments = post.comments.filter(approved_comment=True)
 
-    number_of_items_in_cart = 0  # Initialisation par défaut
-    if user.is_authenticated:
-        cart = Cart.objects.filter(user=user).first()
-        if cart:
-            number_of_items_in_cart = cart.items.count()
 
     return render(request, 'blog/post_detail.html', {
         'post': post,
         'comments': comments,
         'form': form,
         'latest_posts': latest_posts,  # Ajout des 4 derniers articles
-        'number_of_items_in_cart': number_of_items_in_cart
     })
 
 def edit_comment(request, comment_id):

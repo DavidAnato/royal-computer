@@ -1,90 +1,43 @@
 {% extends 'base.html' %}
+{% load static %}
+{% block title %}| Validation de la commande{% endblock %}
+
+{% block meta %}
+<meta name="robots" content="index, nofollow">
+<meta name="description" content="Validez votre commande sur Royal Computer. Vérifiez les détails de votre panier, sélectionnez votre adresse de livraison et finalisez votre achat en toute sécurité.">
+
+<!-- Carte Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@RoyalComputerStore">
+<meta name="twitter:title" content="Validation de la commande">
+<meta name="twitter:description" content="Validez votre commande sur Royal Computer. Vérifiez les détails de votre panier, sélectionnez votre adresse de livraison et finalisez votre achat en toute sécurité.">
+<meta name="twitter:image" content="{% static 'images/rc-logo.png' %}">
+
+<!-- Facebook (Open Graph) -->
+<meta property="og:title" content="Validation de la commande">
+<meta property="og:description" content="Validez votre commande sur Royal Computer. Vérifiez les détails de votre panier, sélectionnez votre adresse de livraison et finalisez votre achat en toute sécurité.">
+<meta property="og:image" content="{% static 'images/rc-logo.png' %}">
+{% endblock %}
 
 {% block content %}
   <div class="banner text-center bg-secondary p-5 m-0">
-    <h1>Validation de la commande</h1>
+    <div class="banner-content d-flex justify-content-center align-items-center">
+        <h1 class="text-bold display-5"> <i class="fas fa-check"></i> Validation de la commande</h1>
+    </div>
   </div>
-  <section class="bg-light">
+  <section class="py-5">
     <div class="container">
       <form method="post">
-  {% csrf_token %}
-  <div class="card rounded-5 my-4 border shadow-0">
-    <div class="m-4">
-      <h3>Selectionez un adresse</h3>  
-      <div class="row ">
-        {% for field in shipping_form %}
-        
-        {% for option in field.field.queryset %}
-        <div class="col-12 col-sm-6 col-md-6 col-lg-4 mb-3">
-            <div class="card radio-card p-3 rounded-5" id="card{{ option.id }}">
-                <div class="form-check mb-2">
-                    <input class="form-check-input shadow-none green-radio" type="radio" name="{{ field.name }}" id="addressOption{{option.id}}" value="{{option.id}}">
-                </div>
-                <p><strong>Adresse :</strong> {{ option.address }}</p>
-                <p><strong>Ville :</strong> {{ option.city }}</p>
-                <p><strong>Code postal :</strong> {{ option.postal_code }}</p>
-            </div>
-        </div>
-        <script>
-          function handleRadioClick(radioInput) {
-              var cardElement = document.getElementById("card{{ option.id }}");
-        
-              // Ajoutez un écouteur d'événements 'click' à l'élément de la carte
-              cardElement.addEventListener("click", function () {
-                  // Inversez l'état de la case à cocher
-                  radioInput.checked = !radioInput.checked;
-              });
-        
-              // Ajoutez un écouteur d'événements 'change' à l'input radio
-              radioInput.addEventListener("change", function () {
-                  // Mettez à jour la classe de l'élément de la carte en fonction de l'état de la case à cocher
-                  if (radioInput.checked) {
-                      cardElement.classList.add("border-success");
-                  } else {
-                      cardElement.classList.remove("border-success");
-                  }
-              });
-        
-              // Déclenchez manuellement l'événement 'change' pour initialiser la classe de l'élément de la carte
-              var event = new Event('change');
-              radioInput.dispatchEvent(event);
-          }
-        
-          handleRadioClick(document.getElementById("addressOption{{option.id}}"));
-        </script>
-                    
-              {% empty %}
-        <div class="col-12">
-            <p>Aucune adresse enregistrée.</p>
-        </div>
-        {% endfor %}
-                    <div class="col">
-    
-              <a href="{% url 'manage_address' %}" class=" card p-3 rounded-5 align-items-center justify-content-center text-center text-decoration-none" style="height:191.2px;">
-                <div class="bg-secondary" style="height:40px; width:1px"></div>
-                <div class="bg-secondary" style="height:1px; width:100px"></div>
-                <div class="bg-secondary" style="height:40px; width:1px"></div>
-    
-            </a>
-          </div>
-    
-              {% if field.errors %}
-                <ul class="errorlist">
-                  {% for error in field.errors %}
-                    <li>{{ error }}</li>
-                  {% endfor %}
-                </ul>
-              {% endif %}
-        {% endfor %}
+      {% csrf_token %}  
+      <div class="d-flex justify-content-between mb-4 gap-2">
+        <a href="{% url 'cart' %}" class="btn btn-anime-pink btn-lg text-bold rounded-5"> <i class="fas fa-arrow-left"></i> Retourner au panier</a>
+        <button type="submit" class="btn btn-anime-success btn-lg text-bold rounded-5">Confirmer la commande <i class="fas fa-arrow-right"></i></button>
       </div>
-        </div>
-  </div>
-        
 
         <div class="col">
           <div class="card rounded-5 mb-4 border shadow-0">
             <div class="m-4">
-              <h4 class="card-title mb-4">Détail du panier</h4>
+              <h4 class="card-title mb-4">Détails du panier</h4>
       
               {% if cart.items.count == 0 %}
                 <p>Votre panier d'achat est vide.</p>
@@ -110,12 +63,12 @@
                         <input type="number" style="width: 100px;" class="form-control shadow-none rounded-5 me-4" name="{{ item.id }}-quantity" value="{{ item.quantity }}" disabled>
                       </div>
                       <div class="">
-                        <text class="h6 total-price">{{ item.total_price|floatformat:2 }} F</text> <br>
+                        <text class="h6 total-price">{{ item.total_price|floatformat:0 }} F</text> <br>
                         <small class="text-muted text-nowrap">
                           {% if item.promo_price %}
-                            {{ item.promo_price|floatformat:2 }} F / par article
+                            {{ item.promo_price|floatformat:0 }} F / par article
                           {% else %}
-                            {{ item.price|floatformat:2 }} F / par article
+                            {{ item.price|floatformat:0 }} F / par article
                           {% endif %}
                         </small>
                       </div>
@@ -127,37 +80,99 @@
                 <div class="card-body">
                   <div class="d-flex justify-content-between">
                     <p class="mb-2">Prix total :</p>
-                    <p class="mb-2 total">{{ cart.total|floatformat:2 }} F CFA</p>
+                    <p class="mb-2 total">{{ cart.total|floatformat:0 }} F CFA</p>
                   </div>
                   {% if cart.promo_code and cart.promo_code.is_valid %} 
     
                   <div class="d-flex justify-content-between">
                     <p class="mb-2">Réduction :</p>
-                    <p class="mb-2 text-success discount">{{ cart.discount|floatformat:2 }} F CFA</p>
+                    <p class="mb-2 text-success discount">{{ cart.discount|floatformat:0 }} F CFA</p>
                   </div>
                   <hr>
                   <div class="d-flex justify-content-between">
                     <p class="mb-2">Prix total :</p>
-                    <p class="mb-2 fw-bold final-total">{{ cart.final_total|floatformat:2 }} F CFA</p>
+                    <p class="mb-2 text-bold final-total">{{ cart.final_total|floatformat:0 }} F CFA</p>
                   </div>
                   {% endif %}
                 </div>
   
-            </div>
-      
-            <div class="border-top pt-4 mx-4 mb-4">
-              <p><i class="fas fa-truck text-muted fa-lg"></i> Vous serez livré dans les plus brefs délais</p>
-            </div>
+            </div>      
           </div>
         </div>
 
-        <div class="text-center">
-          <div class="row">
-            <button type="submit" class="btn btn-primary col-md-6 border-0 rounded-5">Confirmer la commande</button>
-            <a href="{% url 'cart' %}" class="btn btn-pink col-md-6 border-0 rounded-5">Retourner au panier</a>
+        <div class="card rounded-5 border shadow-0">
+          <div class="m-4">
+            <h3>Sélectionnez une adresse</h3>  
+            <div class="row ">
+              {% for field in shipping_form %}
+              
+              {% for option in field.field.queryset %}
+              <div class="col-12 col-sm-6 col-md-6 col-lg-4 mb-3">
+                  <div class="card radio-card p-3 rounded-5" id="card{{ option.id }}">
+                      <div class="form-check mb-2">
+                          <input class="form-check-input shadow-none green-radio" type="radio" name="{{ field.name }}" id="addressOption{{option.id}}" value="{{option.id}}">
+                      </div>
+                      <p><strong>Adresse :</strong> {{ option.address }}</p>
+                      <p><strong>Ville :</strong> {{ option.city }}</p>
+                      <p><strong>Code postal :</strong> {{ option.postal_code }}</p>
+                  </div>
+              </div>
+                          
+              {% empty %}
+              <div class="col-12">
+                  <p>Aucune adresse enregistrée.</p>
+              </div>
+              {% endfor %}
+                <div class="col">
+          
+                    <a href="{% url 'manage_address' %}?next=checkout" class="card p-3 rounded-5 align-items-center justify-content-center text-center text-decoration-none" style="height:191.2px;">
+                      <div class="bg-secondary" style="height:40px; width:1px"></div>
+                      <div class="bg-secondary" style="height:1px; width:100px"></div>
+                      <div class="bg-secondary" style="height:40px; width:1px"></div>
+          
+                  </a>
+                </div>
+              {% endfor %}
+            </div>
           </div>
+          <div class="border-top pt-4 mx-4 mb-4">
+            <p><i class="fas fa-truck text-muted fa-lg"></i> Vous serez livré dans les plus brefs délais</p>
+          </div>
+        </div>
+
+        <div class="d-flex justify-content-between mt-4 gap-2">
+          <a href="{% url 'cart' %}" class="btn btn-anime-pink btn-lg text-bold rounded-5"> <i class="fas fa-arrow-left"></i> Retourner au panier</a>
+          <button type="submit" class="btn btn-anime-success btn-lg text-bold rounded-5">Confirmer la commande <i class="fas fa-arrow-right"></i></button>
         </div>
       </form>
     </div>
   </section>
+  <script>
+    function gererClicBoutonRadio(boutonRadio) {
+        var elementCarte = document.getElementById("card{{ option.id }}");
+  
+        // Ajouter un écouteur d'événements 'clic' à l'élément de la carte
+        elementCarte.addEventListener("click", function () {
+            // Inverser l'état du bouton radio
+            boutonRadio.checked = !boutonRadio.checked;
+        });
+  
+        // Ajouter un écouteur d'événements 'changement' au bouton radio
+        boutonRadio.addEventListener("change", function () {
+            // Mettre à jour la classe de l'élément de la carte selon l'état du bouton radio
+            if (boutonRadio.checked) {
+                elementCarte.classList.add("border-success");
+            } else {
+                elementCarte.classList.remove("border-success");
+            }
+        });
+  
+        // Déclencher manuellement l'événement 'changement' pour initialiser la classe de l'élément de la carte
+        var evenement = new Event('change');
+        boutonRadio.dispatchEvent(evenement);
+    }
+  
+    gererClicBoutonRadio(document.getElementById("addressOption{{option.id}}"));
+  </script>
+
 {% endblock %} 

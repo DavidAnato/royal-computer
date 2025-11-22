@@ -36,7 +36,7 @@ class PaymentMethod(models.Model):
         verbose_name_plural = 'méthodes de paiement'
 
 class CustomUser(AbstractUser):
-    email = models.EmailField(unique=True, verbose_name='e-mail')
+    email = models.EmailField(unique=False, verbose_name='e-mail')
     username = models.CharField(max_length=100, verbose_name='nom d\'utilisateur', unique=True)
     phone_number = models.CharField(max_length=100, verbose_name='numéro de téléphone', blank=True, null=True)
     phone_number_confirmed = models.BooleanField(default=False, verbose_name='Numéro de téléphone confirmé')
@@ -65,6 +65,8 @@ class CustomUser(AbstractUser):
     picture_url = models.URLField(verbose_name='URL de la photo de profil', blank=True)
     verified_email = models.BooleanField(default=False, verbose_name='e-mail vérifié')
     
+    otp = models.CharField(max_length=5, verbose_name='code OTP', null=True, blank=True)
+
     def is_phone_number_confirmed(self):
         if self.phone_number_confirmed:
             return self.phone_number_confirmed
@@ -96,15 +98,13 @@ class CustomUser(AbstractUser):
 
                 img = img.crop((left, top, right, bottom))
                 img.save(self.profile_photo.path)
-
-
-    
+ 
 
 class Address(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='addresses')
     address = models.CharField(max_length=100, verbose_name='adresse')
     city = models.CharField(max_length=50, verbose_name='ville')
-    postal_code = models.CharField(max_length=10, verbose_name='code postal')
+    postal_code = models.CharField(max_length=10, verbose_name='code postal', blank=True, null=True)
 
     def __str__(self):
         return self.address

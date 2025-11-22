@@ -86,8 +86,8 @@ class Rating(models.Model):
 
 class AdditionalImage(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='additional_image_set', verbose_name="produit")
-    image = models.ImageField(upload_to='additional_images/', verbose_name="image supplémentaire")
-
+    image = models.FileField(upload_to='additional_images/', verbose_name="image supplémentaire")
+    is_video = models.BooleanField(default=False, verbose_name="est une vidéo")
     def __str__(self):
         return f"Image supplémentaire pour {self.product.name}"
 

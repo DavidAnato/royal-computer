@@ -1,6 +1,29 @@
-{% extends 'base.html' %} {% load static %} {% block content %}
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}| À propos{% endblock %}
+
+{% block meta %}
+<meta name="robots" content="index, follow">
+<meta name="description" content="Découvrez l'histoire, la mission et les valeurs de Royal Computer. Rencontrez notre équipe dévouée et apprenez-en plus sur notre engagement envers l'excellence et la satisfaction client.">
+
+<!-- Carte Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@RoyalComputerStore">
+<meta name="twitter:title" content="À propos">
+<meta name="twitter:description" content="Découvrez l'histoire, la mission et les valeurs de Royal Computer. Rencontrez notre équipe dévouée et apprenez-en plus sur notre engagement envers l'excellence et la satisfaction client.">
+<meta name="twitter:image" content="{% static 'images/rc-logo.png' %}">
+
+<!-- Facebook (Open Graph) -->
+<meta property="og:title" content="À propos">
+<meta property="og:description" content="Découvrez l'histoire, la mission et les valeurs de Royal Computer. Rencontrez notre équipe dévouée et apprenez-en plus sur notre engagement envers l'excellence et la satisfaction client.">
+<meta property="og:image" content="{% static 'images/rc-logo.png' %}">
+{% endblock %}
+
+{% block content %}
 <div class="banner text-center bg-secondary p-5">
-    <h1>A propos</h1>
+    <div class="banner-content d-flex justify-content-center align-items-center">
+      <h1 class="text-bold display-4"> <i class="fa-solid fa-bars-staggered"></i> À propos</h1>
+    </div>
 </div>
 
   <div class="container mt-5">
@@ -30,22 +53,22 @@
     </div>
 </div>
 <!-- Notre Équipe -->
-<section id="our-team">
+<section id="notre-equipe">
     <div class="container mt-5">
         <h2 class="text-center text-bold">Notre Équipe</h2>
         <div class="underline mx-auto mb-5"></div>
-        <div class="row">
-            <div class="card p-0 text-center align-items-center rounded-5 col-md-4">
+        <div class="row justify-content-center">
+            <div class="card p-0 text-center align-items-center rounded-5 col-md-4 overflow-hidden">
                 <div class="team-member">
-                    <img class="w-100" src="https://z-m-scontent.fcoo1-2.fna.fbcdn.net/v/t1.18169-9/12313644_903797413031677_4964548900959852955_n.jpg?stp=cp0_dst-jpg_e15_p403x403_q65&_nc_cat=105&ccb=1-7&_nc_sid=947906&efg=eyJpIjoibyJ9&_nc_eui2=AeG5E63XldzPVGzcfKjPGRnF72hg1WWnT27vaGDVZadPbsc7sVq4s11s40AzVXAMGqdaI491t5wONU3Ot_RccERR&_nc_ohc=MGLNyIfA5Z4AX98nuf4&_nc_ad=z-m&_nc_cid=1398&_nc_eh=70a3c8fcdb6f2ba202656bd4d34446e7&_nc_rml=0&_nc_ht=z-m-scontent.fcoo1-2.fna&oh=00_AfBFHprpzMGpY-DZeoYJWIth4afvrB4mReYb1sHhVTy6FQ&oe=6552A315" alt="Membre de l'équipe 2">
+                    <img class="w-100" src="{% static 'images/team/amour.png' %}" alt="Membre de l'équipe">
                     <h3>Amour Dossou-Yovo</h3>
                     <p>PDG</p>
-                    <a href="#" class="m-2" target="_blank"><i class="fab fa-facebook"></i> 
-                    <a href="#" class="m-2" target="_blank"><i class="fab fa-twitter"></i>  
-                    <a href="#" class="m-2" target="_blank"><i class="fab fa-linkedin"></i> 
+                    <a href="#" class="m-2 text-primary text-decoration-none" target="_blank"><i class="fab fa-facebook"></i> 
+                    <a href="#" class="m-2 text-dark text-decoration-none" target="_blank"><i class="fa fa-envelope"></i>  
+                    <a href="#" class="m-2 text-success text-decoration-none" target="_blank"><i class="fab fa-square-whatsapp"></i> 
                 </div>
             </div>
-            <!-- Ajoutez d'autres membres de l'équipe ici au besoin -->
+            <!-- Ajoutez d'autres membres de l'équipe selon les besoins -->
         </div>
     </div>
 </section>

@@ -41,10 +41,13 @@ def cart(request):
     cart, created = Cart.objects.get_or_create(user=request.user)
     items = cart.items.all()
     new_products = Product.objects.filter(in_stock=True).filter(is_new=True).order_by('-created_at')
+    inputed_code_promo = ''
+    invalid_promo = False
 
     if request.method == 'POST':
         formset = []
         promo_code = request.POST.get('promo_code')
+        inputed_code_promo = promo_code
         if promo_code.strip() == '':
             cart.promo_code = None  # Supprime le code promo si le champ est vide
             cart.save()
@@ -58,9 +61,11 @@ def cart(request):
                     messages.success(request, f"Code promo validé. Réduction de {promo.discount}% appliquée.")
                 else:
                     cart.promo_code = None
+                    invalid_promo = True
                     messages.error(request, "Code promo invalide.")
             except PromoCode.DoesNotExist:
                 cart.promo_code = None
+                invalid_promo = True
                 messages.error(request, "Code promo invalide.")
 
         for item in items:
@@ -72,17 +77,15 @@ def cart(request):
     else:
         formset = [CartForm(prefix=str(item.id), initial={'quantity': item.quantity}) for item in items]
 
-    number_of_items_in_cart = cart.items.count()  # Supposons que vous avez un champ 'items' pour stocker les produits dans le panier
 
     context = {
         'cart': cart,
         'formset': formset,
         'new_products': new_products,
-        'number_of_items_in_cart': number_of_items_in_cart,
-
-
+        'inputed_code_promo': inputed_code_promo,
+        'invalid_promo': invalid_promo,
     }
-    return render(request, 'cart_manage/cart_view.html', context)
+    return render(request, 'cart_manage/cart.html', context)
 
 # Commande
 
@@ -103,6 +106,8 @@ def checkout(request):
                 OrderItem.objects.create(order=order, product=item.product, quantity=item.quantity, price=item.price)
             cart.items.all().delete()  # Supprimez les éléments du panier une fois la commande passée
             if cart.promo_code:
+                order.promo_code = cart.promo_code
+                order.save()
                 cart.promo_code = None
                 cart.save()
 
@@ -122,8 +127,14 @@ def checkout(request):
 
 def order_success(request):
     order = Order.objects.filter(user=request.user).last()
+    order_items = OrderItem.objects.filter(order=order)
+    order_items_count = order_items.count()
+    order_items_total_quantity = sum(item.quantity for item in order_items)
     context = {
         'order': order,
+        'order_items': order_items,
+        'order_items_count': order_items_count,
+        'order_items_total_quantity': order_items_total_quantity,
     }
 
     return render(request, 'cart_manage/order_success.html', context)

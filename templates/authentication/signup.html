@@ -2,6 +2,23 @@
 {% load static %}
 {% block title %}| Inscription{% endblock %}
 
+{% block meta %}
+<meta name="robots" content="index, nofollow">
+<meta name="description" content="Créez votre compte sur Royal Computer. Inscrivez-vous pour accéder à notre catalogue d'ordinateurs haut de gamme et profiter de nos offres exclusives.">
+
+<!-- Carte Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@RoyalComputerStore">
+<meta name="twitter:title" content="Inscription">
+<meta name="twitter:description" content="Créez votre compte sur Royal Computer. Inscrivez-vous pour accéder à notre catalogue d'ordinateurs haut de gamme et profiter de nos offres exclusives.">
+<meta name="twitter:image" content="{% static 'images/rc-logo.png' %}">
+
+<!-- Facebook (Open Graph) -->
+<meta property="og:title" content="Inscription">
+<meta property="og:description" content="Créez votre compte sur Royal Computer. Inscrivez-vous pour accéder à notre catalogue d'ordinateurs haut de gamme et profiter de nos offres exclusives.">
+<meta property="og:image" content="{% static 'images/rc-logo.png' %}">
+{% endblock %}
+
 {% block content %}
 <div class="h-100">
 
@@ -12,7 +29,7 @@
           <div class="row justify-content-center">
             <div class="col-md-10 col-lg-6">
               <div class="d-flex justify-content-center align-items-center">
-                <img src="{% static 'images/auth/cart.png' %}" alt="Google" class="my-2" style="width: 'auto'; height: 120px;">
+                <img src="{% static 'images/auth/cart.png' %}" alt="Panier" class="my-2" style="width: 'auto'; height: 120px;">
                 <div class="d-flex flex-column">
                   <h1 class="h3">Bienvenue sur <span class="text-bold">Royal Computer</span></h1>
                   <p class="text-muted">Créez un compte et profitez de nos ordinateurs haut de gamme à des prix imbattables.</p>
@@ -74,7 +91,7 @@
                         name="email"
                         id="email"
                         class="form-control border-0 shadow-none rounded-5"
-                        placeholder="Email"
+                        placeholder="Adresse e-mail"
                         required
                       />
                     </div>
@@ -165,7 +182,7 @@
                 <hr />
                 <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
                   <p class="text-center">
-                    Vous avez déjà un <a href="{% url 'login' %}">compte</a> !
+                    Vous avez déjà un compte ? <a href="{% url 'login' %}">Connectez-vous</a> !
                   </p>
                 </div>
               </form>
@@ -176,7 +193,7 @@
               <img
                 src="{% static 'images/auth/signup.png' %}"
                 class="img-fluid"
-                alt="Sample image"
+                alt="Image d'inscription"
               />
             </div>
           </div>
